@@ -25,7 +25,7 @@ module.exports = {
         'react/prop-types': 'off',
         'react/display-name': 'off',
         'prettier/prettier': ['error', { endOfLine: 'auto' }],
-        indent: ['error', 4],
+        // indent: ['error', 4],
         'no-unused-vars': ['warn'],
         // 'no-console': ['warn'],
     },
