@@ -17,6 +17,18 @@ html {
   --color-blue-dark: #28535c;
   --color-blue-light: #356a82;
 
+  /* OTHER colors */
+  --primary-50: #e0fcff;
+  --primary-100: #bef8fd;
+  --primary-200: #87eaf2;
+  --primary-300: #54d1db;
+  --primary-400: #38bec9;
+  --primary-500: #2cb1bc;
+  --primary-600: #14919b;
+  --primary-700: #0e7c86;
+  --primary-800: #0a6c74;
+  --primary-900: #044e54;
+
   /* greys */
   --grey-50: #f8fafc;
   --grey-100: #f1f5f9;
@@ -51,10 +63,13 @@ html {
   --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --nav-height: 6rem;
+  /* TEXT */
+  --small-text: 0.875rem;
+  --extra-small-text: 0.7em;
 }
 
 body {
-  background: var(--background-color);
+  background: var(--grey-50);
   color: var(--text-color);
   font-family: Roboto, sans-serif;
   font-weight: 400;
