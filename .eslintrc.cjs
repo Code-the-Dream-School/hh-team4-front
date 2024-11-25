@@ -24,7 +24,7 @@ module.exports = {
     rules: {
         'comma-dangle': ['error', 'only-multiline'],
         'prettier/prettier': ['error', { endOfLine: 'auto' }],
-        'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], 
+         "react/prop-types": "off",
         'react/react-in-jsx-scope': 'off',
     },
     settings: {

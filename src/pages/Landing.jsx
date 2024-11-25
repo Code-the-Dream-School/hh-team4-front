@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
 import main from '../assets/LandingPage.svg';
-import logo from '../assets/logo.svg';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components';
 
