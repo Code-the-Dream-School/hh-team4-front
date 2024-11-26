@@ -1,27 +1,82 @@
-import React, { useState, useEffect } from 'react';
-import { getAllData } from './util/index';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-const URL = 'http://localhost:8000/api/v1/';
+import {
+    AddDrug,
+    AdminAddUser,
+    Alerts,
+    Dashboard,
+    DispenseDrug,
+    Landing,
+    Login,
+    Register,
+    Reports,
+    Store,
+    User,
+    Error,
+    EditDrug,
+    HomeLayout,
+} from './pages';
 
-function App() {
-    const [message, setMessage] = useState('');
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <HomeLayout />,
+        errorElement: <Error />,
+        children: [
+            {
+                index: true,
+                element: <Landing />,
+            },
+            {
+                path: 'dashboard',
+                element: <Dashboard />,
+            },
+            {
+                path: 'register',
+                element: <Register />,
+            },
+            {
+                path: 'login',
+                element: <Login />,
+            },
+        ],
+    },
 
-    useEffect(() => {
-        (async () => {
-            const myData = await getAllData(URL);
-            setMessage(myData.data);
-        })();
+    {
+        path: '/alerts',
+        element: <Alerts />,
+    },
+    {
+        path: '/adddrug',
+        element: <AddDrug />,
+    },
+    {
+        path: '/editdrug',
+        element: <EditDrug />,
+    },
+    {
+        path: '/dispense',
+        element: <DispenseDrug />,
+    },
+    {
+        path: '/store',
+        element: <Store />,
+    },
+    {
+        path: '/user',
+        element: <User />,
+    },
+    {
+        path: '/adminuser',
+        element: <AdminAddUser />,
+    },
+    {
+        path: '/reports',
+        element: <Reports />,
+    },
+]);
 
-        return () => {
-            console.log('unmounting');
-        };
-    }, []);
-
-    return (
-        <>
-            <h1>{message}</h1>
-        </>
-    );
-}
-
+const App = () => {
+    return <RouterProvider router={router} />;
+};
 export default App;
