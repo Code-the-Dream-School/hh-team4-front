@@ -1,6 +1,6 @@
 export { default as AddDrug } from './AddDrug';
 export { default as AdminAddUser } from './AdminAddUser';
-export { default as Alerts } from './Alerts';
+export { default as Alarms } from './Alarms';
 export { default as Dashboard } from './Dashboard';
 export { default as DispenseDrug } from './DispenseDrug';
 export { default as Landing } from './Landing';

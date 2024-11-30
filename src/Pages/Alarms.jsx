@@ -1,7 +1,7 @@
 import React from "react";
 import Alarmbutton from "./AlarmButton.jsx";
 import { useEffect, useState } from "react";
-import { drugData } from '../../data.jsx'; // Update path accordingly
+import { drugData } from '../../data.js'; // Update path accordingly
 import styles from './AlarmButton.module.css'
 export default function Alarms(){
     
