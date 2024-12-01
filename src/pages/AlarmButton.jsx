@@ -6,15 +6,9 @@ export default function AlarmButton({message, imagepath , filterTitle , filterDa
     const Navigate=useNavigate() ;
 
     function loadingPage(){
-
- 
-    
-    console.log(filterData) ;
-
-    Navigate(`/${targetPage}`, { state: { filterTitle, filterData } });
-
-    
-    
+       console.log(filterData) ;
+       Navigate(`/${targetPage}`, { state: { filterTitle, filterData } });
+  
 }
 
 return (
