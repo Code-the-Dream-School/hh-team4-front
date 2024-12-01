@@ -13,3 +13,4 @@ export { default as User } from './User';
 export { default as Error } from './Error';
 export { default as EditDrug } from './EditDrug';
 export { default as HomeLayout } from './HomeLayout';
+export { default as Medication } from './Medication';
