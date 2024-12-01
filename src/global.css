@@ -73,6 +73,10 @@ body {
     line-height: 1;
 }
 
+body.active-modal {
+    overflow: hidden;
+}
+
 h1,
 h2,
 h3,
