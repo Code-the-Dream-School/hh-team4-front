@@ -15,6 +15,7 @@ import {
     Error,
     EditDrug,
     HomeLayout,
+    Medication,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
     {
         path: '/reports',
         element: <Reports />,
+    },
+    {
+        path: '/Medication',
+        element: <Medication />,
     },
 ]);
 

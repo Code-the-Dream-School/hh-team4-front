@@ -3,6 +3,7 @@ import Alarmbutton from "./AlarmButton.jsx";
 import { useEffect, useState } from "react";
 import { drugData } from '../../data.js'; // Update path accordingly
 import styles from './AlarmButton.module.css'
+
 export default function Alarms(){
     
     const [rowData , setRowdata] =useState([]) ;
@@ -50,7 +51,7 @@ export default function Alarms(){
 return (
     <>
     
-    <h3>Alarm Page</h3>
+    <h3></h3>
     <div className={styles.alarmcontainer}>
     <Alarmbutton message={`Low Stock on ${lowStockData.length} products`}  imagepath="../images/low-stock.png"  filterTitle ="LowStock"   filterData ={lowStockData} targetPage="Medication"/> 
     <Alarmbutton message={`No Stock on ${noStockData.length} products`}  imagepath="../images/out-of-stock.png"  filterTitle="No Stock"  filterData ={noStockData}  targetPage="Medication"/>
