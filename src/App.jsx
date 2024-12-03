@@ -1,10 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-
 
 import {
     AddDrug,
-    AddEdit,
     AdminAddUser,
     Alerts,
     Dashboard,
@@ -19,7 +16,6 @@ import {
     EditDrug,
     HomeLayout,
 } from './pages';
-
 
 const router = createBrowserRouter([
     {
@@ -52,15 +48,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/adddrug',
-        element: <AddDrug />,
+        element: <AddDrug addDrugs={AddDrug} />,
     },
     {
         path: '/editdrug',
-        element: <EditDrug />
-    },
-    {
-        path: '/AddEdit',
-        element: <AddEdit />
+        element: <EditDrug updateDrug={EditDrug} />,
     },
     {
         path: '/dispense',
@@ -84,13 +76,10 @@ const router = createBrowserRouter([
     },
 ]);
 
-
 const App = () => {
-
     return (
         <>
             <RouterProvider router={router} />
-
         </>
     );
 };

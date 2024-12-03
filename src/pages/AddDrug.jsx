@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import AddMedicineForm from '../components/AddMedicineForm'
-import EditDrug from './EditDrug'
-import styled from 'styled-components'
+import AddMedicineForm from '../components/AddMedicineForm';
 
+import styled from 'styled-components';
 
 export default function AddDrug({ addDrugs }) {
-    const [modal, setModal] = useState(false)
+    const [modal, setModal] = useState(false);
     const [drugs, setDrugs] = useState([]);
-    const [drugToEdit, setDrugToEdit] = useState(null);
 
     const toggleModal = () => {
         setModal(!modal);
-    }
+    };
 
     if (modal) {
-        document.body.classList.add('active-modal')
+        document.body.classList.add('active-modal');
     } else {
-        document.body.classList.remove('active-modal')
+        document.body.classList.remove('active-modal');
     }
-
 
     // Combine all form fields into a single object
     const [formData, setFormData] = useState({
@@ -33,9 +30,9 @@ export default function AddDrug({ addDrugs }) {
         lotNumber: '',
     });
 
-    useEffect(() => {
-        console.log('Current Drugs:', drugs);
-    }, [drugs]);
+    //const isFormComplete = Object.values(formData).every((value) => value.trim() !== '');
+
+    useEffect(() => {}, [drugs]);
 
     const formatDate = (date) => {
         if (!date) return ''; // Handle empty or undefined dates
@@ -43,20 +40,26 @@ export default function AddDrug({ addDrugs }) {
     };
 
     const handleMedChange = ({ target: { id, value } }) => {
-        console.log(`Changing ${id} to: ${value}`)
         setFormData((prev) => ({
             ...prev,
-            [id]: id === 'expirationDate' ? formatDate(value) : value, // Dynamically update the field based on its ID 
+            [id]:
+                id === 'quantity' || id === 'minAmount' || id === 'ndcNumber' || id === 'lotNumber'
+                    ? Math.max(0, parseInt(value, 10)) || '' // Ensure non-negative numbers
+                    : id === 'expirationDate'
+                      ? formatDate(value) // Format the date
+                      : value, // For other fields, take the value as-is
         }));
     };
 
     const handleAddMed = (event) => {
         event.preventDefault();
 
-        const newDrug = {
-            id: Date.now(), ...formData,
+        addDrugs = {
+            id: Date.now(),
+            ...formData,
         };
-        setDrugs((prev) => [...prev, newDrug]);
+        console.log('AddDrugs:', addDrugs);
+        setDrugs((prev) => [...prev, addDrugs]);
         //AddDrug(newDrug); // pass new drug to the parent component
         setFormData({
             nameDrug: '',
@@ -68,43 +71,19 @@ export default function AddDrug({ addDrugs }) {
             ndcNumber: '',
             lotNumber: '',
         });
-        console.log('Form reset:', formData);
-    };
-
-    const deleteDrug = (id) => {
-        setDrugs((prev) => prev.filter((drug) => drug.id !== id));
-    };
-
-    const handleEditClick = (drug) => {
-        console.log("Drug to Edit:", drug)
-        setDrugToEdit(drug); // Set the selected drug for editing
-    };
-
-    const closeEditForm = () => {
-        setDrugToEdit(null);
-
-    }
-
-    const updateDrug = (updatedDrug) => {
-        setDrugs((prev) =>
-            prev.map((drug) => (drug.id === updatedDrug.id ? updatedDrug : drug))
-        );
-        setDrugToEdit(null); // Clear the drug to edit after updating
     };
 
     return (
-
         <Wrapper>
-
             <div>
-                <AddForm onSubmit={handleAddMed} >
+                <AddForm onSubmit={handleAddMed}>
                     <div>
-
                         <h1>ADD DRUG</h1>
                         {Object.entries(formData).map(([id, value]) => (
                             <div key={id}>
                                 <StyledLabel htmlFor={id}>
-                                    {id.replace(/([A-Z])/g, ' $1').toLowerCase()} {/* This will render the label text */}
+                                    {id.replace(/([A-Z])/g, ' $1').toLowerCase()}{' '}
+                                    {/* This will render the label text */}
                                 </StyledLabel>
                                 <AddMedicineForm
                                     type={id === 'expirationDate' ? 'date' : 'text'}
@@ -113,7 +92,6 @@ export default function AddDrug({ addDrugs }) {
                                     handleMedChange={handleMedChange}
                                     placeholder={id.replace(/([A-Z])/g, ' $1').toUpperCase()}
                                 >
-
                                     <FormSection>
                                         <Fieldwrapper>
                                             <StyledLabel htmlFor="quantity">Quantity</StyledLabel>
@@ -126,7 +104,9 @@ export default function AddDrug({ addDrugs }) {
                                             />
                                         </Fieldwrapper>
                                         <Fieldwrapper>
-                                            <StyledLabel htmlFor="minAmount">Min Amount</StyledLabel>
+                                            <StyledLabel htmlFor="minAmount">
+                                                Min Amount
+                                            </StyledLabel>
                                             <AddMedicineForm
                                                 type="text"
                                                 id="minAmount"
@@ -136,14 +116,14 @@ export default function AddDrug({ addDrugs }) {
                                             />
                                         </Fieldwrapper>
                                     </FormSection>
-
                                 </AddMedicineForm>
                             </div>
                         ))}
-
                     </div>
 
-                    < AddButton type="submit" onClick={toggleModal} >SAVE DRUG </AddButton>
+                    <AddButton type="submit" onClick={toggleModal}>
+                        SAVE DRUG{' '}
+                    </AddButton>
                 </AddForm>
 
                 {modal && (
@@ -151,47 +131,19 @@ export default function AddDrug({ addDrugs }) {
                         <Overlay onClick={toggleModal}></Overlay>
                         <ModalContent>
                             <p>Your medicine has been successfully added to the inventory.</p>
-                            <CloseModal
-                                onClick={toggleModal}>CLOSE
-                            </CloseModal>
+                            <CloseModal onClick={toggleModal}>CLOSE</CloseModal>
                         </ModalContent>
                     </ButtonModal>
                 )}
-
-                <ul>
-                    {drugs.map((drug) => (
-                        <li key={drug.id}>
-                            {Object.entries(drug).map(([id, value]) => (
-                                <p key={id}>
-                                    <strong>{id.replace(/([A-Z])/g, ' $1')}: </strong> {value}
-                                </p>
-                            ))}
-                            <DeleteButton onClick={() => deleteDrug(drug.id)}>Delete</DeleteButton>
-                            <button onClick={() => handleEditClick(drug)}>Edit</button>
-                        </li>
-                    ))}
-                </ul>
-
-                {
-                    drugToEdit && (
-                        <EditDrug drug={drugToEdit} updateDrug={(updatedDrug) => {
-                            updateDrug(updatedDrug);
-                            closeEditForm();
-                        }} />
-                    )
-                }
-            </div >
+            </div>
         </Wrapper>
     );
-
 }
-/*
+
 AddDrug.propTypes = {
     addDrugs: PropTypes.func.isRequired, // Required function prop
-    updatedDrug: PropTypes.func,         // Optional function prop
     drugs: PropTypes.arrayOf(PropTypes.object), // Optional array prop
 };
-*/
 
 export const Wrapper = styled.div`
     display: flex;
@@ -205,16 +157,13 @@ export const Wrapper = styled.div`
     align-items: center;
     text-align: left;
     font-size: 2rem;
-  
 `;
-
 
 export const FormField = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.4rem; /* Adjust spacing between label and input */
 `;
-
 
 export const AddForm = styled.form`
     display: flex;
@@ -227,9 +176,9 @@ export const AddForm = styled.form`
 `;
 
 export const StyledLabel = styled.label`
-    text-align: left;;
+    text-align: left;
     font-size: 1rem; /* Smaller font size for the label */
-    color: #; 
+    color: #;
 `;
 
 export const FormSection = styled.div`
@@ -256,19 +205,18 @@ export const Fieldwrapper = styled.div`
     }
 `;
 
-
-export const AddButton = styled.button` 
+export const AddButton = styled.button`
     background-color: rgb(34, 63, 75);
     color: white;
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.2em 3em; /* Smaller padding */
     margin: 1em 0 4em 0;
-    font-size: 0.8em;    /* Smaller font size */
+    font-size: 0.8em; /* Smaller font size */
     font-family: inherit;
     cursor: pointer;
     transition: border-color 0.25s;
-    `;
+`;
 
 export const ButtonModal = styled.div`
     position: fixed;
@@ -280,16 +228,17 @@ export const ButtonModal = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    `;
+`;
 
 export const Overlay = styled.div`
-    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    
-    `;
+    right: 0;
+    bottom: 0;
+`;
 
 export const ModalContent = styled.div`
     background: white;
@@ -297,29 +246,27 @@ export const ModalContent = styled.div`
     border-radius: 8px;
     max-width: 500px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    `;
+`;
 
 export const CloseModal = styled.button`
-background-color: rgb(34, 63, 75);
+    background-color: rgb(34, 63, 75);
     color: white;
     border: none;
     border-radius: 4px;
     padding: 0.5rem 1rem;
     cursor: pointer;
     float: right;
-  `;
+`;
 
-export const DeleteButton = styled.button` 
+export const DeleteButton = styled.button`
     background-color: rgb(34, 63, 75);
     color: white;
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
     padding: 0.2em 3em; /* Smaller padding */
-    font-size: 0.8em;    /* Smaller font size */
+    font-size: 0.8em; /* Smaller font size */
     font-family: inherit;
     cursor: pointer;
     transition: border-color 0.25s;
-    `;
-
-
+`;
