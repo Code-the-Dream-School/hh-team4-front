@@ -48,11 +48,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/adddrug',
-        element: <AddDrug />,
+        element: <AddDrug addDrugs={AddDrug} />,
     },
     {
         path: '/editdrug',
-        element: <EditDrug />,
+        element: <EditDrug updateDrug={EditDrug} />,
     },
     {
         path: '/dispense',
@@ -77,6 +77,11 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-    return <RouterProvider router={router} />;
+    return (
+        <>
+            <RouterProvider router={router} />
+        </>
+    );
 };
+
 export default App;
