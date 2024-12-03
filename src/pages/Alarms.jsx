@@ -12,7 +12,6 @@ export default function Alarms() {
     const [expiringsoonData, setExpiringData] = useState([]);
 
     useEffect(() => {
-        
         const drugsData = drugData.filter((drug) => drug.class);
         const lowStockFilter = drugsData.filter((drug) => {
             return parseInt(drug.quantity) !== 0 && drug.quantity <= drug.threshold;
