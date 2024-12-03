@@ -2,24 +2,24 @@
 //import { drugData } from './data.jsx'; // Update path accordingly
 
 export default function FilterSearch({data}) {
-     const [data, setData] = useState([]);
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState(null);
+    //  const [data, setData] = useState([]);
+    // // const [loading, setLoading] = useState(true);
+    // // const [error, setError] = useState(null);
 
-      const fetchData = async () => {
-        try {
-          const response = await fetch('http://localhost:8000/api/v1/inventory');
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          const result = await response.json();
-          setData(result);
-        } catch (error) {
-          setError(error.message);
-        } finally {
-          setLoading(false);
-        }
-    }
+    //   const fetchData = async () => {
+    //     try {
+    //       const response = await fetch('http://localhost:8000/api/v1/inventory');
+    //       if (!response.ok) {
+    //         throw new Error('Network response was not ok');
+    //       }
+    //       const result = await response.json();
+    //       setData(result);
+    //     } catch (error) {
+    //       setError(error.message);
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    // }
 
     const HandelSearch = () => {
         //if()

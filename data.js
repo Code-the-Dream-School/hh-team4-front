@@ -65,7 +65,7 @@ const drugData = [
         storeId: '1234567',
         employeeId: 'inventorymanager1234567',
         ndc: '3847762793088899',
-        Threshold:'500',
+        threshold:'500',
     },
     {
         name: 'salmeterol',
@@ -78,7 +78,7 @@ const drugData = [
         storeId: '1234567',
         employeeId: 'inventorymanager1234567',
         ndc: '12039493890',
-        Threshold:'400',
+        threshold:'400',
     },
     {
         name: 'Coumadin',
@@ -91,7 +91,7 @@ const drugData = [
         storeId: '1234567',
         employeeId: 'inventorymanager1234567',
         ndc: '345456575322',
-        Threshold:'200',
+        threshold:'200',
     },
     {
         name: 'Tamiflu',
@@ -104,7 +104,7 @@ const drugData = [
         storeId: '1234567',
         employeeId: 'inventorymanager1234567',
         ndc: '23789477088734',
-        Threshold:'20',
+        threshold:'20',
     },
     {
         name: 'Cymbalta',
@@ -117,7 +117,7 @@ const drugData = [
         storeId: '1234567',
         employeeId: 'inventorymanager1234567',
         ndc: '347373877658',
-        Threshold:'05',
+        threshold:'05',
     },
     {
         name: 'Prozac',
@@ -130,7 +130,7 @@ const drugData = [
         storeId: '1234567',
         employeeId: 'inventorymanager1234567',
         ndc: '34737387765800',
-        Threshold:'05',
+        threshold:'05',
     },
 ];
 const drugFormData = [
