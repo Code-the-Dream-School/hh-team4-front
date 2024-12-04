@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Medication = ({ name, dosage, price, imageUrl, onAddToCart }) => {
+const Medication = ({ name, generic, drugClass, quantity, expiration, lot, ndc, onAddToCart }) => {
   return (
     <div  
     style={{
@@ -14,26 +14,26 @@ const Medication = ({ name, dosage, price, imageUrl, onAddToCart }) => {
         alignItems: "center",
       }}
       >
-      {/* Medication Image */}
-      <img src='' alt={name} style={{
-        width: '100px', height:'100px'}}
-        />
+      <h2>{name}</h2>  
 
-      {/* Dosage */}   
-      <p>{dosage}</p>
+      {/* Generic */}   
+      <p><strong>Generic:</strong> {generic}</p>
 
-      {/* Price */}
-      <p>${price}</p>
+      {/* Class */}
+      <p><strong>Class:</strong> {drugClass}</p>
 
-      {/* Add to Cart Button */}
-      <button onClick={onAddToCart}
-       style={{padding: "10px 20px",
+      {/* Quantity */}
+      <p><strong>Quantity:</strong> {quantity}</p>
 
-       }}
-       >
-        Add to Cart
+      {/* Expiration */}
+      <p><strong>Expiration Date:</strong> {expiration}</p>
 
-        </button>
+      {/*Lot */}
+      <p><strong>Lot:</strong> {lot}</p>
+
+      {/*NDC */}
+      <p><strong>NDC:</strong> {ndc}</p>
+
     </div>
   )
 }

@@ -1,5 +1,7 @@
+import { Heading,Text, Box, Flex } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { getAllData } from './util/index';
+import MedicationItemCard from './MedicationItemCard';
 
 const URL = 'http://localhost:8000/api/v1/';
 
@@ -19,7 +21,10 @@ function App() {
 
     return (
         <>
-            <h1>{message}</h1>
+        <Flex>
+            {/* <h1>{message}</h1> */}
+            <MedicationItemCard />
+        </Flex>   
         </>
     );
 }
