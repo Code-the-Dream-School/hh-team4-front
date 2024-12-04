@@ -1,7 +1,7 @@
 //import React, { useState, useEffect } from 'react';
 //import { drugData } from './data.jsx'; // Update path accordingly
 
-export default function FilterSearch({data}) {
+export default function FilterSearch() {
     //  const [data, setData] = useState([]);
     // // const [loading, setLoading] = useState(true);
     // // const [error, setError] = useState(null);
