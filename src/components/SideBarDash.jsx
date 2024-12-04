@@ -1,5 +1,6 @@
 import { List, ListItem, Icon } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { IoClose } from 'react-icons/io5';
 
 const SideBarDash = () => {
     return (
