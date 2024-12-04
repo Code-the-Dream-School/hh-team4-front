@@ -71,7 +71,7 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'edit',
-                        element: <EditDrug />,
+                        element: <EditDrug updateDrug={EditDrug} />,
                     },
                     {
                         path: 'add',
