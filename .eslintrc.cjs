@@ -5,11 +5,11 @@ module.exports = {
         es2020: true,
         node: true,
     },
-    parser: '@babel/eslint-parser', 
+    parser: '@babel/eslint-parser',
     parserOptions: {
-        requireConfigFile: false, 
+        requireConfigFile: false,
         ecmaVersion: 2020,
-        sourceType: 'module', 
+        sourceType: 'module',
         babelOptions: {
             presets: ['@babel/preset-react'],
         },
@@ -24,7 +24,7 @@ module.exports = {
     rules: {
         'comma-dangle': ['error', 'only-multiline'],
         'prettier/prettier': ['error', { endOfLine: 'auto' }],
-        'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], 
+        'react/prop-types': 'off',
         'react/react-in-jsx-scope': 'off',
     },
     settings: {

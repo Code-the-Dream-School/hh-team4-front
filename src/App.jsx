@@ -1,4 +1,4 @@
-import { Heading,Text, Box, Flex } from '@chakra-ui/react';
+import { Heading, Text, Box, Flex } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { getAllData } from './util/index';
 import MedicationItemCard from './MedicationItemCard';
@@ -21,10 +21,10 @@ function App() {
 
     return (
         <>
-        <Flex>
-            {/* <h1>{message}</h1> */}
-            <MedicationItemCard />
-        </Flex>   
+            <Flex>
+                {/* <h1>{message}</h1> */}
+                <MedicationItemCard />
+            </Flex>
         </>
     );
 }
