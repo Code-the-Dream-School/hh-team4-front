@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import {
     AddDrug,
     AdminAddUser,
-    Alerts,
+    Alarms,
     Dashboard,
     DispenseDrug,
     Landing,
@@ -15,6 +15,7 @@ import {
     Error,
     EditDrug,
     HomeLayout,
+    Medication,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -43,8 +44,8 @@ const router = createBrowserRouter([
     },
 
     {
-        path: '/alerts',
-        element: <Alerts />,
+        path: '/Alarms',
+        element: <Alarms />,
     },
     {
         path: '/adddrug',
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
     {
         path: '/reports',
         element: <Reports />,
+    },
+    {
+        path: '/Medication',
+        element: <Medication />,
     },
 ]);
 
