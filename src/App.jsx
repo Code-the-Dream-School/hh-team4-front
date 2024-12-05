@@ -1,9 +1,17 @@
-import { Heading,Text, Box, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import { getAllData } from './util/index';
+import { RouterProvider, createHashRouter } from 'react-router-dom';
 import MedicationItemCard from './MedicationItemCard';
 
 const URL = 'http://localhost:8000/api/v1/';
+
+const router = createHashRouter([
+    {
+        path: '/medications',
+        element: <MedicationItemCard />
+    }
+]);
 
 function App() {
     const [message, setMessage] = useState('');
@@ -20,12 +28,8 @@ function App() {
     }, []);
 
     return (
-        <>
-        <Flex>
-            {/* <h1>{message}</h1> */}
-            <MedicationItemCard />
-        </Flex>   
-        </>
+        
+        <RouterProvider router={router} />
     );
 }
 
