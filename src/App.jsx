@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import {
     AdminAddUser,
-    Alerts,
+    Alarms,
     Dashboard,
     DispenseDrug,
     Landing,
@@ -14,6 +14,7 @@ import {
     Error,
     EditDrug,
     HomeLayout,
+    Medication,
     AllDrugs,
     PastOrders,
     AddDrug,
@@ -37,53 +38,44 @@ const router = createBrowserRouter([
                 path: 'login',
                 element: <Login />,
             },
-            {
-                path: 'dashboard',
-                element: <Dashboard />,
-                children: [
-                    {
-                        index: 'true',
-                        element: <AllDrugs />,
-                    },
-                    {
-                        path: 'adduser',
-                        element: <AdminAddUser />,
-                    },
-                    {
-                        path: 'dispense',
-                        element: <DispenseDrug />,
-                    },
-                    {
-                        path: 'alerts',
-                        element: <Alerts />,
-                    },
-                    {
-                        path: 'reports',
-                        element: <Reports />,
-                    },
-                    {
-                        path: 'store',
-                        element: <Store />,
-                    },
-                    {
-                        path: 'user',
-                        element: <User />,
-                    },
-                    {
-                        path: 'edit',
-                        element: <EditDrug updateDrug={EditDrug} />,
-                    },
-                    {
-                        path: 'add',
-                        element: <AddDrug addDrugs={AddDrug} />,
-                    },
-                    {
-                        path: 'past-orders',
-                        element: <PastOrders />,
-                    },
-                ],
-            },
         ],
+    },
+
+    {
+        path: '/alerts',
+        element: <Alerts />,
+    },
+    {
+        path: '/adddrug',
+        element: <AddDrug addDrugs={AddDrug} />,
+    },
+    {
+        path: '/editdrug',
+        element: <EditDrug updateDrug={EditDrug} />,
+    },
+    {
+        path: '/dispense',
+        element: <DispenseDrug />,
+    },
+    {
+        path: '/store',
+        element: <Store />,
+    },
+    {
+        path: '/user',
+        element: <User />,
+    },
+    {
+        path: '/adminuser',
+        element: <AdminAddUser />,
+    },
+    {
+        path: '/reports',
+        element: <Reports />,
+    },
+    {
+        path: '/Medication',
+        element: <Medication />,
     },
 ]);
 
