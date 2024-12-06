@@ -1,9 +1,7 @@
+import React from 'react';
+
 const EditDrug = () => {
-    return (
-        <div>
-            <h1>Edit Drug</h1>
-        </div>
-    );
+    return <div></div>;
 };
 
 export default EditDrug;

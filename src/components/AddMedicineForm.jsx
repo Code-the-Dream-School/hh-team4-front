@@ -1,4 +1,3 @@
-import React from 'react';
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -11,23 +10,21 @@ const AddMedicineForm = ({ id, value, handleMedChange, placeholder }) => {
     }, [value]);
 
     return (
-        <div>
-            <StyleInput
-                type={
-                    id === 'expirationDate'
-                        ? 'date'
-                        : ['quantity', 'minAmount', 'lotNumber', 'ndcNumber'].includes(id)
-                          ? 'number'
-                          : 'text'
-                }
-                key={id}
-                id={id}
-                value={value} // Directly use value passed as a prop
-                onChange={handleMedChange}
-                placeholder={placeholder}
-                ref={inputRef}
-            />
-        </div>
+        <StyleInput
+            type={
+                id === 'expirationDate'
+                    ? 'date'
+                    : ['quantity', 'minAmount', 'lotNumber', 'ndcNumber'].includes(id)
+                      ? 'number'
+                      : 'text'
+            }
+            key={id}
+            id={id}
+            value={value} // Directly use value passed as a prop
+            onChange={handleMedChange}
+            placeholder={placeholder}
+            ref={inputRef}
+        />
     );
 };
 
@@ -43,20 +40,16 @@ export default AddMedicineForm;
 export const FormField = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.4rem; /* Adjust spacing between label and input */
 `;
 
 export const StyleInput = styled.input`
-    text-size: 1rem;
     width: 100%;
-    border: 1.5px solid #000;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1em;
-    margin: 0rem;
-    color: #000;
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--grey-300);
+    color: black;
+    height: 35px;
+    text-transform: uppercase;
 
     /* Placeholder text color */
     &::placeholder {

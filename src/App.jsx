@@ -1,9 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import {
-    AddDrug,
     AdminAddUser,
-    Alarms,
+    Alerts,
     Dashboard,
     DispenseDrug,
     Landing,
@@ -15,7 +14,11 @@ import {
     Error,
     EditDrug,
     HomeLayout,
+    AllDrugs,
+    PastOrders,
+    AddDrug,
     Medication,
+    Alarms,
 } from './pages';
 
 const router = createBrowserRouter([
@@ -29,10 +32,6 @@ const router = createBrowserRouter([
                 element: <Landing />,
             },
             {
-                path: 'dashboard',
-                element: <Dashboard />,
-            },
-            {
                 path: 'register',
                 element: <Register />,
             },
@@ -40,53 +39,65 @@ const router = createBrowserRouter([
                 path: 'login',
                 element: <Login />,
             },
+            {
+                path: 'dashboard',
+                element: <Dashboard />,
+                children: [
+                    {
+                        index: 'true',
+                        element: <AllDrugs />,
+                    },
+                    {
+                        path: 'adduser',
+                        element: <AdminAddUser />,
+                    },
+                    {
+                        path: 'dispense',
+                        element: <DispenseDrug />,
+                    },
+                    {
+                        path: 'alerts',
+                        element: <Alarms />,
+                    },
+                    {
+                        path: 'reports',
+                        element: <Reports />,
+                    },
+                    {
+                        path: 'store',
+                        element: <Store />,
+                    },
+                    {
+                        path: 'user',
+                        element: <User />,
+                    },
+                    {
+                        path: 'edit',
+                        element: <EditDrug updateDrug={EditDrug} />,
+                    },
+                    {
+                        path: 'add',
+                        element: <AddDrug addDrugs={AddDrug} />,
+                    },
+                    {
+                        path: 'past-orders',
+                        element: <PastOrders />,
+                    },
+                    {
+                        path: 'medication',
+                        element: <Medication />,
+                    },
+                    {
+                        path: 'alerts',
+                        element: <Alerts />,
+                    },
+                ],
+            },
         ],
-    },
-
-    {
-        path: '/Alarms',
-        element: <Alarms />,
-    },
-    {
-        path: '/adddrug',
-        element: <AddDrug addDrugs={AddDrug} />,
-    },
-    {
-        path: '/editdrug',
-        element: <EditDrug updateDrug={EditDrug} />,
-    },
-    {
-        path: '/dispense',
-        element: <DispenseDrug />,
-    },
-    {
-        path: '/store',
-        element: <Store />,
-    },
-    {
-        path: '/user',
-        element: <User />,
-    },
-    {
-        path: '/adminuser',
-        element: <AdminAddUser />,
-    },
-    {
-        path: '/reports',
-        element: <Reports />,
-    },
-    {
-        path: '/Medication',
-        element: <Medication />,
     },
 ]);
 
 const App = () => {
-    return (
-        <>
-            <RouterProvider router={router} />
-        </>
-    );
+    return <RouterProvider router={router} />;
 };
-
 export default App;

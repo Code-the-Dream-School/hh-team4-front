@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AddMedicineForm from '../components/AddMedicineForm';
+import Logo from '../components/Logo';
 
 import styled from 'styled-components';
 
@@ -78,7 +79,8 @@ export default function AddDrug({ addDrugs }) {
             <div>
                 <AddForm onSubmit={handleAddMed}>
                     <div>
-                        <h1>ADD DRUG</h1>
+                        <Logo />
+                        <h4>ADD DRUG</h4>
                         {Object.entries(formData).map(([id, value]) => (
                             <div key={id}>
                                 <StyledLabel htmlFor={id}>
@@ -104,16 +106,18 @@ export default function AddDrug({ addDrugs }) {
                                             />
                                         </Fieldwrapper>
                                         <Fieldwrapper>
-                                            <StyledLabel htmlFor="minAmount">
-                                                Min Amount
-                                            </StyledLabel>
-                                            <AddMedicineForm
-                                                type="text"
-                                                id="minAmount"
-                                                value={formData.minAmount}
-                                                handleMedChange={handleMedChange}
-                                                placeholder="MIN AMOUNT"
-                                            />
+                                            <div className="form-row">
+                                                <StyledLabel htmlFor="minAmount">
+                                                    Min Amount
+                                                </StyledLabel>
+                                                <AddMedicineForm
+                                                    type="text"
+                                                    id="minAmount"
+                                                    value={formData.minAmount}
+                                                    handleMedChange={handleMedChange}
+                                                    placeholder="MIN AMOUNT"
+                                                />
+                                            </div>
                                         </Fieldwrapper>
                                     </FormSection>
                                 </AddMedicineForm>
@@ -145,77 +149,86 @@ AddDrug.propTypes = {
     drugs: PropTypes.arrayOf(PropTypes.object), // Optional array prop
 };
 
-export const Wrapper = styled.div`
-    display: flex;
-    justify-content: space-around;
-    flex-direction: row;
-    gap: 10px;
-    width: 100%;
-    padding: 4rem 0em 2rem 3rem;
-    margin: 3rem;
-    margin: 0;
+export const Wrapper = styled.section`
+    min-height: 100vh;
+    display: grid;
     align-items: center;
-    text-align: left;
-    font-size: 2rem;
+    h4 {
+        text-align: center;
+        margin-bottom: 1.38rem;
+    }
+    .logo {
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 1.38rem;
+    }
 `;
 
-export const FormField = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem; /* Adjust spacing between label and input */
-`;
+export const FormField = styled.div``;
 
 export const AddForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    width: 100%;
+    width: 90vw;
+    max-width: 400px;
+    border-top: 5px solid var(--color-blue-dark);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 3rem auto;
 `;
 
 export const StyledLabel = styled.label`
-    text-align: left;
-    font-size: 1rem; /* Smaller font size for the label */
-    color: #;
+    text-transform: lowercase;
+    display: block;
+    font-size: var(--small-text);
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+    letter-spacing: var(--letter-spacing);
+    line-height: 1.5;
 `;
 
 export const FormSection = styled.div`
-    display: flex;
-    justify-content: space-between; /* Adjust space between fields */
-    gap: 1rem; /* Add space between the two fields */
+    width: 90vw;
+    max-width: var(--fixed-width);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 3rem auto;
 `;
 
 export const Fieldwrapper = styled.div`
-    display: flex;
-    flex-direction: column; /* Labels and inputs stack vertically */
-    gap: 0.4rem; /* Spacing between the label and input */
-    flex: 1;
-    input {
-        padding: 0.5rem;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+    .form-row {
+        margin-bottom: 0.5rem;
     }
-
+    input {
+        text-transform: uppercase;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--grey-300);
+        color: var(--text-color);
+        height: 35px;
+        background-color: white;
+    }
     label {
         font-size: 0.9rem;
-        color: #333;
+        text-transform: lowercase;
     }
 `;
 
 export const AddButton = styled.button`
-    background-color: rgb(34, 63, 75);
-    color: white;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.2em 3em; /* Smaller padding */
-    margin: 1em 0 4em 0;
-    font-size: 0.8em; /* Smaller font size */
-    font-family: inherit;
+    margin-top: 1rem;
+    background-color: var(--color-blue-dark);
+    width: 100%;
     cursor: pointer;
-    transition: border-color 0.25s;
+    color: var(--white);
+    border: transparent;
+    border-radius: var(--border-radius);
+    letter-spacing: var(--letter-spacing);
+    padding: 1rem 4rem;
+    box-shadow: var(--shadow-1);
+    transition: var(--transition);
+    text-transform: capitalize;
+    display: inline-block;
 `;
 
 export const ButtonModal = styled.div`
