@@ -1,101 +1,66 @@
-import { useEffect, useState } from "react";
-import FilterSearch from "./FilterSearch";
+import { useState, createContext, useContext } from 'react';
+import { Outlet } from 'react-router-dom';
+import styled from 'styled-components';
+import { BigSidebar, Navbar, SmallSidebar } from '../components';
 
+const DashboardContext = createContext();
 
 const Dashboard = () => {
+    const user = { name: 'john' };
+    const [showSidebar, setShowSidebar] = useState(false);
 
-    const [data , setData] = useState ([]) ;
-    const [filterData, setFilterData] = useState ([]) ;
-    const [loading , setLoading  ]= useState(true) ;
-    const [error , setError]=useState(false) ;
-    const [searchsection, setSearchSection] = useState(false);
-
-   
-    useEffect(()=>{
-        fetch("http://localhost:8000/api/v1/inventory")
-        .then(response =>{
-            if (!response){
-                throw new error ('Network response was not ok')
-            }
-            return response.json() ;
-        })
-        .then((data) => {
-            setData(data.data);
-            console.log(data) ;
-            setFilterData(data.data);
-            console.log("Filterdata ", filterData) ; 
-            setLoading(false);
-        })
-        .catch(error=> setError(error.message)) ;
-
-    }, []);
-    
-
-
-    const toggleSearch = () => {
-        setSearchSection((prevState) => !prevState);
+    const toggleSidebar = () => {
+        setShowSidebar(!showSidebar);
     };
 
-    const handleFilter = (filteredData) => {
-        console.log('this is handle filter from the page dashboard') ;
-        console.log(filteredData);
-        setFilterData(filteredData);
+    const logoutUser = async () => {
+        console.log('logout user');
     };
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
 
     return (
-        <>
-            <h1>Dashboard</h1>
-            <div>
-                <button onClick={toggleSearch}>Filter and search</button>
-                {searchsection && (
+        <DashboardContext.Provider
+            value={{
+                user,
+                showSidebar,
+                toggleSidebar,
+                logoutUser,
+            }}
+        >
+            <Wrapper>
+                <main className="dashboard">
+                    <SmallSidebar />
+                    <BigSidebar />
                     <div>
-                        <FilterSearch  data={data} onFilter={handleFilter} />
+                        <Navbar />
+                        <div className="dashboard-page">
+                            <Outlet />
+                        </div>
                     </div>
-                )}
-            </div>
-            <div>
-            
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Generic</th>
-                        <th>Class</th>
-                        <th>Quantity</th>
-                        <th>Threshold</th>
-                        <th>Expiration</th>
-                        <th>Batch</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    { filterData.map((drug)  => (
-                      
-                        <tr key={drug._id}>
-                             
-                            <td>{drug.name}</td>
-                            <td>{drug.genericName}</td>
-                            
-                            <td>{drug.lot}</td>
-                            
-                            <td>{drug.expirationDate}</td>
-                            <td>{drug.class}</td>
-                            <td>{drug.store}</td>
-                            <td>{drug.ndcNumber}</td>
-                            <td>{drug.threshold}</td>
-                            <td>{drug.quantity}</td>
-                          
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-           
-        </>
+                </main>
+            </Wrapper>
+        </DashboardContext.Provider>
     );
 };
 
+export const useDashboardContext = () => useContext(DashboardContext);
 export default Dashboard;
+
+const Wrapper = styled.section`
+    .dashboard {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    .dashboard-page {
+        width: 90vw;
+        margin: 0 auto;
+        padding: 2rem 0;
+    }
+    @media (min-width: 992px) {
+        .dashboard {
+            grid-template-columns: auto 1fr;
+        }
+        .dashboard-page {
+            width: 90%;
+        }
+    }
+`;
