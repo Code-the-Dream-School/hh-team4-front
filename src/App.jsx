@@ -48,6 +48,10 @@ const router = createBrowserRouter([
         element: <Alarms />,
     },
     {
+        path: '/Dashboard',
+        element: <Alarms />,
+    },
+    {
         path: '/adddrug',
         element: <AddDrug addDrugs={AddDrug} />,
     },

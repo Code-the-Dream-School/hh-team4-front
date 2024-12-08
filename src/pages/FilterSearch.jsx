@@ -1,63 +1,100 @@
-//import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 //import { drugData } from './data.jsx'; // Update path accordingly
 
-export default function FilterSearch() {
-    //  const [data, setData] = useState([]);
-    // // const [loading, setLoading] = useState(true);
-    // // const [error, setError] = useState(null);
+export default function FilterSearch({data , onFilter}) {
+  
+    
+    const [formValues , setFormValues] = useState({
+        
+        drugname: '',
+        lot: '',
+        ExpirationdateFrom: '',
+        Expirationdateto: '',
+        type: '',
+    })
 
-    //   const fetchData = async () => {
-    //     try {
-    //       const response = await fetch('http://localhost:8000/api/v1/inventory');
-    //       if (!response.ok) {
-    //         throw new Error('Network response was not ok');
-    //       }
-    //       const result = await response.json();
-    //       setData(result);
-    //     } catch (error) {
-    //       setError(error.message);
-    //     } finally {
-    //       setLoading(false);
-    //     }
-    // }
+    const HandelSearch = (e) => {
+        e.preventDefault();
+       
+        let filteredData = data;
+       
+        // Apply filters
+      
+        if (formValues.drugname) {
+            
 
-    const HandelSearch = () => {
-        //if()
-        //data.filter()
+            filteredData = filteredData.filter((item) =>
+                item.name.toLowerCase().includes( formValues.drugname.toLowerCase())
+            );
+           
+        }
+       
+        if (formValues.lot) {
+            filteredData = filteredData.filter((item) => item.lot === formValues.lot);
+        }
+
+        if (formValues.ExpirationdateFrom && formValues.Expirationdateto) {
+            filteredData = filteredData.filter(
+                (item) =>
+                    new Date(item.expirationDate) >= new Date(formValues.ExpirationdateFrom) &&
+                    new Date(item.expirationDate) <= new Date(formValues.Expirationdateto)
+            );
+        }
+
+        if (formValues.type) {
+            filteredData = filteredData.filter((item) =>
+                item.type.toLowerCase().includes(formValues.type.toLowerCase())
+            );
+        }
+        onFilter(filteredData);
+       
     };
-    const HandelCancel = () => {};
+    const HandelCancel = (e) => {
+        setFormValues({
+            drugname: '',
+            lot: '',
+            ExpirationdateFrom: '',
+            Expirationdateto: '',
+            type: '',
+        });
+        onFilter(data);
+    };
 
-    // const [filteredDrugs, setFilteredDrugs] = useState([]);
-    // useEffect(() => {
-    //     // Filter the data for a specific class
-    //     let DrugData = drugData.filter((drug) => drug.class === 'DrugData');
-    //     if (filter) Drugdata= drugData.filter((drug)=> d)
-    //     setFilteredDrugs(DrugData); // Set filtered data in the state
-    // }, []);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+      
+    };
+    
     return (
         <>
+        <form>
             <div>
                 <label htmlFor="drugname">Drug Name: </label>
-                <input name="drugname" />
+                <input name="drugname"  value={formValues.drugname} onChange={handleInputChange} />
             </div>
             <div>
-                <label htmlFor="batchCode">BatchCode: </label>
-                <input name="batchCode" />
+                <label htmlFor="lot">Lot number: </label>
+                <input name="lot"   value={formValues.lot} onChange={handleInputChange} />
             </div>
             <div>
                 <label htmlFor="ExpirationdateFrom">Expirationdate From: </label>
-                <input name="ExpirationdateFrom" />
+                <input name="ExpirationdateFrom"  value={formValues.ExpirationdateFrom}  onChange={handleInputChange} type="date"/>
                 <label htmlFor="Expirationdateto">Expirationdate To: </label>
-                <input name="Expirationdateto" />
+                <input name="Expirationdateto"  value={formValues.Expirationdateto}  onChange={handleInputChange} type="date"/>
             </div>
             <div>
                 <label htmlFor="type">Type of Drug:</label>
-                <input name="type" />
+                <input name="type" value={formValues.type}  onChange={handleInputChange}/>
             </div>
             <div>
                 <button onClick={HandelSearch}>Search</button>
                 <button onClick={HandelCancel}>Cancel</button>
             </div>
+            </form>
         </>
     );
 }

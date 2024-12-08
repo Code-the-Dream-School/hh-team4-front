@@ -12,11 +12,12 @@ export default function Alarms() {
     const [expiringsoonData, setExpiringData] = useState([]);
 
     useEffect(() => {
+
         const drugsData = drugData.filter((drug) => drug.class);
+       
         const lowStockFilter = drugsData.filter((drug) => {
             return parseInt(drug.quantity) !== 0 && drug.quantity <= drug.threshold;
         });
-
         setLowStockData(lowStockFilter); // Data drugs matching LowStuck
 
         const noStockFilter = drugsData.filter((drug) => parseInt(drug.quantity) === 0);
@@ -25,7 +26,6 @@ export default function Alarms() {
         const expirationDateData = drugsData.filter((drug) => {
             const expirationDate = new Date(drug.expiration);
             const today = new Date();
-
             return expirationDate - today < 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
         });
 
