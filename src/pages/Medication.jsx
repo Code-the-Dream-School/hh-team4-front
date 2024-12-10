@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
-import FilterSearch from './FilterSearch';
 
 export default function Medication() {
     const location = useLocation();
@@ -14,11 +13,8 @@ export default function Medication() {
         return <p>No data available</p>;
     }
 
-   
-    
     return (
         <div>
-            
             <h1>{filterTitle}</h1>
             <table>
                 <thead>

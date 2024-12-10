@@ -1,18 +1,16 @@
 import React from 'react';
 import Alarmbutton from './AlarmButton.jsx';
 import { useEffect, useState } from 'react';
-import { drugData } from '../../data.js';
+
 import styles from './AlarmButton.module.css';
 
 export default function Alarms() {
-   
-
     const [lowStockData, setLowStockData] = useState([]);
     const [noStockData, setnoStockData] = useState([]);
     const [expiringsoonData, setExpiringData] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/v1/inventory")
+        fetch('http://localhost:8000/api/v1/inventory')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -20,15 +18,14 @@ export default function Alarms() {
                 return response.json();
             })
             .then((data) => {
-              
-                FilterData(data.data); 
+                FilterData(data.data);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
-    }, []); 
-    
-    const FilterData= (drugsData) =>{
+    }, []);
+
+    const FilterData = (drugsData) => {
         const lowStockFilter = drugsData.filter((drug) => {
             return parseInt(drug.quantity) !== 0 && drug.quantity <= drug.threshold;
         });
@@ -42,12 +39,10 @@ export default function Alarms() {
             if (isNaN(expirationDate)) return false;
             const today = new Date();
             return expirationDate - today < 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
-            
-    
         });
 
         setExpiringData(expirationDateData); //Data for Date checking
-    }
+    };
 
     return (
         <>

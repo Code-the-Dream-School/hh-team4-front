@@ -2,7 +2,7 @@ import { useState, createContext, useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { BigSidebar, Navbar, SmallSidebar } from '../components';
-import Alarms from './Alarms';
+
 const DashboardContext = createContext();
 
 const Dashboard = () => {
@@ -16,9 +16,6 @@ const Dashboard = () => {
     const logoutUser = async () => {
         console.log('logout user');
     };
-    const toggleAlarm=()=>{
-            setAlarmSection((preState) => !preState) ;
-    }
 
     return (
         <DashboardContext.Provider
@@ -29,7 +26,6 @@ const Dashboard = () => {
                 logoutUser,
             }}
         >
-           
             <Wrapper>
                 <main className="dashboard">
                     <SmallSidebar />
