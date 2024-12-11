@@ -3,6 +3,7 @@ import Logo from './Logo';
 import { FaAlignLeft } from 'react-icons/fa';
 import { useDashboardContext } from '../pages/Dashboard';
 import { LogoutContainer } from '.';
+import { TbBellFilled } from 'react-icons/tb';
 
 const Navbar = () => {
     const { toggleSidebar } = useDashboardContext();
@@ -17,6 +18,9 @@ const Navbar = () => {
                     <h4 className="logo-text">MediStock</h4>
                 </div>
                 <div className="btn-container">
+                    <button className="bell-button">
+                        <TbBellFilled className="bell-icon" />
+                    </button>
                     <LogoutContainer />
                 </div>
             </div>
@@ -72,6 +76,16 @@ const Wrapper = styled.nav`
         .logo-text {
             display: block;
             color: var(--color-blue-dark);
+        }
+        .bell-button {
+            border: 15px solid var(--color-alert);
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+        .bell-icon {
+            font-size: 1.5rem;
+            background-color: var(--color-alert);
+            color: white;
         }
     }
 `;
