@@ -1,41 +1,39 @@
-import { Link } from 'react-router-dom';
+import { Form, redirect, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
+import customFetch from '../util/customFetch';
+
+//formData - is an api, gives back an array of arrays, must have name same as database
+export const action = async ({ request }) => {
+    const formData = await request.formData();
+    // console.log(formData);
+    const data = Object.fromEntries(formData);
+    try {
+        await customFetch.post('/auth/signup', data);
+        return redirect('/login');
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};
 
 const Register = () => {
     return (
         <Wrapper>
-            <form className="form">
+            <Form method="post" className="form">
                 <Logo />
                 <h4>Register</h4>
-                <FormRow
-                    type="text"
-                    name="name"
-                    labelText="name"
-                    defaultValue="DefaultName"
-                    placeholder="NAME"
-                />
-                <FormRow
+                <FormRow type="text" name="name" labelText="name" placeholder="NAME" />
+                {/* <FormRow
                     type="text"
                     name="lastName"
                     labelText="lastname"
                     defaultValue="DefaultLastName"
                     placeholder="LAST NAME"
-                />
-                <FormRow
-                    type="text"
-                    name="store"
-                    labelText="store"
-                    defaultValue="DefaultStore"
-                    placeholder="STORE"
-                />
-                <FormRow
-                    type="email"
-                    name="email"
-                    labelText="email"
-                    defaultValue="defaultEmail@gmail.com"
-                    placeholder="EMAIL"
-                />
+                /> */}
+                <FormRow type="text" name="store" labelText="store" placeholder="STORE" />
+                <FormRow type="text" name="role" labelText="role" placeholder="ROLE NAME" />
+                <FormRow type="email" name="email" labelText="email" placeholder="EMAIL" />
                 <FormRow
                     type="password"
                     name="password"
@@ -52,7 +50,7 @@ const Register = () => {
                         Login
                     </Link>
                 </p>
-            </form>
+            </Form>
         </Wrapper>
     );
 };
