@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
-import FilterSearch from './FilterSearch';
 
 export default function Medication() {
     const location = useLocation();
@@ -14,21 +13,8 @@ export default function Medication() {
         return <p>No data available</p>;
     }
 
-    const [searchsection, setsearchsection] = useState(false);
-    const toggleSearch = () => {
-        setsearchsection((prevState) => !prevState);
-    };
-
     return (
         <div>
-            <div>
-                <button onClick={toggleSearch}>Filter and search</button>
-                {searchsection && (
-                    <div>
-                        <FilterSearch />
-                    </div>
-                )}
-            </div>
             <h1>{filterTitle}</h1>
             <table>
                 <thead>

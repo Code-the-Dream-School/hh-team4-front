@@ -1,60 +1,134 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
 import { FaFilter } from 'react-icons/fa';
-import { drugData } from '../../data';
+//import { drugData } from '../../data';
 import { TbBellFilled } from 'react-icons/tb';
+import { useEffect, useState } from 'react';
+import FilterSearch from './FilterSearch';
+import Alarms from './Alarms';
+import { useLocation } from 'react-router-dom';
 
 const AllDrugs = () => {
     const columnLabels = [
         'name',
-        'generic',
+        'genericName',
         'class',
         'quantity',
-        'expiration date',
-        'lot #',
-        'ndc #',
+        'expirationDate',
+        'lot',
+        'ndcNumber',
         'view/edit/delete',
     ];
+
+    const [data, setData] = useState([]);
+    const [filterData, setFilterData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [searchsection, setSearchSection] = useState(false);
+    const [alarmSection, setAlarmSection] = useState(false);
+
+    const location = useLocation();
+    const { alarmFilterData: alarmFilterData } = location.state || {};
+
+    useEffect(() => {
+        fetch('http://localhost:8000/api/v1/inventory')
+            .then((response) => {
+                if (!response) {
+                    throw new error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (alarmFilterData) {
+                    // Use the passed alarm filter if available
+                    setFilterData(alarmFilterData);
+                } else {
+                    setData(data.data);
+                    setFilterData(data.data);
+                }
+
+                setLoading(false);
+            })
+            .catch((error) => setError(error.message));
+    }, [alarmFilterData]);
+
+    const toggleSearch = () => {
+        setSearchSection((prevState) => !prevState);
+    };
+
+    const handleFilter = (filteredData) => {
+        setFilterData(filteredData);
+    };
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
+    const toggleAlarm = () => {
+        setAlarmSection((preState) => !preState);
+    };
 
     return (
         <Wrapper>
             {/*  */}
+
             <div className="centered-container">
                 <div className="bell-icon-box">
-                    <button className="bell-button">
+                    <button className="bell-button" onClick={toggleAlarm}>
                         <TbBellFilled className="bell-icon" />
                     </button>
                 </div>
                 <div className="filter-search-box">
                     <div className="left-filter-box">
-                        <button className="filter-button">
+                        <button className="filter-button" onClick={toggleSearch}>
                             <FaFilter className="filter-icon" />
                         </button>
                     </div>
+                    <div></div>
                     <div className="search-box">
                         <div className="search-icon">
                             <IoIosSearch />
                         </div>
-                        <input type="text" placeholder="Search ..." className="search-input" />
+                        <input
+                            type="text"
+                            placeholder="Search by drug name ..."
+                            className="search-input"
+                        />
                     </div>
                 </div>
-                <div className="blank"></div>
+            </div>
+            <div className="advanced-search">
+                {searchsection && (
+                    <div>
+                        <br />
+                        <FilterSearch data={data} onFilter={handleFilter} />
+                    </div>
+                )}
             </div>
             {/*  */}
-            <div className="grid-container">
-                {/* Render column headers */}
-                {columnLabels.map((label, index) => (
-                    <div key={index} className="grid-item grid-header">
-                        {label}
-                    </div>
-                ))}
-                {/* Render rows dynamically */}
-                {drugData.map((drug, rowIndex) =>
-                    columnLabels.map((label, colIndex) => (
-                        <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {drug[label] || ''}
+            {!alarmSection && (
+                <div className="grid-container">
+                    {/* Render column headers */}
+                    {columnLabels.map((label, index) => (
+                        <div key={index} className="grid-item grid-header">
+                            {label}
                         </div>
-                    ))
+                    ))}
+                    {/* Render rows dynamically */}
+                    {filterData.map((drug, rowIndex) =>
+                        columnLabels.map((label, colIndex) => (
+                            <div key={`${rowIndex}-${colIndex}`} className="grid-item">
+                                {drug[label] || ''}
+                            </div>
+                        ))
+                    )}
+                </div>
+            )}
+            <div className="Alarm-container">
+                {alarmSection && (
+                    <div>
+                        {' '}
+                        <Alarms />{' '}
+                    </div>
                 )}
             </div>
         </Wrapper>
@@ -153,5 +227,12 @@ const Wrapper = styled.section`
         font-weight: bold;
         background-color: var(--color-green-med);
         color: var(--color-blue-dark);
+    }
+    .advanced-search {
+        align-items: center;
+        justify-content: center;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
     }
 `;
