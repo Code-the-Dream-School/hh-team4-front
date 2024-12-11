@@ -1,29 +1,40 @@
-import { Link } from 'react-router-dom';
+import { Link, Form, redirect, useNavigation } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
+import { toast } from 'react-toastify';
+import customFetch from '../util/customFetch';
+
+export const action = async ({ request }) => {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+    try {
+        await customFetch.post('/auth/login', data);
+        toast.success('Login Successful');
+        return redirect('/dashboard');
+    } catch (error) {
+        toast.error(error?.response?.data?.msg);
+    }
+    return null;
+};
 
 const Login = () => {
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === 'submitting';
+
     return (
         <Wrapper>
-            <form className="form">
+            <Form method="post" className="form">
                 <Logo />
                 <h4>Login</h4>
-                <FormRow
-                    type="email"
-                    name="email"
-                    labelText="email"
-                    defaultValue="defaultEmail@gmail.com"
-                    placeholder="EMAIL"
-                />
+                <FormRow type="email" name="email" labelText="email" placeholder="EMAIL" />
                 <FormRow
                     type="password"
                     name="password"
                     labelText="password"
-                    defaultValue="CodeTheDreamPassword"
                     placeholder="PASSWORD"
                 />
-                <button type="submit" className="btn btn-block">
-                    Submit
+                <button type="submit" className="btn btn-block" disabled={isSubmitting}>
+                    {isSubmitting ? 'submitting...' : 'submit'}
                 </button>
                 <p>
                     Not Registered Yet?
@@ -31,7 +42,7 @@ const Login = () => {
                         Register!
                     </Link>
                 </p>
-            </form>
+            </Form>
         </Wrapper>
     );
 };
