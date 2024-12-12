@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
 import Alarms from './Alarms';
 import { useLocation } from 'react-router-dom';
+import LiveSearch from '../components/LiveSearch';
 
 const AllDrugs = () => {
     const columnLabels = [
@@ -26,6 +27,7 @@ const AllDrugs = () => {
     const [error, setError] = useState(false);
     const [searchsection, setSearchSection] = useState(false);
     const [alarmSection, setAlarmSection] = useState(false);
+    const [liveSearch, SetLiveSearch]= useState([]);
 
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
@@ -67,6 +69,16 @@ const AllDrugs = () => {
         setAlarmSection((preState) => !preState);
     };
 
+    
+    // const handelLiveSearch=(e) =>{
+    //     const search=e.target.value 
+    //     SetLiveSearch(search);
+
+    // }
+    // const handelLiveSearch = (filteredTasks) => {
+    //     setFilteredTodos(filteredTasks);
+    //   };
+
     return (
         <Wrapper>
             {/*  */}
@@ -85,14 +97,10 @@ const AllDrugs = () => {
                     </div>
                     <div></div>
                     <div className="search-box">
-                        <div className="search-icon">
+                        <div className="search-icon" >
                             <IoIosSearch />
                         </div>
-                        <input
-                            type="text"
-                            placeholder="Search by drug name ..."
-                            className="search-input"
-                        />
+                        <LiveSearch data={data} liveSearchFilter={handleFilter} />
                     </div>
                 </div>
             </div>
