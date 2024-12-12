@@ -33,7 +33,15 @@ const AllDrugs = () => {
     const { alarmFilterData: alarmFilterData } = location.state || {};
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/inventory')
+        
+        fetch('http://localhost:8000/api/v1/inventory', {
+            method: 'Get', // Or other HTTP methods like POST, PUT, DELETE, etc.
+            headers: {
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWI0ZmE3OWY0MTBmYWQ2OGMwMzNjNCIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0MDM3Nzc3LCJleHAiOjE3MzQwNDEzNzd9.7mKyz9iZJS0EP2C5NBuee4rR2WIhh7A-J_FJx9IAeFE`,
+                'Content-Type': 'application/json'
+            },
+          
+        })
             .then((response) => {
                 if (!response) {
                     throw new error('Network response was not ok');
@@ -70,15 +78,6 @@ const AllDrugs = () => {
     };
 
     
-    // const handelLiveSearch=(e) =>{
-    //     const search=e.target.value 
-    //     SetLiveSearch(search);
-
-    // }
-    // const handelLiveSearch = (filteredTasks) => {
-    //     setFilteredTodos(filteredTasks);
-    //   };
-
     return (
         <Wrapper>
             {/*  */}

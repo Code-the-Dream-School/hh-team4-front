@@ -11,9 +11,10 @@ export default function LiveSearch({data , liveSearchFilter}){
         
         
         setLiveSearch(value);
-        const filtereddata = data.filter((item) => item.name.toLowerCase().includes(value))}
+        const livefiltereddata = data.filter((item) => item.name.toLowerCase().includes(value))
     
-    liveSearchFilter(filtereddata) ;
+    liveSearchFilter(livefiltereddata) ;
+    }    
         
     
 
