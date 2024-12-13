@@ -2,12 +2,14 @@ import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const AddMedicineForm = ({ type, id, value, handleMedChange, placeholder }) => {
+const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
     const inputRef = useRef();
 
     useEffect(() => {
-        inputRef.current.focus();
-    }, [value]);
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, []);
 
     return (
         <StyleInput
@@ -18,25 +20,24 @@ const AddMedicineForm = ({ type, id, value, handleMedChange, placeholder }) => {
                         ? 'number'
                         : 'text'
             }
-            //key={id}
+            key={id}
             id={id}
-            value={value} // Directly use value passed as a prop
-            onChange={handleMedChange}
+            value={value || ''}// Directly use value passed as a prop
+            onChange={handleInputChange}
             placeholder={placeholder}
             ref={inputRef}
-            required
         />
     );
 };
 
-AddMedicineForm.propTypes = {
+EditMedicineForm.propTypes = {
     id: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Accept string or number
-    handleMedChange: PropTypes.func.isRequired,
+    handleInputChange: PropTypes.func,
     placeholder: PropTypes.string.isRequired,
 };
 
-export default AddMedicineForm;
+export default EditMedicineForm;
 
 export const FormField = styled.div`
     display: flex;
