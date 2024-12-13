@@ -27,7 +27,7 @@ const Landing = () => {
                     <Link to="/register" className="btn register-link">
                         Register
                     </Link>
-                    <Link to="/register" className="btn register-link">
+                    <Link to="/login" className="btn register-link">
                         Login
                     </Link>
                 </div>
@@ -47,6 +47,7 @@ const Wrapper = styled.section`
         height: 8rem;
         display: flex;
         align-items: center;
+        margin-bottom: 3rem;
     }
     .mylogo {
         object-fit: cover;

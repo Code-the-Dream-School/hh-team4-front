@@ -1,29 +1,75 @@
-import { Link } from 'react-router-dom';
+import { Link, Form, redirect, useNavigation, useActionData } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
+import { toast } from 'react-toastify';
+import customFetch from '../util/customFetch';
+
+// export const action = async ({ request }) => {
+//     const formData = await request.formData();
+//     const data = Object.fromEntries(formData);
+//     const errors = { msg: '' };
+//     if (data.password.length < 3) {
+//         errors.msg = 'Password too short';
+//         return errors;
+//     }
+//     try {
+//         await customFetch.post('/auth/login', data);
+//         toast.success('Login Successful');
+//         return redirect('/dashboard');
+//     } catch (error) {
+//         toast.error(error?.response?.data?.msg);
+//     }
+//     return null;
+// };
+
+export const action = async ({ request }) => {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+
+    const errors = { msg: '' };
+
+    if (data.password.length < 3) {
+        errors.msg = 'Password too short';
+        return errors;
+    }
+
+    try {
+        const response = await customFetch.post('/auth/login', data);
+        const { token, user } = response.data;
+        //SET THEM IN LOCAL STORAGE
+        localStorage.setItem('token', token);
+        localStorage.setItem('userId', user.id);
+        toast.success('Login Successful');
+        return redirect('/dashboard');
+    } catch (error) {
+        // Handle errors
+        toast.error(error?.response?.data?.msg || 'Something went wrong');
+    }
+
+    return null;
+};
 
 const Login = () => {
+    const errors = useActionData();
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === 'submitting';
+
     return (
         <Wrapper>
-            <form className="form">
+            <Form method="post" className="form">
                 <Logo />
                 <h4>Login</h4>
-                <FormRow
-                    type="email"
-                    name="email"
-                    labelText="email"
-                    defaultValue="defaultEmail@gmail.com"
-                    placeholder="EMAIL"
-                />
+                {errors?.msg && <p style={{ color: 'red' }}>{errors.msg}</p>}
+
+                <FormRow type="email" name="email" labelText="email" placeholder="EMAIL" />
                 <FormRow
                     type="password"
                     name="password"
                     labelText="password"
-                    defaultValue="CodeTheDreamPassword"
-                    placeholder="PASSWORD"
+                    placeholder="password"
                 />
-                <button type="submit" className="btn btn-block">
-                    Submit
+                <button type="submit" className="btn btn-block" disabled={isSubmitting}>
+                    {isSubmitting ? 'submitting...' : 'submit'}
                 </button>
                 <p>
                     Not Registered Yet?
@@ -31,7 +77,7 @@ const Login = () => {
                         Register!
                     </Link>
                 </p>
-            </form>
+            </Form>
         </Wrapper>
     );
 };
@@ -56,7 +102,6 @@ const Wrapper = styled.section`
     }
     .form-input {
         background-color: var(--grey-50);
-        text-transform: uppercase;
     }
     h4 {
         text-align: center;
