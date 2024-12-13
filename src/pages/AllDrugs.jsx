@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
 import Alarms from './Alarms';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const AllDrugs = () => {
     const columnLabels = [
@@ -19,6 +20,14 @@ const AllDrugs = () => {
         'ndcNumber',
         'view/edit/delete',
     ];
+
+    const editNavigate = useNavigate();
+
+    const handleEdit = (drugId) => {
+        console.log('Navigate to edit', drugId)
+        editNavigate(`/dashboard/edit/${drugId}`); // Navigate to the Edit Page with the drug ID
+    };
+
 
     const [data, setData] = useState([]);
     const [filterData, setFilterData] = useState([]);
@@ -117,12 +126,18 @@ const AllDrugs = () => {
                     {filterData.map((drug, rowIndex) =>
                         columnLabels.map((label, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                                {drug[label] || ''}
+                                {label === 'view/edit/delete' ? (
+                                    <button onClick={() =>
+                                        handleEdit(drug._id)}>Edit</button>
+                                ) : (
+                                    drug[label] || ''
+                                )}
                             </div>
                         ))
                     )}
                 </div>
-            )}
+            )
+            }
             <div className="Alarm-container">
                 {alarmSection && (
                     <div>
@@ -131,7 +146,7 @@ const AllDrugs = () => {
                     </div>
                 )}
             </div>
-        </Wrapper>
+        </Wrapper >
     );
 };
 
