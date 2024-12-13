@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
 import { FaFilter } from 'react-icons/fa';
 //import { drugData } from '../../data';
-import { TbBellFilled } from 'react-icons/tb';
+//import { TbBellFilled } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
-import Alarms from './Alarms';
+//import Alarms from './Alarms';
 import { useLocation } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
 
@@ -26,21 +26,19 @@ const AllDrugs = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [searchsection, setSearchSection] = useState(false);
-    const [alarmSection, setAlarmSection] = useState(false);
-    const [liveSearch, SetLiveSearch]= useState([]);
+    //const [alarmSection, setAlarmSection] = useState(false);
+    //const [liveSearch, SetLiveSearch]= useState([]);
 
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
 
     useEffect(() => {
-        
         fetch('http://localhost:8000/api/v1/inventory', {
             method: 'Get', // Or other HTTP methods like POST, PUT, DELETE, etc.
             headers: {
-                'Authorization': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWI0ZmE3OWY0MTBmYWQ2OGMwMzNjNCIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0MDQyODA4LCJleHAiOjE3MzQwNDY0MDh9.y2gXyuE6vypJtVV-SDNfcskEHs8fbRGHblPSWrboK5o`,
-                'Content-Type': 'application/json'
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWI0ZmE3OWY0MTBmYWQ2OGMwMzNjNCIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0MDQ5MTU2LCJleHAiOjE3MzQwNTI3NTZ9.CC3WyCKUFA76Jw69pXV9qcJBzK8mwlnGcXopkT_qGiM`,
+                'Content-Type': 'application/json',
             },
-          
         })
             .then((response) => {
                 if (!response) {
@@ -73,21 +71,16 @@ const AllDrugs = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
-    const toggleAlarm = () => {
-        setAlarmSection((preState) => !preState);
-    };
-
-    
     return (
         <Wrapper>
             {/*  */}
 
             <div className="centered-container">
-                <div className="bell-icon-box">
+                {/* <div className="bell-icon-box">
                     <button className="bell-button" onClick={toggleAlarm}>
                         <TbBellFilled className="bell-icon" />
                     </button>
-                </div>
+                </div> */}
                 <div className="filter-search-box">
                     <div className="left-filter-box">
                         <button className="filter-button" onClick={toggleSearch}>
@@ -96,7 +89,7 @@ const AllDrugs = () => {
                     </div>
                     <div></div>
                     <div className="search-box">
-                        <div className="search-icon" >
+                        <div className="search-icon">
                             <IoIosSearch />
                         </div>
                         <LiveSearch data={data} liveSearchFilter={handleFilter} />
@@ -112,30 +105,21 @@ const AllDrugs = () => {
                 )}
             </div>
             {/*  */}
-            {!alarmSection && (
-                <div className="grid-container">
-                    {/* Render column headers */}
-                    {columnLabels.map((label, index) => (
-                        <div key={index} className="grid-item grid-header">
-                            {label}
-                        </div>
-                    ))}
-                    {/* Render rows dynamically */}
-                    {filterData.map((drug, rowIndex) =>
-                        columnLabels.map((label, colIndex) => (
-                            <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                                {drug[label] || ''}
-                            </div>
-                        ))
-                    )}
-                </div>
-            )}
-            <div className="Alarm-container">
-                {alarmSection && (
-                    <div>
-                        {' '}
-                        <Alarms />{' '}
+
+            <div className="grid-container">
+                {/* Render column headers */}
+                {columnLabels.map((label, index) => (
+                    <div key={index} className="grid-item grid-header">
+                        {label}
                     </div>
+                ))}
+                {/* Render rows dynamically */}
+                {filterData.map((drug, rowIndex) =>
+                    columnLabels.map((label, colIndex) => (
+                        <div key={`${rowIndex}-${colIndex}`} className="grid-item">
+                            {drug[label] || ''}
+                        </div>
+                    ))
                 )}
             </div>
         </Wrapper>

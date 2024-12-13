@@ -1,30 +1,24 @@
-import React,{useState} from 'react' ;
+import React, { useState } from 'react';
 
-export default function LiveSearch({data , liveSearchFilter}){
+export default function LiveSearch({ data, liveSearchFilter }) {
+    const [liveSearch, setLiveSearch] = useState('');
 
-    const [liveSearch , setLiveSearch]= useState("")
+    const handelLiveSearchInput = (e) => {
+        const value = e.target.value.toLowerCase();
 
-
-    const handelLiveSearchInput=(e)=>{
-        const value=e.target.value.toLowerCase() ;
-        
-        
-        
         setLiveSearch(value);
-        const livefiltereddata = data.filter((item) => item.name.toLowerCase().includes(value))
-    
-    liveSearchFilter(livefiltereddata) ;
-    }    
-        
-    
+        const livefiltereddata = data.filter((item) => item.name.toLowerCase().includes(value));
+
+        liveSearchFilter(livefiltereddata);
+    };
 
     return (
-                <input
-                            type="text"
-                            placeholder="Search by drug name ..."
-                            className="search-input"
-                            onChange={handelLiveSearchInput}
-                        />
+        <input
+            type="text"
+            placeholder="Search by drug name ..."
+            value={liveSearch}
+            className="search-input"
+            onChange={handelLiveSearchInput}
+        />
     );
 }
-
