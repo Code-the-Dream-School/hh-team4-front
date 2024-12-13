@@ -1,11 +1,26 @@
 import { useState, createContext, useContext } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import { BigSidebar, Navbar, SmallSidebar } from '../components';
+// import customFetch from '../util/customFetch';
+
+export const loader = async () => {
+    // try {
+    //     const { data } = await customFetch.get('/users/:id');
+    //     return data;
+    // } catch (error) {
+    //     console.log(error);
+    //     return redirect('/');
+    // }
+    return 'not working yet';
+};
 
 const DashboardContext = createContext();
 
 const Dashboard = () => {
+    const data = useLoaderData();
+    console.log(data);
+
     const user = { name: 'john' };
     const [showSidebar, setShowSidebar] = useState(false);
 

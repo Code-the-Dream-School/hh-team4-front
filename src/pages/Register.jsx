@@ -36,15 +36,14 @@ const Register = () => {
                     defaultValue="DefaultLastName"
                     placeholder="LAST NAME"
                 /> */}
-                <FormRow type="text" name="store" labelText="store" placeholder="STORE" />
-                <FormRow type="text" name="role" labelText="role" placeholder="ROLE NAME" />
-                <FormRow type="email" name="email" labelText="email" placeholder="EMAIL" />
+                <FormRow type="text" name="store" labelText="store" placeholder="store name" />
+                <FormRow type="text" name="role" labelText="role" placeholder="name of role" />
+                <FormRow type="email" name="email" labelText="email" placeholder="email" />
                 <FormRow
                     type="password"
                     name="password"
                     labelText="password"
-                    defaultValue="CodeTheDreamPassword"
-                    placeholder="PASSWORD"
+                    placeholder="password"
                 />
                 <button type="submit" className="btn btn-block" disabled={isSubmitting}>
                     {isSubmitting ? 'submitting...' : 'submit'}
@@ -80,7 +79,6 @@ const Wrapper = styled.section`
     }
     .form-input {
         background-color: var(--grey-50);
-        text-transform: uppercase;
     }
     h4 {
         text-align: center;

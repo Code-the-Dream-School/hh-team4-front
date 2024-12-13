@@ -1,4 +1,4 @@
-import { Link, Form, redirect, useNavigation } from 'react-router-dom';
+import { Link, Form, redirect, useNavigation, useActionData } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
 import { toast } from 'react-toastify';
@@ -7,6 +7,11 @@ import customFetch from '../util/customFetch';
 export const action = async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+    const errors = { msg: '' };
+    if (data.password.length < 3) {
+        errors.msg = 'Password too short';
+        return errors;
+    }
     try {
         await customFetch.post('/auth/login', data);
         toast.success('Login Successful');
@@ -18,6 +23,7 @@ export const action = async ({ request }) => {
 };
 
 const Login = () => {
+    const errors = useActionData();
     const navigation = useNavigation();
     const isSubmitting = navigation.state === 'submitting';
 
@@ -26,12 +32,14 @@ const Login = () => {
             <Form method="post" className="form">
                 <Logo />
                 <h4>Login</h4>
+                {errors?.msg && <p style={{ color: 'red' }}>{errors.msg}</p>}
+
                 <FormRow type="email" name="email" labelText="email" placeholder="EMAIL" />
                 <FormRow
                     type="password"
                     name="password"
                     labelText="password"
-                    placeholder="PASSWORD"
+                    placeholder="password"
                 />
                 <button type="submit" className="btn btn-block" disabled={isSubmitting}>
                     {isSubmitting ? 'submitting...' : 'submit'}
@@ -67,7 +75,6 @@ const Wrapper = styled.section`
     }
     .form-input {
         background-color: var(--grey-50);
-        text-transform: uppercase;
     }
     h4 {
         text-align: center;
