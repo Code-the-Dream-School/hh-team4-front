@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
 import { FaFilter } from 'react-icons/fa';
-//import { drugData } from '../../data';
-//import { TbBellFilled } from 'react-icons/tb';
+
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
-//import Alarms from './Alarms';
+
 import { useLocation } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
 
@@ -26,17 +25,15 @@ const AllDrugs = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [searchsection, setSearchSection] = useState(false);
-    //const [alarmSection, setAlarmSection] = useState(false);
-    //const [liveSearch, SetLiveSearch]= useState([]);
-
+   
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
 
     useEffect(() => {
         fetch('http://localhost:8000/api/v1/inventory', {
-            method: 'Get', // Or other HTTP methods like POST, PUT, DELETE, etc.
+            method: 'Get', 
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWI0ZmE3OWY0MTBmYWQ2OGMwMzNjNCIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0MDQ5MTU2LCJleHAiOjE3MzQwNTI3NTZ9.CC3WyCKUFA76Jw69pXV9qcJBzK8mwlnGcXopkT_qGiM`,
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWI0ZmE3OWY0MTBmYWQ2OGMwMzNjNCIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0MDY5NjgwLCJleHAiOjE3MzQwNzMyODB9.SEKi_q-5gUAgo4ZHrh5_sn5tu-tyKPamcxhxOL1mHK4`,
                 'Content-Type': 'application/json',
             },
         })
@@ -48,7 +45,6 @@ const AllDrugs = () => {
             })
             .then((data) => {
                 if (alarmFilterData) {
-                    // Use the passed alarm filter if available
                     setFilterData(alarmFilterData);
                 } else {
                     setData(data.data);
@@ -76,11 +72,6 @@ const AllDrugs = () => {
             {/*  */}
 
             <div className="centered-container">
-                {/* <div className="bell-icon-box">
-                    <button className="bell-button" onClick={toggleAlarm}>
-                        <TbBellFilled className="bell-icon" />
-                    </button>
-                </div> */}
                 <div className="filter-search-box">
                     <div className="left-filter-box">
                         <button className="filter-button" onClick={toggleSearch}>
