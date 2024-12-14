@@ -22,7 +22,7 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
             }
             key={id}
             id={id}
-            value={value || ''}// Directly use value passed as a prop
+            value={value || ''}
             onChange={handleInputChange}
             placeholder={placeholder}
             ref={inputRef}

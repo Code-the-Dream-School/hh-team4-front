@@ -9,7 +9,6 @@ export default function AddDrug({ addDrugs }) {
     const [modal, setModal] = useState(false);
     const [drugs, setDrugs] = useState([]);
 
-
     const toggleModal = () => {
         setModal(!modal);
     };
@@ -20,7 +19,6 @@ export default function AddDrug({ addDrugs }) {
     } else {
         document.body.classList.remove('active-modal');
     }
-
 
     // Combine all form fields into a single object
     const [formData, setFormData] = useState({
@@ -35,17 +33,12 @@ export default function AddDrug({ addDrugs }) {
         store: ''
     });
 
-
-
-
     useEffect(() => { }, [drugs]);
-
 
     const formatDate = (date) => {
         if (!date) return ''; // Handle empty or undefined dates
         return new Date(date).toISOString().split('T')[0];
     };
-
 
     const drugClasses = [
         'Antibiotic',
@@ -70,10 +63,8 @@ export default function AddDrug({ addDrugs }) {
         }));
     };
 
-
     const handleAddMed = (event) => {
         event.preventDefault();
-
 
         addDrugs = {
             ...formData,
@@ -81,11 +72,11 @@ export default function AddDrug({ addDrugs }) {
         console.log('AddDrugs:', addDrugs);
         console.log('JSON:', JSON.stringify(addDrugs));
 
-
+        const token = localStorage.getItem("token")
         fetch('http://localhost:8000/api/v1/inventory', {
             method: 'POST', // Or other HTTP methods like POST, PUT, DELETE, etc.
             headers: {
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NThkMjVlMGQyNzdiZjBkNTkxOWE1YiIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0MDk1NDg1LCJleHAiOjE3MzQwOTkwODV9.RU-oQun8HufESwnH-4uiWyJBGAHXubhfO3pB8BoYzKQ`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(addDrugs)
@@ -100,7 +91,7 @@ export default function AddDrug({ addDrugs }) {
                 }
                 return response.json(); // Assuming the response is JSON
             })
-            .then(data => {
+            .then(() => {
                 // Do something with the data
                 console.log(addDrugs);
                 setModal(true);
@@ -126,7 +117,6 @@ export default function AddDrug({ addDrugs }) {
             store: '',
         });
     };
-
 
     return (
         <Wrapper>
@@ -214,7 +204,6 @@ export default function AddDrug({ addDrugs }) {
         </Wrapper>
     );
 }
-
 
 AddDrug.propTypes = {
     addDrugs: PropTypes.func.isRequired, // Required function prop

@@ -40,7 +40,15 @@ const AllDrugs = () => {
     const { alarmFilterData: alarmFilterData } = location.state || {};
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/inventory')
+        const token = localStorage.getItem("token")
+
+        fetch('http://localhost:8000/api/v1/inventory', {
+            method: 'GET', // Or other HTTP methods like POST, PUT, DELETE, etc.
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
             .then((response) => {
                 if (!response) {
                     throw new error('Network response was not ok');

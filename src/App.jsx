@@ -78,8 +78,8 @@ const router = createBrowserRouter([
                         element: <User />,
                     },
                     {
-                        path: 'edit',
-                        element: <EditDrug updateDrug={EditDrug} />,
+                        path: 'edit/:id', // Dynamic parameter for drug ID
+                        element: <EditDrug />,
                     },
                     {
                         path: 'add',

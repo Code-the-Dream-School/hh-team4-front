@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import EditMedicineForm from '../components/EditMedicineForm';
-
 import styled from 'styled-components';
 
-
-export default function EditDrug({ editDrugs }) {
-    const location = useLocation();
+export default function EditDrug({ }) {
+    const [modal, setModal] = useState(false);
     const { id } = useParams(); // Get drug ID from URL
-    const editNavigate = useNavigate();
     const [editData, setEditData] = useState({
         name: '',
         genericName: '',
@@ -31,18 +27,34 @@ export default function EditDrug({ editDrugs }) {
         'Other',
     ];
 
+    const toggleModal = () => {
+        setModal(!modal);
+    };
+
     useEffect(() => {
         // Fetch existing drug data to populate form
+        const token = localStorage.getItem("token")
         fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
+            method: 'GET',
             headers: {
-                'Authorization': `Bearer YOUR_API_TOKEN`,
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             },
         })
             .then((response) => {
                 if (!response.ok) throw new Error('Failed to fetch drug data');
                 return response.json();
             })
-            .then((data) => setEditData(data))
+            .then((data) => {
+                console.log("This is data", data)
+                delete data.data.createdBy
+                delete data.data._id
+                delete data.data.createdAt
+                delete data.data.__v
+                delete data.data.updatedAt
+
+                setEditData(data.data)
+            })
             .catch((error) => console.error('Error:', error));
     }, [id]);
 
@@ -59,10 +71,11 @@ export default function EditDrug({ editDrugs }) {
     const handleSaveChanges = (event) => {
         event.preventDefault();
 
+        const token = localStorage.getItem("token")
         fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
-            method: 'GET', // Or other HTTP methods like POST, PUT, DELETE, etc.
+            method: 'PATCH', // Or other HTTP methods like POST, PUT, DELETE, etc.
             headers: {
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NThkMjVlMGQyNzdiZjBkNTkxOWE1YiIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0MTI2MTY3LCJleHAiOjE3MzQxMjk3Njd9.6mD0Wdu8P0s7-baBBFH1Fne72z9kshr0Lp8T5usSrn0`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(editData)
@@ -96,6 +109,7 @@ export default function EditDrug({ editDrugs }) {
         });
     };
 
+    console.log("data", editData)
 
     return (
         <Wrapper>
@@ -162,8 +176,17 @@ export default function EditDrug({ editDrugs }) {
                     }
 
                     {/* Add other form fields as needed */}
-                    <button type="submit">Save Changes</button>
+                    <button type="submit" onClick={toggleModal}>Save Changes</button>
                 </form >
+                {modal && (
+                    <ButtonModal>
+                        <Overlay onClick={toggleModal}></Overlay>
+                        <ModalContent>
+                            <p>Your medicine has been successfully updated to the inventory.</p>
+                            <CloseModal onClick={() => setModal(false)}>CLOSE</CloseModal>
+                        </ModalContent>
+                    </ButtonModal>
+                )}
             </div>
         </Wrapper>
     );
