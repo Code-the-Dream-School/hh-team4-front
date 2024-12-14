@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import EditMedicineForm from '../components/EditMedicineForm';
 import styled from 'styled-components';
 
-export default function EditDrug({ }) {
+export default function EditDrug() {
     const [modal, setModal] = useState(false);
     const { id } = useParams(); // Get drug ID from URL
     const [editData, setEditData] = useState({
