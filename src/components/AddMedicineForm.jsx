@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const AddMedicineForm = ({ type, id, value, handleMedChange, placeholder }) => {
+const AddMedicineForm = ({ id, value, handleMedChange, placeholder }) => {
     const inputRef = useRef();
 
     useEffect(() => {
@@ -15,8 +15,8 @@ const AddMedicineForm = ({ type, id, value, handleMedChange, placeholder }) => {
                 id === 'expirationDate'
                     ? 'date'
                     : ['quantity', 'minAmount'].includes(id)
-                        ? 'number'
-                        : 'text'
+                      ? 'number'
+                      : 'text'
             }
             //key={id}
             id={id}

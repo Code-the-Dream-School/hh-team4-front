@@ -15,7 +15,7 @@ export default function EditDrug() {
         expirationDate: '',
         ndcNumber: '',
         lot: '',
-        store: ''
+        store: '',
     });
     const drugClasses = [
         'Antibiotic',
@@ -33,12 +33,12 @@ export default function EditDrug() {
 
     useEffect(() => {
         // Fetch existing drug data to populate form
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem('token');
         fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
         })
             .then((response) => {
@@ -46,18 +46,17 @@ export default function EditDrug() {
                 return response.json();
             })
             .then((data) => {
-                console.log("This is data", data)
-                delete data.data.createdBy
-                delete data.data._id
-                delete data.data.createdAt
-                delete data.data.__v
-                delete data.data.updatedAt
+                console.log('This is data', data);
+                delete data.data.createdBy;
+                delete data.data._id;
+                delete data.data.createdAt;
+                delete data.data.__v;
+                delete data.data.updatedAt;
 
-                setEditData(data.data)
+                setEditData(data.data);
             })
             .catch((error) => console.error('Error:', error));
     }, [id]);
-
 
     const handleInputChange = (event) => {
         const { id, value } = event.target;
@@ -71,27 +70,27 @@ export default function EditDrug() {
     const handleSaveChanges = (event) => {
         event.preventDefault();
 
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem('token');
         fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
             method: 'PATCH', // Or other HTTP methods like POST, PUT, DELETE, etc.
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(editData)
+            body: JSON.stringify(editData),
         })
-            .then(response => {
+            .then((response) => {
                 // Handle the response
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json(); // Assuming the response is JSON
             })
-            .then(data => {
+            .then((data) => {
                 // Do something with the data
                 console.log(data);
             })
-            .catch(error => {
+            .catch((error) => {
                 // Handle errors
                 console.error('Error:', error);
             });
@@ -109,75 +108,73 @@ export default function EditDrug() {
         });
     };
 
-    console.log("data", editData)
+    console.log('data', editData);
 
     return (
         <Wrapper>
             <div>
-                < form onSubmit={handleSaveChanges} >
-                    {
-                        Object.entries(editData).map(([id, value]) => (
-                            <div key={id}>
-                                <StyledLabel htmlFor={id}>
-                                    {id.replace(/([A-Z])/g, ' $1').toLowerCase()}{' '}
-                                    {/* This will render the label text */}
-                                </StyledLabel>
-                                {id === 'class' ? (
-                                    <select
-                                        id={id}
-                                        value={value}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="" disabled>Select a class</option>
-                                        {drugClasses.map((drugClass) => (
-                                            <option key={drugClass} value={drugClass}>
-                                                {drugClass}
-                                            </option>
-                                        ))}
-                                    </select>
-                                ) : (
-                                    <EditMedicineForm
-                                        type={id === 'expirationDate' ? 'date' : 'text'}
-                                        id={id}
-                                        value={value}
-                                        handleInputChange={handleInputChange}
-                                        placeholder={id.replace(/([A-Z])/g, ' $1')}
-                                    >
-                                        <FormSection>
-                                            <Fieldwrapper>
-                                                <StyledLabel htmlFor="quantity">Quantity</StyledLabel>
+                <form onSubmit={handleSaveChanges}>
+                    {Object.entries(editData).map(([id, value]) => (
+                        <div key={id}>
+                            <StyledLabel htmlFor={id}>
+                                {id.replace(/([A-Z])/g, ' $1').toLowerCase()}{' '}
+                                {/* This will render the label text */}
+                            </StyledLabel>
+                            {id === 'class' ? (
+                                <select id={id} value={value} onChange={handleInputChange}>
+                                    <option value="" disabled>
+                                        Select a class
+                                    </option>
+                                    {drugClasses.map((drugClass) => (
+                                        <option key={drugClass} value={drugClass}>
+                                            {drugClass}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <EditMedicineForm
+                                    type={id === 'expirationDate' ? 'date' : 'text'}
+                                    id={id}
+                                    value={value}
+                                    handleInputChange={handleInputChange}
+                                    placeholder={id.replace(/([A-Z])/g, ' $1')}
+                                >
+                                    <FormSection>
+                                        <Fieldwrapper>
+                                            <StyledLabel htmlFor="quantity">Quantity</StyledLabel>
+                                            <EditMedicineForm
+                                                type="text"
+                                                id="quantity"
+                                                value={editData.quantity}
+                                                handleSaveChanges={handleSaveChanges}
+                                                placeholder="QUANTITY"
+                                            />
+                                        </Fieldwrapper>
+                                        <Fieldwrapper>
+                                            <div className="form-row">
+                                                <StyledLabel htmlFor="threshold">
+                                                    Min Amount
+                                                </StyledLabel>
                                                 <EditMedicineForm
                                                     type="text"
-                                                    id="quantity"
-                                                    value={editData.quantity}
-                                                    handleSaveChanges={handleSaveChanges}
-                                                    placeholder="QUANTITY"
+                                                    id="threshold"
+                                                    value={editData.threshold}
+                                                    handleInputChange={handleInputChange}
+                                                    placeholder="MIN AMOUNT"
                                                 />
-                                            </Fieldwrapper>
-                                            <Fieldwrapper>
-                                                <div className="form-row">
-                                                    <StyledLabel htmlFor="threshold">
-                                                        Min Amount
-                                                    </StyledLabel>
-                                                    <EditMedicineForm
-                                                        type="text"
-                                                        id="threshold"
-                                                        value={editData.threshold}
-                                                        handleInputChange={handleInputChange}
-                                                        placeholder="MIN AMOUNT"
-                                                    />
-                                                </div>
-                                            </Fieldwrapper>
-                                        </FormSection>
-                                    </EditMedicineForm>
-                                )}
-                            </div>
-                        ))
-                    }
+                                            </div>
+                                        </Fieldwrapper>
+                                    </FormSection>
+                                </EditMedicineForm>
+                            )}
+                        </div>
+                    ))}
 
                     {/* Add other form fields as needed */}
-                    <button type="submit" onClick={toggleModal}>Save Changes</button>
-                </form >
+                    <button type="submit" onClick={toggleModal}>
+                        Save Changes
+                    </button>
+                </form>
                 {modal && (
                     <ButtonModal>
                         <Overlay onClick={toggleModal}></Overlay>
@@ -190,7 +187,7 @@ export default function EditDrug() {
             </div>
         </Wrapper>
     );
-};
+}
 
 export const Wrapper = styled.section`
     min-height: 100vh;

@@ -4,7 +4,6 @@ import AddMedicineForm from '../components/AddMedicineForm';
 import Logo from '../components/Logo';
 import styled from 'styled-components';
 
-
 export default function AddDrug({ addDrugs }) {
     const [modal, setModal] = useState(false);
     const [drugs, setDrugs] = useState([]);
@@ -12,7 +11,6 @@ export default function AddDrug({ addDrugs }) {
     const toggleModal = () => {
         setModal(!modal);
     };
-
 
     if (modal) {
         document.body.classList.add('active-modal');
@@ -30,10 +28,10 @@ export default function AddDrug({ addDrugs }) {
         expirationDate: '',
         ndcNumber: '',
         lot: '',
-        store: ''
+        store: '',
     });
 
-    useEffect(() => { }, [drugs]);
+    useEffect(() => {}, [drugs]);
 
     const formatDate = (date) => {
         if (!date) return ''; // Handle empty or undefined dates
@@ -47,9 +45,8 @@ export default function AddDrug({ addDrugs }) {
         'Antidepressant',
         'Antiviral',
         'Antifungal',
-        'Other'
+        'Other',
     ];
-
 
     const handleMedChange = ({ target: { id, value } }) => {
         setFormData((prev) => ({
@@ -58,8 +55,8 @@ export default function AddDrug({ addDrugs }) {
                 id === 'quantity' || id === 'threshold'
                     ? Math.max(0, parseInt(value, 10)) || '' // Ensure non-negative numbers
                     : id === 'expirationDate'
-                        ? formatDate(value) // Format the date
-                        : value, // For other fields, take the value as-is
+                      ? formatDate(value) // Format the date
+                      : value, // For other fields, take the value as-is
         }));
     };
 
@@ -72,19 +69,18 @@ export default function AddDrug({ addDrugs }) {
         console.log('AddDrugs:', addDrugs);
         console.log('JSON:', JSON.stringify(addDrugs));
 
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem('token');
         fetch('http://localhost:8000/api/v1/inventory', {
             method: 'POST', // Or other HTTP methods like POST, PUT, DELETE, etc.
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(addDrugs)
+            body: JSON.stringify(addDrugs),
         })
-            .then(response => {
+            .then((response) => {
                 // Handle the response
                 console.error('Response status:', response.status);
-
 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -96,14 +92,12 @@ export default function AddDrug({ addDrugs }) {
                 console.log(addDrugs);
                 setModal(true);
             })
-            .catch(error => {
+            .catch((error) => {
                 // Handle errors
                 console.error('Error:', error);
             });
 
-
         setDrugs((prev) => [...prev, addDrugs]);
-
 
         setFormData({
             name: '',
@@ -132,12 +126,10 @@ export default function AddDrug({ addDrugs }) {
                                     {/* This will render the label text */}
                                 </StyledLabel>
                                 {id === 'class' ? (
-                                    <select
-                                        id={id}
-                                        value={value}
-                                        onChange={handleMedChange}
-                                    >
-                                        <option value="" disabled>Select a class</option>
+                                    <select id={id} value={value} onChange={handleMedChange}>
+                                        <option value="" disabled>
+                                            Select a class
+                                        </option>
                                         {drugClasses.map((drugClass) => (
                                             <option key={drugClass} value={drugClass}>
                                                 {drugClass}
@@ -154,7 +146,9 @@ export default function AddDrug({ addDrugs }) {
                                     >
                                         <FormSection>
                                             <Fieldwrapper>
-                                                <StyledLabel htmlFor="quantity">Quantity</StyledLabel>
+                                                <StyledLabel htmlFor="quantity">
+                                                    Quantity
+                                                </StyledLabel>
                                                 <AddMedicineForm
                                                     type="text"
                                                     id="quantity"
@@ -184,12 +178,10 @@ export default function AddDrug({ addDrugs }) {
                         ))}
                     </div>
 
-
                     <AddButton type="submit" onClick={toggleModal}>
                         SAVE DRUG{' '}
                     </AddButton>
                 </AddForm>
-
 
                 {modal && (
                     <ButtonModal>
@@ -210,149 +202,137 @@ AddDrug.propTypes = {
     drugs: PropTypes.arrayOf(PropTypes.object), // Optional array prop
 };
 
-
 export const Wrapper = styled.section`
-   min-height: 100vh;
-   display: grid;
-   align-items: center;
-   h4 {
-       text-align: center;
-       margin-bottom: 1.38rem;
-   }
-   .logo {
-       display: block;
-       margin: 0 auto;
-       margin-bottom: 1.38rem;
-   }
+    min-height: 100vh;
+    display: grid;
+    align-items: center;
+    h4 {
+        text-align: center;
+        margin-bottom: 1.38rem;
+    }
+    .logo {
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 1.38rem;
+    }
 `;
-
 
 export const FormField = styled.div``;
 
-
 export const AddForm = styled.form`
-   width: 90vw;
-   max-width: 400px;
-   border-top: 5px solid var(--color-blue-dark);
-   border-radius: var(--border-radius);
-   box-shadow: var(--shadow-2);
-   padding: 2rem 2.5rem;
-   margin: 3rem auto;
+    width: 90vw;
+    max-width: 400px;
+    border-top: 5px solid var(--color-blue-dark);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 3rem auto;
 `;
-
 
 export const StyledLabel = styled.label`
-   text-transform: lowercase;
-   display: block;
-   font-size: var(--small-text);
-   margin-bottom: 0.75rem;
-   text-transform: capitalize;
-   letter-spacing: var(--letter-spacing);
-   line-height: 1.5;
+    text-transform: lowercase;
+    display: block;
+    font-size: var(--small-text);
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+    letter-spacing: var(--letter-spacing);
+    line-height: 1.5;
 `;
-
 
 export const FormSection = styled.div`
-   width: 90vw;
-   max-width: var(--fixed-width);
-   border-radius: var(--border-radius);
-   box-shadow: var(--shadow-2);
-   padding: 2rem 2.5rem;
-   margin: 3rem auto;
+    width: 90vw;
+    max-width: var(--fixed-width);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 3rem auto;
 `;
-
 
 export const Fieldwrapper = styled.div`
-   .form-row {
-       margin-bottom: 0.5rem;
-   }
-   input {
-       text-transform: uppercase;
-       width: 100%;
-       padding: 0.375rem 0.75rem;
-       border-radius: var(--border-radius);
-       border: 1px solid var(--grey-300);
-       color: var(--text-color);
-       height: 35px;
-       background-color: white;
-   }
-   label {
-       font-size: 0.9rem;
-       text-transform: lowercase;
-   }
+    .form-row {
+        margin-bottom: 0.5rem;
+    }
+    input {
+        text-transform: uppercase;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--grey-300);
+        color: var(--text-color);
+        height: 35px;
+        background-color: white;
+    }
+    label {
+        font-size: 0.9rem;
+        text-transform: lowercase;
+    }
 `;
-
 
 export const AddButton = styled.button`
-   margin-top: 1rem;
-   background-color: var(--color-blue-dark);
-   width: 100%;
-   cursor: pointer;
-   color: var(--white);
-   border: transparent;
-   border-radius: var(--border-radius);
-   letter-spacing: var(--letter-spacing);
-   padding: 1rem 4rem;
-   box-shadow: var(--shadow-1);
-   transition: var(--transition);
-   text-transform: capitalize;
-   display: inline-block;
+    margin-top: 1rem;
+    background-color: var(--color-blue-dark);
+    width: 100%;
+    cursor: pointer;
+    color: var(--white);
+    border: transparent;
+    border-radius: var(--border-radius);
+    letter-spacing: var(--letter-spacing);
+    padding: 1rem 4rem;
+    box-shadow: var(--shadow-1);
+    transition: var(--transition);
+    text-transform: capitalize;
+    display: inline-block;
 `;
-
 
 export const ButtonModal = styled.div`
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   background: rgba(0, 0, 0, 0.5);
-   display: flex;
-   justify-content: center;
-   align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
-
 
 export const Overlay = styled.div`
-   width: 100vw;
-   height: 100vh;
-   position: fixed;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 `;
-
 
 export const ModalContent = styled.div`
-   background: white;
-   padding: 2rem;
-   border-radius: 8px;
-   max-width: 500px;
-   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 `;
-
 
 export const CloseModal = styled.button`
-   background-color: rgb(34, 63, 75);
-   color: white;
-   border: none;
-   border-radius: 4px;
-   padding: 0.5rem 1rem;
-   cursor: pointer;
-   float: right;
+    background-color: rgb(34, 63, 75);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    float: right;
 `;
 
-
 export const DeleteButton = styled.button`
-   background-color: rgb(34, 63, 75);
-   color: white;
-   border-radius: 8px;
-   border: 1px solid transparent;
-   padding: 0.6em 1.2em;
-   padding: 0.2em 3em; /* Smaller padding */
-   font-size: 0.8em; /* Smaller font size */
-   font-family: inherit;
-   cursor: pointer;
-   transition: border-color 0.25s;
+    background-color: rgb(34, 63, 75);
+    color: white;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    padding: 0.2em 3em; /* Smaller padding */
+    font-size: 0.8em; /* Smaller font size */
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.25s;
 `;

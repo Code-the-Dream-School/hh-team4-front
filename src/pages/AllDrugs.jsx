@@ -24,10 +24,9 @@ const AllDrugs = () => {
     const editNavigate = useNavigate();
 
     const handleEdit = (drugId) => {
-        console.log('Navigate to edit', drugId)
+        console.log('Navigate to edit', drugId);
         editNavigate(`/dashboard/edit/${drugId}`); // Navigate to the Edit Page with the drug ID
     };
-
 
     const [data, setData] = useState([]);
     const [filterData, setFilterData] = useState([]);
@@ -40,14 +39,14 @@ const AllDrugs = () => {
     const { alarmFilterData: alarmFilterData } = location.state || {};
 
     useEffect(() => {
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem('token');
 
         fetch('http://localhost:8000/api/v1/inventory', {
             method: 'GET', // Or other HTTP methods like POST, PUT, DELETE, etc.
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
         })
             .then((response) => {
                 if (!response) {
@@ -135,8 +134,7 @@ const AllDrugs = () => {
                         columnLabels.map((label, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                                 {label === 'view/edit/delete' ? (
-                                    <button onClick={() =>
-                                        handleEdit(drug._id)}>Edit</button>
+                                    <button onClick={() => handleEdit(drug._id)}>Edit</button>
                                 ) : (
                                     drug[label] || ''
                                 )}
@@ -144,8 +142,7 @@ const AllDrugs = () => {
                         ))
                     )}
                 </div>
-            )
-            }
+            )}
             <div className="Alarm-container">
                 {alarmSection && (
                     <div>
@@ -154,7 +151,7 @@ const AllDrugs = () => {
                     </div>
                 )}
             </div>
-        </Wrapper >
+        </Wrapper>
     );
 };
 
