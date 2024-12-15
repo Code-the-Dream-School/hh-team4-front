@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { BigSidebar, Navbar, SmallSidebar } from '../components';
 import customFetch from '../util/customFetch';
 import Alarms from './Alarms';
+
 export const loader = async () => {
     try {
         // Retrieve the token from localStorage
