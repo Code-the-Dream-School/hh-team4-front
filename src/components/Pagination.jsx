@@ -1,12 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => {
-  
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    
     const getPageNumbers = () => {
         const pages = [];
         for (let i = 1; i <= totalPages; i++) {
@@ -29,7 +27,7 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => 
                 {getPageNumbers().map((number) => (
                     <button
                         key={number}
-                        className={`page-button ${number === currentPage ? "active" : ""}`}
+                        className={`page-button ${number === currentPage ? 'active' : ''}`}
                         onClick={() => onPageChange(number)}
                     >
                         {number}
@@ -57,28 +55,28 @@ Pagination.propTypes = {
 
 export default Pagination;
 
-const Wrapper=styled.section`
-.pagination{
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin: 1rem 0;
-}
-.page-button{
-padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    cursor: pointer;
-}
+const Wrapper = styled.section`
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+    .page-button {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+    }
 
-.page-button.active {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-}
+    .page-button.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
 
-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
+    button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
 `;

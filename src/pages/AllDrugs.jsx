@@ -29,10 +29,10 @@ const AllDrugs = () => {
     const [searchsection, setSearchSection] = useState(false);
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
-    const [currentPage ,setCurrentPage]=useState(1) ;
+    const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
         fetch('http://localhost:8000/api/v1/inventory', {
-            method: 'Get', 
+            method: 'Get',
             headers: {
                 Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWI0ZmE3OWY0MTBmYWQ2OGMwMzNjNCIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0Mjg1NDU0LCJleHAiOjE3MzQyODkwNTR9.C95mnASqbVQ-c1GPXXtZXQd0mANz_P2IiKINz44X8oo`,
                 'Content-Type': 'application/json',
@@ -65,16 +65,15 @@ const AllDrugs = () => {
         setFilterData(filteredData);
     };
 
-    const itemsPerPage = 10 ;
-    const totalItems = filterData.length ;
+    const itemsPerPage = 10;
+    const totalItems = filterData.length;
 
-    const getCurrentItems=()=>{
-        const startIndex= (currentPage-1) * itemsPerPage  ;
-        const endIndex= startIndex + itemsPerPage;
+    const getCurrentItems = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
         return filterData.slice(startIndex, endIndex);
-    }
-    
-    
+    };
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
@@ -124,13 +123,12 @@ const AllDrugs = () => {
                     ))
                 )}
             </div>
-             <Pagination
+            <Pagination
                 totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 onPageChange={setCurrentPage}
             />
-          
         </Wrapper>
     );
 };
@@ -235,5 +233,4 @@ const Wrapper = styled.section`
         border-radius: 8px;
         box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
     }
-   
 `;
