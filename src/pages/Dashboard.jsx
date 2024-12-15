@@ -1,12 +1,42 @@
 import { useState, createContext, useContext } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import { BigSidebar, Navbar, SmallSidebar } from '../components';
+
 import Alarms from './Alarms';
+
+import customFetch from '../util/customFetch';
+
+export const loader = async () => {
+    try {
+        // Retrieve the token from localStorage
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        // Make a GET request to the endpoint
+        const response = await customFetch.get(`/users/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+            },
+        });
+
+        // Handle the response
+        console.log('User Details:', response.data);
+        return response.data; // Return the user details
+    } catch (error) {
+        // Handle errors
+        console.error('Error fetching user details:', error?.response?.data || error.message);
+        throw error; // Re-throw the error for further handling if necessary
+    }
+};
+
 
 const DashboardContext = createContext();
 
 const Dashboard = () => {
+    const data = useLoaderData();
+    console.log(data);
+
     const user = { name: 'john' };
     const [showSidebar, setShowSidebar] = useState(false);
     const [showAlarm, setShowAlarm] = useState(false);

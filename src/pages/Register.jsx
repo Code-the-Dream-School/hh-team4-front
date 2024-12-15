@@ -1,7 +1,8 @@
-import { Form, redirect, Link } from 'react-router-dom';
+import { Form, redirect, useNavigation, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
 import customFetch from '../util/customFetch';
+import { toast } from 'react-toastify';
 
 //formData - is an api, gives back an array of arrays, must have name same as database
 export const action = async ({ request }) => {
@@ -10,14 +11,18 @@ export const action = async ({ request }) => {
     const data = Object.fromEntries(formData);
     try {
         await customFetch.post('/auth/signup', data);
+        toast.success('Registration Successful');
         return redirect('/login');
     } catch (error) {
-        console.log(error);
+        toast.error(error?.response?.data?.msg);
         return error;
     }
 };
 
 const Register = () => {
+    const navigation = useNavigation();
+    console.log(navigation);
+    const isSubmitting = navigation.state === 'submitting';
     return (
         <Wrapper>
             <Form method="post" className="form">
@@ -31,18 +36,17 @@ const Register = () => {
                     defaultValue="DefaultLastName"
                     placeholder="LAST NAME"
                 /> */}
-                <FormRow type="text" name="store" labelText="store" placeholder="STORE" />
-                <FormRow type="text" name="role" labelText="role" placeholder="ROLE NAME" />
-                <FormRow type="email" name="email" labelText="email" placeholder="EMAIL" />
+                <FormRow type="text" name="store" labelText="store" placeholder="store name" />
+                <FormRow type="text" name="role" labelText="role" placeholder="name of role" />
+                <FormRow type="email" name="email" labelText="email" placeholder="email" />
                 <FormRow
                     type="password"
                     name="password"
                     labelText="password"
-                    defaultValue="CodeTheDreamPassword"
-                    placeholder="PASSWORD"
+                    placeholder="password"
                 />
-                <button type="submit" className="btn btn-block">
-                    Submit
+                <button type="submit" className="btn btn-block" disabled={isSubmitting}>
+                    {isSubmitting ? 'submitting...' : 'submit'}
                 </button>
                 <p>
                     Already Registered?
@@ -75,7 +79,6 @@ const Wrapper = styled.section`
     }
     .form-input {
         background-color: var(--grey-50);
-        text-transform: uppercase;
     }
     h4 {
         text-align: center;
