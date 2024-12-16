@@ -41,11 +41,8 @@ const AllDrugs = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        const token = localStorage.getItem('token');
-
         fetch('http://localhost:8000/api/v1/inventory', {
             method: 'GET',
-            method: 'GET', // Or other HTTP methods like POST, PUT, DELETE, etc.
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
