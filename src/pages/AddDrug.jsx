@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AddMedicineForm from '../components/AddMedicineForm';
 import Logo from '../components/Logo';
-
 import styled from 'styled-components';
 
 export default function AddDrug({ addDrugs }) {
@@ -21,17 +20,16 @@ export default function AddDrug({ addDrugs }) {
 
     // Combine all form fields into a single object
     const [formData, setFormData] = useState({
-        nameDrug: '',
+        name: '',
         genericName: '',
-        classOfDrug: '',
+        class: '',
         quantity: '',
-        minAmount: '',
+        threshold: '',
         expirationDate: '',
         ndcNumber: '',
-        lotNumber: '',
+        lot: '',
+        store: '',
     });
-
-    //const isFormComplete = Object.values(formData).every((value) => value.trim() !== '');
 
     useEffect(() => {}, [drugs]);
 
@@ -40,11 +38,20 @@ export default function AddDrug({ addDrugs }) {
         return new Date(date).toISOString().split('T')[0];
     };
 
+    const drugClasses = [
+        'Antibiotic',
+        'Analgesic',
+        'Antidepressant',
+        'Antiviral',
+        'Antifungal',
+        'Other',
+    ];
+
     const handleMedChange = ({ target: { id, value } }) => {
         setFormData((prev) => ({
             ...prev,
             [id]:
-                id === 'quantity' || id === 'minAmount' || id === 'ndcNumber' || id === 'lotNumber'
+                id === 'quantity' || id === 'threshold'
                     ? Math.max(0, parseInt(value, 10)) || '' // Ensure non-negative numbers
                     : id === 'expirationDate'
                       ? formatDate(value) // Format the date
@@ -56,21 +63,51 @@ export default function AddDrug({ addDrugs }) {
         event.preventDefault();
 
         addDrugs = {
-            id: Date.now(),
             ...formData,
         };
         console.log('AddDrugs:', addDrugs);
+        console.log('JSON:', JSON.stringify(addDrugs));
+
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:8000/api/v1/inventory', {
+            method: 'POST', // Or other HTTP methods like POST, PUT, DELETE, etc.
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(addDrugs),
+        })
+            .then((response) => {
+                // Handle the response
+                console.error('Response status:', response.status);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Assuming the response is JSON
+            })
+            .then(() => {
+                // Do something with the data
+                console.log(addDrugs);
+                setModal(true);
+            })
+            .catch((error) => {
+                // Handle errors
+                console.error('Error:', error);
+            });
+
         setDrugs((prev) => [...prev, addDrugs]);
-        //AddDrug(newDrug); // pass new drug to the parent component
+
         setFormData({
-            nameDrug: '',
+            name: '',
             genericName: '',
-            classOfDrug: '',
+            class: '',
             quantity: '',
-            minAmount: '',
+            threshold: '',
             expirationDate: '',
             ndcNumber: '',
-            lotNumber: '',
+            lot: '',
+            store: '',
         });
     };
 
@@ -87,40 +124,55 @@ export default function AddDrug({ addDrugs }) {
                                     {id.replace(/([A-Z])/g, ' $1').toLowerCase()}{' '}
                                     {/* This will render the label text */}
                                 </StyledLabel>
-                                <AddMedicineForm
-                                    type={id === 'expirationDate' ? 'date' : 'text'}
-                                    id={id}
-                                    value={value}
-                                    handleMedChange={handleMedChange}
-                                    placeholder={id.replace(/([A-Z])/g, ' $1').toUpperCase()}
-                                >
-                                    <FormSection>
-                                        <Fieldwrapper>
-                                            <StyledLabel htmlFor="quantity">Quantity</StyledLabel>
-                                            <AddMedicineForm
-                                                type="text"
-                                                id="quantity"
-                                                value={formData.quantity}
-                                                handleMedChange={handleMedChange}
-                                                placeholder="QUANTITY"
-                                            />
-                                        </Fieldwrapper>
-                                        <Fieldwrapper>
-                                            <div className="form-row">
-                                                <StyledLabel htmlFor="minAmount">
-                                                    Min Amount
+                                {id === 'class' ? (
+                                    <select id={id} value={value} onChange={handleMedChange}>
+                                        <option value="" disabled>
+                                            Select a class
+                                        </option>
+                                        {drugClasses.map((drugClass) => (
+                                            <option key={drugClass} value={drugClass}>
+                                                {drugClass}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <AddMedicineForm
+                                        type={id === 'expirationDate' ? 'date' : 'text'}
+                                        id={id}
+                                        value={value}
+                                        handleMedChange={handleMedChange}
+                                        placeholder={id.replace(/([A-Z])/g, ' $1')}
+                                    >
+                                        <FormSection>
+                                            <Fieldwrapper>
+                                                <StyledLabel htmlFor="quantity">
+                                                    Quantity
                                                 </StyledLabel>
                                                 <AddMedicineForm
                                                     type="text"
-                                                    id="minAmount"
-                                                    value={formData.minAmount}
+                                                    id="quantity"
+                                                    value={formData.quantity}
                                                     handleMedChange={handleMedChange}
-                                                    placeholder="MIN AMOUNT"
+                                                    placeholder="QUANTITY"
                                                 />
-                                            </div>
-                                        </Fieldwrapper>
-                                    </FormSection>
-                                </AddMedicineForm>
+                                            </Fieldwrapper>
+                                            <Fieldwrapper>
+                                                <div className="form-row">
+                                                    <StyledLabel htmlFor="threshold">
+                                                        Min Amount
+                                                    </StyledLabel>
+                                                    <AddMedicineForm
+                                                        type="text"
+                                                        id="threshold"
+                                                        value={formData.threshold}
+                                                        handleMedChange={handleMedChange}
+                                                        placeholder="MIN AMOUNT"
+                                                    />
+                                                </div>
+                                            </Fieldwrapper>
+                                        </FormSection>
+                                    </AddMedicineForm>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -135,7 +187,7 @@ export default function AddDrug({ addDrugs }) {
                         <Overlay onClick={toggleModal}></Overlay>
                         <ModalContent>
                             <p>Your medicine has been successfully added to the inventory.</p>
-                            <CloseModal onClick={toggleModal}>CLOSE</CloseModal>
+                            <CloseModal onClick={() => setModal(false)}>CLOSE</CloseModal>
                         </ModalContent>
                     </ButtonModal>
                 )}
