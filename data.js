@@ -173,4 +173,60 @@ const drugClasses = [
     'Antivirals',
 ];
 
-export { drugClasses, drugFormData, drugData, storeInfo, userInfo };
+const drugInfo = [
+    {
+        name: 'Albuterol',
+        genericName: 'albuterol sulfate',
+        class: 'Bronchodilators',
+        quantity: '400',
+        expirationDate: '03/25/2025',
+        lot: '1',
+        ndcNumber: '3847762793088899',
+    },
+    {
+        name: 'salmeterol',
+        genericName: 'salmeterol',
+        class: 'bronchodilators',
+        quantity: '200',
+        expirationDate: '04/11/2025',
+        lot: '2',
+        ndcNumber: '12039493890',
+    },
+    {
+        name: 'Coumadin',
+        genericName: 'Warfarin',
+        class: 'Anticoagulants',
+        quantity: '100',
+        expirationDate: '02/14/2025',
+        lot: '3',
+        ndcNumber: '345456575322',
+    },
+    {
+        name: 'Tamiflu',
+        genericName: 'Oseltamivir',
+        class: 'Antiviral',
+        quantity: '0',
+        expirationDate: '01/20/2025',
+        lot: '4',
+        ndcNumber: '23789477088734',
+    },
+    {
+        name: 'Cymbalta',
+        genericName: 'duloxetine',
+        class: 'Antidepressants',
+        quantity: '06',
+        expirationDate: '01/05/2025',
+        lot: '5',
+        ndcNumber: '347373877658',
+    },
+    {
+        name: 'Prozac',
+        genericName: 'fluoxetine',
+        class: 'Antidepressant',
+        quantity: '10',
+        expirationDate: '01/01/2025',
+        lot: '6',
+        ndcNumber: '34737387765800',
+    },
+];
+export { drugClasses, drugFormData, drugData, storeInfo, userInfo, drugInfo };

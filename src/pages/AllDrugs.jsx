@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
 import { FaFilter } from 'react-icons/fa';
-import { drugData } from '../../data';
+import { drugInfo } from '../../data';
 import { TbBellFilled } from 'react-icons/tb';
+import React from 'react';
+import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 
 const AllDrugs = () => {
     const columnLabels = [
@@ -48,14 +50,50 @@ const AllDrugs = () => {
                         {label}
                     </div>
                 ))}
+
                 {/* Render rows dynamically */}
-                {drugData.map((drug, rowIndex) =>
-                    columnLabels.map((label, colIndex) => (
-                        <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {drug[label] || ''}
-                        </div>
-                    ))
-                )}
+                {drugInfo.map((drug, rowIndex) => (
+                    <React.Fragment key={rowIndex}>
+                        {columnLabels.map((label, colIndex) => {
+                            // Handle the last column for view/edit/delete icons
+                            if (label === 'view/edit/delete') {
+                                return (
+                                    <div
+                                        key={`${rowIndex}-${colIndex}`}
+                                        className="grid-item actions"
+                                    >
+                                        <button className="action-button view">
+                                            <FaEye />
+                                        </button>
+                                        <button className="action-button edit">
+                                            <FaEdit />
+                                        </button>
+                                        <button className="action-button delete">
+                                            <FaTrash />
+                                        </button>
+                                    </div>
+                                );
+                            }
+
+                            // Map column labels to drug data keys
+                            const valueMap = {
+                                name: drug.name,
+                                generic: drug.genericName,
+                                class: drug.class,
+                                quantity: drug.quantity,
+                                'expiration date': drug.expirationDate,
+                                'lot #': drug.lot,
+                                'ndc #': drug.ndcNumber,
+                            };
+
+                            return (
+                                <div key={`${rowIndex}-${colIndex}`} className="grid-item">
+                                    {valueMap[label] || ''}
+                                </div>
+                            );
+                        })}
+                    </React.Fragment>
+                ))}
             </div>
         </Wrapper>
     );
@@ -74,6 +112,36 @@ const Wrapper = styled.section`
         background-color: #fff;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+    .actions {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .action-button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .action-button:hover {
+        transform: scale(1.2);
+    }
+
+    .action-button.view {
+        color: var(--color-blue-dark);
+    }
+
+    .action-button.edit {
+        color: var(--color-green-dark);
+    }
+
+    .action-button.delete {
+        color: var(--color-alert);
+    }
+
     .left-filter-box {
         margin-right: 3rem;
     }
