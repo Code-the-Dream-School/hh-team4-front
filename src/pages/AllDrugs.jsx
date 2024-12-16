@@ -5,7 +5,7 @@ import { FaFilter } from 'react-icons/fa';
 //import { TbBellFilled } from 'react-icons/tb';
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
-//import Alarms from './Alarms';
+
 import { useLocation } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +34,7 @@ const AllDrugs = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [searchsection, setSearchSection] = useState(false);
-    //const [alarmSection, setAlarmSection] = useState(false);
+
     //const [liveSearch, SetLiveSearch]= useState([]);
 
     const location = useLocation();
@@ -115,34 +115,24 @@ const AllDrugs = () => {
                 )}
             </div>
             {/*  */}
-            {!alarmSection && (
-                <div className="grid-container">
-                    {/* Render column headers */}
-                    {columnLabels.map((label, index) => (
-                        <div key={index} className="grid-item grid-header">
-                            {label}
-                        </div>
-                    ))}
-                    {/* Render rows dynamically */}
-                    {filterData.map((drug, rowIndex) =>
-                        columnLabels.map((label, colIndex) => (
-                            <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                                {label === 'view/edit/delete' ? (
-                                    <button onClick={() => handleEdit(drug._id)}>Edit</button>
-                                ) : (
-                                    drug[label] || ''
-                                )}
-                            </div>
-                        ))
-                    )}
-                </div>
-            )}
-            <div className="Alarm-container">
-                {alarmSection && (
-                    <div>
-                        {' '}
-                        <Alarms />{' '}
+            <div className="grid-container">
+                {/* Render column headers */}
+                {columnLabels.map((label, index) => (
+                    <div key={index} className="grid-item grid-header">
+                        {label}
                     </div>
+                ))}
+                {/* Render rows dynamically */}
+                {filterData.map((drug, rowIndex) =>
+                    columnLabels.map((label, colIndex) => (
+                        <div key={`${rowIndex}-${colIndex}`} className="grid-item">
+                            {label === 'view/edit/delete' ? (
+                                <button onClick={() => handleEdit(drug._id)}>Edit</button>
+                            ) : (
+                                drug[label] || ''
+                            )}
+                        </div>
+                    ))
                 )}
             </div>
         </Wrapper>

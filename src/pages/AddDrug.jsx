@@ -41,7 +41,6 @@ export default function AddDrug({ addDrugs }) {
     const drugClasses = [
         'Antibiotic',
         'Analgesic',
-        'Antihistamine',
         'Antidepressant',
         'Antiviral',
         'Antifungal',
