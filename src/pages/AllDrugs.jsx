@@ -34,13 +34,12 @@ const AllDrugs = () => {
         const token = localStorage.getItem('token');
 
         fetch('http://localhost:8000/api/v1/inventory', {
-            method: 'GET', 
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         })
-      
             .then((response) => {
                 if (!response) {
                     throw new error('Network response was not ok');
