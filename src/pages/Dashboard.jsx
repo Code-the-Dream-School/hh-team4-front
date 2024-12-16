@@ -2,6 +2,7 @@ import { useState, createContext, useContext } from 'react';
 import { Outlet, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import { BigSidebar, Navbar, SmallSidebar } from '../components';
+import Alarms from './Alarms';
 import customFetch from '../util/customFetch';
 
 export const loader = async () => {
@@ -35,9 +36,14 @@ const Dashboard = () => {
 
     const user = { name: 'john' };
     const [showSidebar, setShowSidebar] = useState(false);
+    const [showAlarm, setShowAlarm] = useState(false);
 
     const toggleSidebar = () => {
         setShowSidebar(!showSidebar);
+    };
+
+    const toggleAlarm = () => {
+        setShowAlarm(!showAlarm);
     };
 
     const logoutUser = async () => {
@@ -51,6 +57,8 @@ const Dashboard = () => {
                 showSidebar,
                 toggleSidebar,
                 logoutUser,
+                toggleAlarm,
+                showAlarm,
             }}
         >
             <Wrapper>
@@ -59,9 +67,7 @@ const Dashboard = () => {
                     <BigSidebar />
                     <div>
                         <Navbar />
-                        <div className="dashboard-page">
-                            <Outlet />
-                        </div>
+                        <div className="dashboard-page">{showAlarm ? <Alarms /> : <Outlet />}</div>
                     </div>
                 </main>
             </Wrapper>
