@@ -2,8 +2,8 @@ import { useState, createContext, useContext } from 'react';
 import { Outlet, useLoaderData } from 'react-router-dom';
 import styled from 'styled-components';
 import { BigSidebar, Navbar, SmallSidebar } from '../components';
-import Alarms from './Alarms';
 import customFetch from '../util/customFetch';
+import Alarms from './Alarms';
 
 export const loader = async () => {
     try {

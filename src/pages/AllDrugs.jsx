@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
 import { FaFilter } from 'react-icons/fa';
-//import { drugData } from '../../data';
-//import { TbBellFilled } from 'react-icons/tb';
+
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
 
 import { useLocation } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
+//import { dataListAnatomy } from '@chakra-ui/react/anatomy';
+import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
 
 const AllDrugs = () => {
@@ -34,17 +35,14 @@ const AllDrugs = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [searchsection, setSearchSection] = useState(false);
-
-    //const [liveSearch, SetLiveSearch]= useState([]);
-
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
-
+    const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
         const token = localStorage.getItem('token');
 
         fetch('http://localhost:8000/api/v1/inventory', {
-            method: 'GET', // Or other HTTP methods like POST, PUT, DELETE, etc.
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -58,7 +56,6 @@ const AllDrugs = () => {
             })
             .then((data) => {
                 if (alarmFilterData) {
-                    // Use the passed alarm filter if available
                     setFilterData(alarmFilterData);
                 } else {
                     setData(data.data);
@@ -78,6 +75,15 @@ const AllDrugs = () => {
         setFilterData(filteredData);
     };
 
+    const itemsPerPage = 10;
+    const totalItems = filterData.length;
+
+    const getCurrentItems = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return filterData.slice(startIndex, endIndex);
+    };
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
@@ -86,11 +92,6 @@ const AllDrugs = () => {
             {/*  */}
 
             <div className="centered-container">
-                {/* <div className="bell-icon-box">
-                    <button className="bell-button" onClick={toggleAlarm}>
-                        <TbBellFilled className="bell-icon" />
-                    </button>
-                </div> */}
                 <div className="filter-search-box">
                     <div className="left-filter-box">
                         <button className="filter-button" onClick={toggleSearch}>
@@ -123,7 +124,7 @@ const AllDrugs = () => {
                     </div>
                 ))}
                 {/* Render rows dynamically */}
-                {filterData.map((drug, rowIndex) =>
+                {getCurrentItems().map((drug, rowIndex) =>
                     columnLabels.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                             {label === 'view/edit/delete' ? (
@@ -135,6 +136,12 @@ const AllDrugs = () => {
                     ))
                 )}
             </div>
+            <Pagination
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+            />
         </Wrapper>
     );
 };
