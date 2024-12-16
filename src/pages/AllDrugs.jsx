@@ -31,13 +31,16 @@ const AllDrugs = () => {
     const { alarmFilterData: alarmFilterData } = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
+        const token = localStorage.getItem('token');
+
         fetch('http://localhost:8000/api/v1/inventory', {
-            method: 'Get',
+            method: 'GET', 
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NWI0ZmE3OWY0MTBmYWQ2OGMwMzNjNCIsInJvbGUiOiJpbnZlbnRvcnlNYW5hZ2VyIiwiaWF0IjoxNzM0Mjg1NDU0LCJleHAiOjE3MzQyODkwNTR9.C95mnASqbVQ-c1GPXXtZXQd0mANz_P2IiKINz44X8oo`,
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
         })
+      
             .then((response) => {
                 if (!response) {
                     throw new error('Network response was not ok');
