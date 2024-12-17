@@ -252,7 +252,7 @@ export const Fieldwrapper = styled.div`
         margin-bottom: 0.5rem;
     }
     input {
-        text-transform: uppercase;
+       
         width: 100%;
         padding: 0.375rem 0.75rem;
         border-radius: var(--border-radius);
