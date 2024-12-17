@@ -122,7 +122,6 @@ export default function AddDrug({ addDrugs }) {
                             <div key={id}>
                                 <StyledLabel htmlFor={id}>
                                     {id.replace(/([A-Z])/g, ' $1').toLowerCase()}{' '}
-                                    {/* This will render the label text */}
                                 </StyledLabel>
                                 {id === 'class' ? (
                                     <select id={id} value={value} onChange={handleMedChange}>
@@ -153,7 +152,7 @@ export default function AddDrug({ addDrugs }) {
                                                     id="quantity"
                                                     value={formData.quantity}
                                                     handleMedChange={handleMedChange}
-                                                    placeholder="QUANTITY"
+                                                    placeholder="Quantity"
                                                 />
                                             </Fieldwrapper>
                                             <Fieldwrapper>
@@ -166,7 +165,7 @@ export default function AddDrug({ addDrugs }) {
                                                         id="threshold"
                                                         value={formData.threshold}
                                                         handleMedChange={handleMedChange}
-                                                        placeholder="MIN AMOUNT"
+                                                        placeholder="Minimum Amount"
                                                     />
                                                 </div>
                                             </Fieldwrapper>
@@ -197,8 +196,8 @@ export default function AddDrug({ addDrugs }) {
 }
 
 AddDrug.propTypes = {
-    addDrugs: PropTypes.func.isRequired, // Required function prop
-    drugs: PropTypes.arrayOf(PropTypes.object), // Optional array prop
+    addDrugs: PropTypes.func.isRequired,
+    drugs: PropTypes.arrayOf(PropTypes.object),
 };
 
 export const Wrapper = styled.section`
@@ -252,7 +251,6 @@ export const Fieldwrapper = styled.div`
         margin-bottom: 0.5rem;
     }
     input {
-        text-transform: uppercase;
         width: 100%;
         padding: 0.375rem 0.75rem;
         border-radius: var(--border-radius);
@@ -279,7 +277,6 @@ export const AddButton = styled.button`
     padding: 1rem 4rem;
     box-shadow: var(--shadow-1);
     transition: var(--transition);
-    text-transform: capitalize;
     display: inline-block;
 `;
 
