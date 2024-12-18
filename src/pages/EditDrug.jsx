@@ -147,7 +147,7 @@ export default function EditDrug() {
                                                 id="quantity"
                                                 value={editData.quantity}
                                                 handleSaveChanges={handleSaveChanges}
-                                                placeholder="QUANTITY"
+                                                placeholder="Quantity"
                                             />
                                         </Fieldwrapper>
                                         <Fieldwrapper>
@@ -160,7 +160,7 @@ export default function EditDrug() {
                                                     id="threshold"
                                                     value={editData.threshold}
                                                     handleInputChange={handleInputChange}
-                                                    placeholder="MIN AMOUNT"
+                                                    placeholder="Min Amount"
                                                 />
                                             </div>
                                         </Fieldwrapper>
@@ -240,7 +240,6 @@ export const Fieldwrapper = styled.div`
         margin-bottom: 0.5rem;
     }
     input {
-        text-transform: uppercase;
         width: 100%;
         padding: 0.375rem 0.75rem;
         border-radius: var(--border-radius);
