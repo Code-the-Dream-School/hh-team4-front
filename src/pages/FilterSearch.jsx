@@ -22,30 +22,25 @@ export default function FilterSearch({ data, onFilter }) {
         // Apply filters
 
         if (formValues.drugName) {
-            console.log('drugname is', formValues.drugName);
             filteredData = filteredData.filter((item) =>
                 item.name.toLowerCase().includes(formValues.drugName.toLowerCase())
             );
         }
         if (formValues.genericName) {
-            console.log('drugname is', formValues.genericName);
             filteredData = filteredData.filter((item) =>
                 item.genericName.toLowerCase().includes(formValues.genericName.toLowerCase())
             );
         }
         if (formValues.class) {
-            console.log('class is', formValues.class);
             filteredData = filteredData.filter((item) =>
                 item.class.toLowerCase().includes(formValues.class.toLowerCase())
             );
         }
 
         if (formValues.lot) {
-            console.log('lot is', formValues.lot);
             filteredData = filteredData.filter((item) => item.lot === formValues.lot);
         }
         if (formValues.ndcNumber) {
-            console.log('ndcNumber is', formValues.ndcNumber);
             filteredData = filteredData.filter((item) => item.ndcNumber === formValues.ndcNumber);
         }
 

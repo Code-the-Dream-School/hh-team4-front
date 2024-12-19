@@ -51,7 +51,6 @@ export const StyleInput = styled.input`
     color: black;
     height: 35px;
 
-    /* Placeholder text color */
     &::placeholder {
         color: black; /* Set placeholder text to black */
     }
