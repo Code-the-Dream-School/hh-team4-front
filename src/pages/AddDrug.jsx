@@ -14,7 +14,6 @@ export default function AddDrug({ addDrugs }) {
         expirationDate: '',
         ndcNumber: '',
         lot: '',
-
     });
 
     const [errorsForm, setErrorsForm] = useState({
@@ -34,12 +33,12 @@ export default function AddDrug({ addDrugs }) {
     };
 
     const drugClasses = [
-        "Analgesic",
-        "Antiinflammatory",
-        "Antibiotic",
-        "Antihypertensive",
-        "Antidiabetic",
-        "Other",
+        'Analgesic',
+        'Antiinflammatory',
+        'Antibiotic',
+        'Antihypertensive',
+        'Antidiabetic',
+        'Other',
     ];
 
     const handleMedChange = ({ target: { id, value } }) => {
@@ -49,39 +48,39 @@ export default function AddDrug({ addDrugs }) {
                 id === 'quantity' || id === 'threshold'
                     ? Math.max(0, parseInt(value, 10)) || ''
                     : id === 'expirationDate'
-                        ? formatDate(value)
-                        : value,
+                      ? formatDate(value)
+                      : value,
         }));
     };
     const validate = (values) => {
         const errors = {};
 
         if (!values.name) {
-            errors.name = "Please provide Medication Name"
+            errors.name = 'Please provide Medication Name';
         }
         if (!values.genericName) {
-            errors.genericName = "Please provide Generic Medication Name"
+            errors.genericName = 'Please provide Generic Medication Name';
         }
         if (!values.quantity) {
-            errors.quantity = "Please provide Quantity must be a non-negative number"
+            errors.quantity = 'Please provide Quantity must be a non-negative number';
         }
         if (!values.threshold) {
-            errors.threshold = "Please provide threshold quantity"
+            errors.threshold = 'Please provide threshold quantity';
         } else if (values.threshold < 10) {
-            errors.threshold = "Threshold must be higher than 10"
+            errors.threshold = 'Threshold must be higher than 10';
         }
         if (!values.expirationDate) {
-            errors.expirationDate = "Please provide Expiration Date"
+            errors.expirationDate = 'Please provide Expiration Date';
         }
         if (!values.ndcNumber) {
-            errors.ndcNumber = "Please provide NDC Number"
+            errors.ndcNumber = 'Please provide NDC Number';
         }
         if (!values.lot) {
-            errors.lot = "Please provide Lot Code"
+            errors.lot = 'Please provide Lot Code';
         }
         return errors;
-    }
-    const isEmpty = (obj) => Object.keys(obj).length === 0
+    };
+    const isEmpty = (obj) => Object.keys(obj).length === 0;
     const handleAddMed = (event) => {
         event.preventDefault();
 
@@ -113,12 +112,12 @@ export default function AddDrug({ addDrugs }) {
                     toast.success('Registration Successful');
                 })
                 .catch((error) => {
-                    console.error(error)
+                    console.error(error);
                 });
         }
 
         if (isEmpty(errors)) {
-            console.log("this are errors", errors)
+            console.log('this are errors', errors);
 
             setFormData({
                 name: '',
@@ -132,7 +131,6 @@ export default function AddDrug({ addDrugs }) {
             });
         }
     };
-
 
     return (
         <Wrapper>
@@ -164,7 +162,6 @@ export default function AddDrug({ addDrugs }) {
                                             ))}
                                         </select>
                                     </div>
-
                                 ) : (
                                     <AddMedicineForm
                                         type={id === 'expirationDate' ? 'date' : 'text'}
@@ -207,7 +204,13 @@ export default function AddDrug({ addDrugs }) {
                                     </AddMedicineForm>
                                 )}
                                 {errorsForm[id] && (
-                                    <p style={{ color: 'red', fontSize: '0.9rem', marginTop: '0.2rem' }}>
+                                    <p
+                                        style={{
+                                            color: 'red',
+                                            fontSize: '0.9rem',
+                                            marginTop: '0.2rem',
+                                        }}
+                                    >
                                         {errorsForm[id]}
                                     </p>
                                 )}
@@ -215,9 +218,7 @@ export default function AddDrug({ addDrugs }) {
                         ))}
                     </div>
 
-                    <AddButton type="submit" >
-                        SAVE DRUG{' '}
-                    </AddButton>
+                    <AddButton type="submit">SAVE DRUG </AddButton>
                 </AddForm>
             </div>
         </Wrapper>
@@ -247,33 +248,33 @@ export const Wrapper = styled.section`
 export const FormField = styled.div``;
 
 export const AddForm = styled.form`
-                width: 90vw;
-                max-width: 400px;
-                border-top: 5px solid var(--color-blue-dark);
-                border-radius: var(--border-radius);
-                box-shadow: var(--shadow-2);
-                padding: 2rem 2.5rem;
-                margin: 3rem auto;
-                `;
+    width: 90vw;
+    max-width: 400px;
+    border-top: 5px solid var(--color-blue-dark);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 3rem auto;
+`;
 
 export const StyledLabel = styled.label`
-                text-transform: lowercase;
-                display: block;
-                font-size: var(--small-text);
-                margin-bottom: 0.75rem;
-                text-transform: capitalize;
-                letter-spacing: var(--letter-spacing);
-                line-height: 1.5;
-                `;
+    text-transform: lowercase;
+    display: block;
+    font-size: var(--small-text);
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+    letter-spacing: var(--letter-spacing);
+    line-height: 1.5;
+`;
 
 export const FormSection = styled.div`
-                width: 90vw;
-                max-width: var(--fixed-width);
-                border-radius: var(--border-radius);
-                box-shadow: var(--shadow-2);
-                padding: 2rem 2.5rem;
-                margin: 3rem auto;
-                `;
+    width: 90vw;
+    max-width: var(--fixed-width);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 3rem auto;
+`;
 
 export const Fieldwrapper = styled.div`
                 .form-row {
@@ -295,42 +296,39 @@ export const Fieldwrapper = styled.div`
                 `;
 
 export const AddButton = styled.button`
-                margin-top: 1rem;
-                background-color: var(--color-blue-dark);
-                width: 100%;
-                cursor: pointer;
-                color: var(--white);
-                border: transparent;
-                border-radius: var(--border-radius);
-                letter-spacing: var(--letter-spacing);
-                padding: 1rem 4rem;
-                box-shadow: var(--shadow-1);
-                transition: var(--transition);
-                display: inline-block;
-                `;
+    margin-top: 1rem;
+    background-color: var(--color-blue-dark);
+    width: 100%;
+    cursor: pointer;
+    color: var(--white);
+    border: transparent;
+    border-radius: var(--border-radius);
+    letter-spacing: var(--letter-spacing);
+    padding: 1rem 4rem;
+    box-shadow: var(--shadow-1);
+    transition: var(--transition);
+    display: inline-block;
+`;
 
 export const Overlay = styled.div`
-                width: 100vw;
-                height: 100vh;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                `;
-
-
-
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+`;
 
 export const DeleteButton = styled.button`
-                background-color: rgb(34, 63, 75);
-                color: white;
-                border-radius: 8px;
-                border: 1px solid transparent;
-                padding: 0.6em 1.2em;
-                padding: 0.2em 3em; /* Smaller padding */
-                font-size: 0.8em; /* Smaller font size */
-                font-family: inherit;
-                cursor: pointer;
-                transition: border-color 0.25s;
-                `;
+    background-color: rgb(34, 63, 75);
+    color: white;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    padding: 0.2em 3em; /* Smaller padding */
+    font-size: 0.8em; /* Smaller font size */
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.25s;
+`;

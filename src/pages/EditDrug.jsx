@@ -14,7 +14,6 @@ export default function EditDrug() {
         expirationDate: '',
         ndcNumber: '',
         lot: '',
-
     });
     const drugClasses = [
         'Antibiotic',
@@ -46,7 +45,7 @@ export default function EditDrug() {
                 delete data.data.createdAt;
                 delete data.data.__v;
                 delete data.data.updatedAt;
-                delete data.data.store
+                delete data.data.store;
                 setEditData(data.data);
             })
             .catch((error) => console.error('Error:', error));
@@ -98,7 +97,6 @@ export default function EditDrug() {
             expirationDate: '',
             ndcNumber: '',
             lot: '',
-
         });
     };
 
@@ -163,11 +161,8 @@ export default function EditDrug() {
                     ))}
 
                     {/* Add other form fields as needed */}
-                    <button type="submit" >
-                        Save Changes
-                    </button>
+                    <button type="submit">Save Changes</button>
                 </form>
-
             </div>
         </Wrapper>
     );
@@ -263,7 +258,6 @@ export const Overlay = styled.div`
     right: 0;
     bottom: 0;
 `;
-
 
 export const DeleteButton = styled.button`
     background-color: rgb(34, 63, 75);
