@@ -4,7 +4,6 @@ import EditMedicineForm from '../components/EditMedicineForm';
 import styled from 'styled-components';
 
 export default function EditDrug() {
-    const [modal, setModal] = useState(false);
     const { id } = useParams(); // Get drug ID from URL
     const [editData, setEditData] = useState({
         name: '',
@@ -15,7 +14,6 @@ export default function EditDrug() {
         expirationDate: '',
         ndcNumber: '',
         lot: '',
-        store: '',
     });
     const drugClasses = [
         'Antibiotic',
@@ -26,10 +24,6 @@ export default function EditDrug() {
         'Antifungal',
         'Other',
     ];
-
-    const toggleModal = () => {
-        setModal(!modal);
-    };
 
     useEffect(() => {
         // Fetch existing drug data to populate form
@@ -46,13 +40,12 @@ export default function EditDrug() {
                 return response.json();
             })
             .then((data) => {
-                console.log('This is data', data);
                 delete data.data.createdBy;
                 delete data.data._id;
                 delete data.data.createdAt;
                 delete data.data.__v;
                 delete data.data.updatedAt;
-
+                delete data.data.store;
                 setEditData(data.data);
             })
             .catch((error) => console.error('Error:', error));
@@ -104,11 +97,8 @@ export default function EditDrug() {
             expirationDate: '',
             ndcNumber: '',
             lot: '',
-            store: '',
         });
     };
-
-    console.log('data', editData);
 
     return (
         <Wrapper>
@@ -171,19 +161,8 @@ export default function EditDrug() {
                     ))}
 
                     {/* Add other form fields as needed */}
-                    <button type="submit" onClick={toggleModal}>
-                        Save Changes
-                    </button>
+                    <button type="submit">Save Changes</button>
                 </form>
-                {modal && (
-                    <ButtonModal>
-                        <Overlay onClick={toggleModal}></Overlay>
-                        <ModalContent>
-                            <p>Your medicine has been successfully updated to the inventory.</p>
-                            <CloseModal onClick={() => setModal(false)}>CLOSE</CloseModal>
-                        </ModalContent>
-                    </ButtonModal>
-                )}
             </div>
         </Wrapper>
     );
@@ -270,18 +249,6 @@ export const AddButton = styled.button`
     display: inline-block;
 `;
 
-export const ButtonModal = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
-
 export const Overlay = styled.div`
     width: 100vw;
     height: 100vh;
@@ -290,24 +257,6 @@ export const Overlay = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-`;
-
-export const ModalContent = styled.div`
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    max-width: 500px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-`;
-
-export const CloseModal = styled.button`
-    background-color: rgb(34, 63, 75);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    float: right;
 `;
 
 export const DeleteButton = styled.button`

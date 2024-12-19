@@ -18,13 +18,11 @@ const AddMedicineForm = ({ id, value, handleMedChange, placeholder }) => {
                       ? 'number'
                       : 'text'
             }
-            //key={id}
             id={id}
-            value={value} // Directly use value passed as a prop
+            value={value}
             onChange={handleMedChange}
             placeholder={placeholder}
             ref={inputRef}
-            required
         />
     );
 };
