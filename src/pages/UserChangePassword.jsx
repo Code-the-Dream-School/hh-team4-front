@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
 import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Install react-icons with: npm install react-icons
 
 const UserChangePassowrd=()=>{
 
@@ -12,11 +13,20 @@ const [password , setPassword] = useState("") ;
 const [confirmPassword , setconfirmPassword] = useState("") ;
 const [error, setError] = useState('');
 const navigate = useNavigate();
+const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
 
 
 const updatePassword= ()=>{
 
-    if (confirmPassword !== password) {
+    if(password === "" || confirmPassword === ""){
+        setError("Passwords not Entered.");
+        return ;
+
+    }else if ( confirmPassword !== password) {
         setError("Passwords don't match.");
         return ;
     } else {
@@ -49,9 +59,13 @@ const updatePassword= ()=>{
             return response.json();
         })
         .then((data) => {
-            setPassword(password);
-            toast.success('Password updated successfully!');
-            navigate("/dashboard/user");
+            if (data.success) {
+                setPassword(password);
+                toast.success('Password updated successfully!');
+                navigate("/dashboard/user");
+            } else {
+                throw new Error(data.message || 'Password update failed.');
+            }
         })
         .catch((error) => {
             console.error('Error updating password:', error.message);
@@ -95,12 +109,42 @@ const handleInputChange=(e)=>{
             <h4>User Update Password</h4>
                 <div className="form-row">
                     <label className='form-label' htmlFor='password'>New Password </label>
-                    <input className="form-input" name="password" onChange={handleInputChange} />
+                    <input className="form-input"  type="password" name="password" onChange={handleInputChange} />
+                    <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    style={{
+                        position: 'absolute',
+                        right: '10px',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: '#555',
+                    }}
+                >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </button>
                 </div>
 
                 <div className="form-row">
                     <label className="form-label" htmlFor="confirmpassword">Confirm Password </label>
-                    <input className="form-input" name="confirmpassword"  onChange={handleInputChange} />
+                    <input className="form-input" type="password" name="confirmpassword"  onChange={handleInputChange} />
+                    <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    style={{
+                        position: 'absolute',
+                        right: '10px',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: '#555',
+                    }}
+                >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </button>
+
+
                 </div>
                 <div>{error && <p style={{ color: 'red' }}>{error}</p>} </div>
                 <div className="btn btn-block">
