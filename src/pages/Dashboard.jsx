@@ -32,9 +32,9 @@ const DashboardContext = createContext();
 
 const Dashboard = () => {
     const data = useLoaderData();
-    console.log(data);
+    console.log(data.data.name);
 
-    const user = { name: 'john' };
+    const user = { name: data.data.name };
     const [showSidebar, setShowSidebar] = useState(false);
     const [showAlarm, setShowAlarm] = useState(false);
 

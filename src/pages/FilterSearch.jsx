@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { MdSearch } from 'react-icons/md';
+import { IoClose } from 'react-icons/io5';
 //import { drugData } from './data.jsx'; // Update path accordingly
 
 export default function FilterSearch({ data, onFilter }) {
@@ -84,89 +86,96 @@ export default function FilterSearch({ data, onFilter }) {
     return (
         <Wrapper>
             <form className="form-container">
+                <IoClose className="close-btn" onClick={HandelCancel} />
+                <h4 className="heading">Search Options:</h4>
                 <div className="grid-container">
                     <div>
-                        <label htmlFor="drugName" className="label">
-                            Drug Name:{' '}
+                        <label htmlFor="drugName" className="form-label">
+                            drug name:{' '}
                         </label>
                         <input
                             name="drugName"
-                            className="input"
+                            className="form-input"
                             value={formValues.drugName}
                             onChange={handleInputChange}
                         />
                     </div>
                     <div>
-                        <label htmlFor="genericName" className="label">
-                            GenericName:{' '}
+                        <label htmlFor="genericName" className="form-label">
+                            generic name:{' '}
                         </label>
                         <input
                             name="genericName"
-                            className="input"
+                            className="form-input"
                             value={formValues.genericName}
                             onChange={handleInputChange}
                         />
                     </div>
                     <div>
-                        <label htmlFor="class" className="label">
+                        <label htmlFor="class" className="form-label">
                             class:{' '}
                         </label>
                         <input
                             name="class"
-                            className="input"
+                            className="form-input"
                             value={formValues.class}
                             onChange={handleInputChange}
                         />
                     </div>
                     <div>
-                        <label htmlFor="lot" className="label">
-                            Lot number:{' '}
+                        <label htmlFor="lot" className="form-label">
+                            lot #:{' '}
                         </label>
                         <input
                             name="lot"
-                            className="input"
+                            className="form-input"
                             value={formValues.lot}
                             onChange={handleInputChange}
                         />
                     </div>
                     <div>
-                        <label htmlFor="ndcNumber" className="label">
-                            NDC number:{' '}
+                        <label htmlFor="ndcNumber" className="form-label">
+                            NDC #:{' '}
                         </label>
                         <input
                             name="ndcNumber"
-                            className="input"
+                            className="form-input"
                             value={formValues.ndcNumber}
                             onChange={handleInputChange}
                         />
                     </div>
                     <div>
-                        <label htmlFor="ExpirationdateFrom" className="label">
-                            Expirationdate From:{' '}
+                        <label htmlFor="ExpirationdateFrom" className="form-label">
+                            expiration date from:{' '}
                         </label>
                         <input
                             name="ExpirationdateFrom"
-                            className="input"
+                            className="form-input"
                             value={formValues.ExpirationdateFrom}
-                            onChange={handleInputChange}
-                            type="date"
-                        />
-                        <label htmlFor="Expirationdateto" className="label">
-                            Expirationdate To:{' '}
-                        </label>
-                        <input
-                            name="Expirationdateto"
-                            className="input"
-                            value={formValues.Expirationdateto}
                             onChange={handleInputChange}
                             type="date"
                         />
                     </div>
                     <div>
-                        <button onClick={HandelSearch} className="button">
-                            Search
+                        <label htmlFor="Expirationdateto" className="form-label date">
+                            expiration date to:{' '}
+                        </label>
+                        <input
+                            name="Expirationdateto"
+                            className="form-input"
+                            value={formValues.Expirationdateto}
+                            onChange={handleInputChange}
+                            type="date"
+                        />
+                    </div>
+                    <div className="buttons-box">
+                        <button onClick={HandelSearch} className="btn btn-block">
+                            <div className="inside-button">
+                                Search
+                                <MdSearch className="search" />
+                            </div>
                         </button>
-                        <button onClick={HandelCancel} className="button">
+                        <button onClick={HandelCancel} className="btn2 btn btn-block">
                             Cancel
                         </button>
                     </div>
@@ -177,45 +186,53 @@ export default function FilterSearch({ data, onFilter }) {
 }
 
 const Wrapper = styled.section`
-
- .form-container {
-        
+    .close-btn {
+        position: relative;
+        float: right;
+        color: var(--color-blue-dark);
+        top: 0px;
+        right: 0px;
+        font-size: 2.5rem;
+    }
+    .heading {
+        font-weight: bold;
+        color: var(--color-blue-dark);
+        padding-top: 1rem;
+        padding-left: 1rem;
+    }
+    .form-input {
+        padding: 0rem 0.25rem;
+    }
+    .form-container {
         align-items: center;
         background-color: #f5f5f5;
         border-radius: 8px;
         background-color: #fff;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        
     }
-.input {
-        text-transform: uppercase;
-        width: 100%;
-        padding: 0.375rem 0.75rem;
-        border-radius: var(--border-radius);
-        border: 2px solid var(--red-300);
-        color: var(--text-color);
-        height: 35px;
-        background-color: white;
-    }
-    .label {
-       text-transform: lowercase;
-        display: block;
-        font-size: var(--small-text);
-        margin-bottom: 0.75rem;
-        text-transform: capitalize;
-        letter-spacing: var(--letter-spacing);
-        line-height: 1.5;
-    }
-     .grid-container {
+    .grid-container {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows:repeat(2, 1fr);
-        gap: 50px;
-        padding: 50px;
+        grid-template-rows: repeat(4, 1fr);
+        padding: 1rem;
     }
-        .button{
-        border: 15px solid ;
-        border-radius: 50%;
-        }
-}
+    .date {
+    }
+    .buttons-box {
+        display: flex;
+        margin-top: 2rem;
+    }
+    .btn2 {
+        margin-left: 0.5rem;
+        background-color: var(--color-alert);
+    }
+    .inside-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .search {
+        padding-left: 0.25rem;
+        font-size: 1.5rem;
+    }
 `;

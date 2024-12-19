@@ -12,21 +12,23 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
     }, []);
 
     return (
-        <StyleInput
-            type={
-                id === 'expirationDate'
-                    ? 'date'
-                    : ['quantity', 'minAmount'].includes(id)
-                      ? 'number'
-                      : 'text'
-            }
-            key={id}
-            id={id}
-            value={value || ''}
-            onChange={handleInputChange}
-            placeholder={placeholder}
-            ref={inputRef}
-        />
+        <>
+            <StyleInput
+                type={
+                    id === 'expirationDate'
+                        ? 'date'
+                        : ['quantity', 'minAmount'].includes(id)
+                          ? 'number'
+                          : 'text'
+                }
+                key={id}
+                id={id}
+                value={value || ''}
+                onChange={handleInputChange}
+                placeholder={placeholder}
+                ref={inputRef}
+            />
+        </>
     );
 };
 
@@ -51,9 +53,11 @@ export const StyleInput = styled.input`
     border: 1px solid var(--grey-300);
     color: black;
     height: 35px;
+    margin-bottom: 15px;
 
     /* Placeholder text color */
     &::placeholder {
         color: black; /* Set placeholder text to black */
+        margin-bottom: 0px;
     }
 `;
