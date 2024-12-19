@@ -8,41 +8,15 @@ const DispenseDrug = () => {
             <form className="form">
                 <Logo />
                 <h4>Dispense Drug</h4>
-                <FormRow
-                    type="text"
-                    name="name"
-                    labelText="name"
-                    defaultValue="ALBUTEROL"
-                    placeholder="NAME"
-                />
+                <FormRow type="text" name="name" labelText="name" placeholder="Name" />
                 <FormRow
                     type="number"
                     name="quantity"
-                    labelText="quantity"
-                    defaultValue="100"
-                    placeholder="DRUG QUANTITY"
+                    labelText="Quantity"
+                    placeholder="Drug Quantity"
                 />
-                <FormRow
-                    type="text"
-                    name="lot #"
-                    labelText="lot #"
-                    defaultValue="123"
-                    placeholder="LOT NUMBER"
-                />
-                <FormRow
-                    type="text"
-                    name="ndc #"
-                    labelText="ndc #"
-                    defaultValue="123456"
-                    placeholder="NDC NUMBER"
-                />
-                <FormRow
-                    type="text"
-                    name="dispense date"
-                    labelText="dispense date"
-                    defaultValue="12/25/2024"
-                    placeholder="DISPENSE DATE"
-                />
+                <FormRow type="text" name="lot #" labelText="lot #" placeholder="LOT Number" />
+                <FormRow type="text" name="ndc #" labelText="ndc #" placeholder="NDC Number" />
                 <button type="submit" className="btn btn-block">
                     Dispense Medication
                 </button>
@@ -75,7 +49,6 @@ const Wrapper = styled.section`
     }
     .form-input {
         background-color: var(--grey-50);
-        text-transform: uppercase;
     }
     h4 {
         text-align: center;

@@ -4,6 +4,8 @@ import AddMedicineForm from '../components/AddMedicineForm';
 import Logo from '../components/Logo';
 import styled from 'styled-components';
 
+//Classes - div= className='form-row', label= className='form-label' input/select= className='form-input'
+
 export default function AddDrug({ addDrugs }) {
     const [modal, setModal] = useState(false);
     const [drugs, setDrugs] = useState([]);
@@ -39,11 +41,11 @@ export default function AddDrug({ addDrugs }) {
     };
 
     const drugClasses = [
-        'Antibiotic',
         'Analgesic',
-        'Antidepressant',
-        'Antiviral',
-        'Antifungal',
+        'Antiinflammatory',
+        'Antibiotic',
+        'Antihypertensive',
+        'Antidiabetic',
         'Other',
     ];
 
@@ -52,10 +54,10 @@ export default function AddDrug({ addDrugs }) {
             ...prev,
             [id]:
                 id === 'quantity' || id === 'threshold'
-                    ? Math.max(0, parseInt(value, 10)) || '' // Ensure non-negative numbers
+                    ? Math.max(0, parseInt(value, 10)) || ''
                     : id === 'expirationDate'
-                      ? formatDate(value) // Format the date
-                      : value, // For other fields, take the value as-is
+                      ? formatDate(value)
+                      : value,
         }));
     };
 
@@ -87,12 +89,10 @@ export default function AddDrug({ addDrugs }) {
                 return response.json(); // Assuming the response is JSON
             })
             .then(() => {
-                // Do something with the data
                 console.log(addDrugs);
                 setModal(true);
             })
             .catch((error) => {
-                // Handle errors
                 console.error('Error:', error);
             });
 
@@ -119,22 +119,31 @@ export default function AddDrug({ addDrugs }) {
                         <Logo />
                         <h4>ADD DRUG</h4>
                         {Object.entries(formData).map(([id, value]) => (
-                            <div key={id}>
+                            <div className="form-row" key={id}>
                                 <StyledLabel htmlFor={id}>
                                     {id.replace(/([A-Z])/g, ' $1').toLowerCase()}{' '}
-                                    {/* This will render the label text */}
                                 </StyledLabel>
                                 {id === 'class' ? (
-                                    <select id={id} value={value} onChange={handleMedChange}>
-                                        <option value="" disabled>
-                                            Select a class
-                                        </option>
-                                        {drugClasses.map((drugClass) => (
-                                            <option key={drugClass} value={drugClass}>
-                                                {drugClass}
+                                    <div className="form-row">
+                                        <select
+                                            className="form-input"
+                                            id={id}
+                                            value={value}
+                                            onChange={handleMedChange}
+                                        >
+                                            <label className="form-label" htmlFor="store">
+                                                Select a Class:
+                                            </label>
+                                            <option value="" disabled>
+                                                Select a class
                                             </option>
-                                        ))}
-                                    </select>
+                                            {drugClasses.map((drugClass) => (
+                                                <option key={drugClass} value={drugClass}>
+                                                    {drugClass}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 ) : (
                                     <AddMedicineForm
                                         type={id === 'expirationDate' ? 'date' : 'text'}
@@ -153,7 +162,7 @@ export default function AddDrug({ addDrugs }) {
                                                     id="quantity"
                                                     value={formData.quantity}
                                                     handleMedChange={handleMedChange}
-                                                    placeholder="QUANTITY"
+                                                    placeholder="quantity"
                                                 />
                                             </Fieldwrapper>
                                             <Fieldwrapper>
@@ -166,7 +175,7 @@ export default function AddDrug({ addDrugs }) {
                                                         id="threshold"
                                                         value={formData.threshold}
                                                         handleMedChange={handleMedChange}
-                                                        placeholder="MIN AMOUNT"
+                                                        placeholder="minimum amount"
                                                     />
                                                 </div>
                                             </Fieldwrapper>
@@ -197,8 +206,8 @@ export default function AddDrug({ addDrugs }) {
 }
 
 AddDrug.propTypes = {
-    addDrugs: PropTypes.func.isRequired, // Required function prop
-    drugs: PropTypes.arrayOf(PropTypes.object), // Optional array prop
+    addDrugs: PropTypes.func.isRequired,
+    drugs: PropTypes.arrayOf(PropTypes.object),
 };
 
 export const Wrapper = styled.section`
@@ -252,7 +261,6 @@ export const Fieldwrapper = styled.div`
         margin-bottom: 0.5rem;
     }
     input {
-        text-transform: uppercase;
         width: 100%;
         padding: 0.375rem 0.75rem;
         border-radius: var(--border-radius);
@@ -279,7 +287,6 @@ export const AddButton = styled.button`
     padding: 1rem 4rem;
     box-shadow: var(--shadow-1);
     transition: var(--transition);
-    text-transform: capitalize;
     display: inline-block;
 `;
 

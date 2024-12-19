@@ -28,16 +28,29 @@ const Register = () => {
             <Form method="post" className="form">
                 <Logo />
                 <h4>Register</h4>
-                <FormRow type="text" name="name" labelText="name" placeholder="NAME" />
-                {/* <FormRow
-                    type="text"
-                    name="lastName"
-                    labelText="lastname"
-                    defaultValue="DefaultLastName"
-                    placeholder="LAST NAME"
-                /> */}
-                <FormRow type="text" name="store" labelText="store" placeholder="store name" />
-                <FormRow type="text" name="role" labelText="role" placeholder="name of role" />
+                <FormRow type="text" name="name" labelText="name" placeholder="name" />
+                <div className="form-row">
+                    <select className="form-input" id="store" name="store" required>
+                        <option value="" disabled>
+                            -- Choose a store --
+                        </option>
+                        <option value="Store 1">Store 1</option>
+                        <option value="Store 2">Store 2</option>
+                    </select>
+                </div>
+                <div className="form-row">
+                    <label className="form-label" htmlFor="role">
+                        select a store roll:
+                    </label>
+                    <select className="form-input" id="role" name="role" required>
+                        <option value="" disabled>
+                            -- Choose a role --
+                        </option>
+                        <option value="admin">admin</option>
+                        <option value="inventoryManager">inventoryManager</option>
+                        <option value="clerk">clerk</option>
+                    </select>
+                </div>
                 <FormRow type="email" name="email" labelText="email" placeholder="email" />
                 <FormRow
                     type="password"
@@ -96,5 +109,7 @@ const Wrapper = styled.section`
         color: var(--primary-500);
         letter-spacing: var(--letter-spacing);
         margin-left: 0.25rem;
+    }
+    .custom-select {
     }
 `;

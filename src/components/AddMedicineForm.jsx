@@ -50,9 +50,7 @@ export const StyleInput = styled.input`
     border: 1px solid var(--grey-300);
     color: black;
     height: 35px;
-    text-transform: uppercase;
 
-    /* Placeholder text color */
     &::placeholder {
         color: black; /* Set placeholder text to black */
     }
