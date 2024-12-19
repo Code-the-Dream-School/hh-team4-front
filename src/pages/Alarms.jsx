@@ -13,13 +13,13 @@ export default function Alarms() {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-    fetch('http://localhost:8000/api/v1/inventory', {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-    })
+        fetch('http://localhost:8000/api/v1/inventory', {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -27,7 +27,7 @@ export default function Alarms() {
                 return response.json();
             })
             .then((data) => {
-                setDrugsData(data.data)
+                setDrugsData(data.data);
                 FilterData(data.data);
             })
             .catch((error) => {
@@ -50,10 +50,9 @@ export default function Alarms() {
             const today = new Date();
             return expirationDate - today < 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
         });
-        console.log(expirationDateData);
         setExpiringData(expirationDateData); //Data for Date checking
     };
- 
+
     return (
         <>
             <h3></h3>
@@ -78,9 +77,7 @@ export default function Alarms() {
                     filterTitle="Expire"
                     alarmFilterData={expiringsoonData}
                     targetPage="dashboard"
-                   
                 />
-                
             </div>
         </>
     );

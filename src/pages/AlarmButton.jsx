@@ -1,11 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './AlarmButton.module.css';
 
-export default function AlarmButton({ message, imagepath, filterTitle, alarmFilterData, targetPage }) {
+export default function AlarmButton({
+    message,
+    imagepath,
+    filterTitle,
+    alarmFilterData,
+    targetPage,
+}) {
     const Navigate = useNavigate();
 
     function loadingPage() {
-        console.log("filterData");
+        console.log('filterData');
         console.log(alarmFilterData);
         Navigate(`/${targetPage}`, { state: { alarmFilterData } });
     }

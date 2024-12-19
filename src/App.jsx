@@ -11,6 +11,7 @@ import {
     Reports,
     Store,
     User,
+    UserChangePassword,
     Error,
     EditDrug,
     HomeLayout,
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
                     {
                         path: 'user',
                         element: <User />,
+                    },
+                    {
+                        path: 'UserChangePassword',
+                        element: <UserChangePassword />,
                     },
                     {
                         path: 'edit/:id', // Dynamic parameter for drug ID

@@ -39,12 +39,10 @@ const AllDrugs = () => {
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
-   
-   
+
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        
         fetch('http://localhost:8000/api/v1/inventory', {
             method: 'GET',
             headers: {
@@ -60,8 +58,8 @@ const AllDrugs = () => {
             })
             .then((data) => {
                 if (alarmFilterData) {
-                    console.log("alarmFilterData")
-                    console.log(alarmFilterData) ;
+                    console.log('alarmFilterData');
+                    console.log(alarmFilterData);
                     setData(alarmFilterData);
                     setFilterData(alarmFilterData);
                 } else {
