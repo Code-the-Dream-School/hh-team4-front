@@ -18,13 +18,11 @@ const AddMedicineForm = ({ id, value, handleMedChange, placeholder }) => {
                       ? 'number'
                       : 'text'
             }
-            //key={id}
             id={id}
-            value={value} // Directly use value passed as a prop
+            value={value}
             onChange={handleMedChange}
             placeholder={placeholder}
             ref={inputRef}
-            required
         />
     );
 };
@@ -50,9 +48,7 @@ export const StyleInput = styled.input`
     border: 1px solid var(--grey-300);
     color: black;
     height: 35px;
-    text-transform: uppercase;
 
-    /* Placeholder text color */
     &::placeholder {
         color: black; /* Set placeholder text to black */
     }

@@ -6,7 +6,6 @@ import { TbBellFilled } from 'react-icons/tb';
 import { BsGraphUp } from 'react-icons/bs';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsPersonFillAdd } from 'react-icons/bs';
-import { FaStoreAlt } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
 
 const links = [
@@ -16,8 +15,7 @@ const links = [
     { text: 'dispense drug', path: 'dispense', icon: <AiFillMinusCircle /> },
     { text: 'alerts', path: 'alerts', icon: <TbBellFilled /> },
     { text: 'reports', path: 'reports', icon: <BsGraphUp /> },
-    { text: 'past orders', path: 'past-orders', icon: <FaArrowCircleLeft /> },
-    { text: 'store', path: 'store', icon: <FaStoreAlt /> },
+    { text: 'past dispensed', path: 'past-orders', icon: <FaArrowCircleLeft /> },
     { text: 'user', path: 'user', icon: <CgProfile /> },
 ];
 
