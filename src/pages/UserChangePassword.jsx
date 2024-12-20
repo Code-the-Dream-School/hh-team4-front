@@ -147,12 +147,10 @@ const handleInputChange=(e)=>{
 
                 </div>
                 <div>{error && <p style={{ color: 'red' }}>{error}</p>} </div>
-                <div className="btn btn-block">
-                    <button onClick={updatePassword}>Update Password</button>
-                 </div>
-               
-                <div className="btn btn-block">
-                    <button onClick={cancelPassword}>Cancel</button>
+                <div   className="buttons"  >
+                    <button  className="btn btn-block" onClick={updatePassword}>Update Password</button>
+              
+                    <button className="btn btn-block" onClick={cancelPassword}>Cancel</button>
                 </div>
             </div>
         </Wrapper>
