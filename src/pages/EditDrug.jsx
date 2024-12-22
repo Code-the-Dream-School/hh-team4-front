@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import EditMedicineForm from '../components/EditMedicineForm';
 import styled from 'styled-components';
+import { FaEdit } from 'react-icons/fa';
 
 export default function EditDrug() {
     const { id } = useParams(); // Get drug ID from URL
@@ -104,23 +105,34 @@ export default function EditDrug() {
         <Wrapper>
             <div>
                 <form onSubmit={handleSaveChanges}>
+                    <div className="icon-heading">
+                        <h2 className="heading">Edit Medication</h2>
+                        <FaEdit className="icon" />
+                    </div>
                     {Object.entries(editData).map(([id, value]) => (
                         <div key={id}>
-                            <StyledLabel htmlFor={id}>
+                            <StyledLabel className="form-label" htmlFor={id}>
                                 {id.replace(/([A-Z])/g, ' $1').toLowerCase()}{' '}
                                 {/* This will render the label text */}
                             </StyledLabel>
                             {id === 'class' ? (
-                                <select id={id} value={value} onChange={handleInputChange}>
-                                    <option value="" disabled>
-                                        Select a class
-                                    </option>
-                                    {drugClasses.map((drugClass) => (
-                                        <option key={drugClass} value={drugClass}>
-                                            {drugClass}
+                                <div className="form-row">
+                                    <select
+                                        className="form-input"
+                                        id={id}
+                                        value={value}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="" disabled>
+                                            Select a class
                                         </option>
-                                    ))}
-                                </select>
+                                        {drugClasses.map((drugClass) => (
+                                            <option key={drugClass} value={drugClass}>
+                                                {drugClass}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             ) : (
                                 <EditMedicineForm
                                     type={id === 'expirationDate' ? 'date' : 'text'}
@@ -161,7 +173,9 @@ export default function EditDrug() {
                     ))}
 
                     {/* Add other form fields as needed */}
-                    <button type="submit">Save Changes</button>
+                    <button className="btn btn-block" type="submit">
+                        Save Changes
+                    </button>
                 </form>
             </div>
         </Wrapper>
@@ -172,6 +186,20 @@ export const Wrapper = styled.section`
     min-height: 100vh;
     display: grid;
     align-items: center;
+    .icon-heading {
+        display: flex;
+    }
+    .heading {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        font-weight: bold;
+        color: var(--color-blue-dark);
+    }
+    .icon {
+        font-size: 2rem;
+        margin-left: 1rem;
+        color: var(--color-green-dark);
+    }
     h4 {
         text-align: center;
         margin-bottom: 1.38rem;
@@ -195,15 +223,7 @@ export const AddForm = styled.form`
     margin: 3rem auto;
 `;
 
-export const StyledLabel = styled.label`
-    text-transform: lowercase;
-    display: block;
-    font-size: var(--small-text);
-    margin-bottom: 0.75rem;
-    text-transform: capitalize;
-    letter-spacing: var(--letter-spacing);
-    line-height: 1.5;
-`;
+export const StyledLabel = styled.label``;
 
 export const FormSection = styled.div`
     width: 90vw;
