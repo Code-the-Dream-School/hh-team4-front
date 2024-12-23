@@ -4,24 +4,21 @@ import { FormRow, Logo } from '../components';
 import customFetch from '../util/customFetch';
 import { toast } from 'react-toastify';
 
-//formData - is an api, gives back an array of arrays, must have name same as database
 export const action = async ({ request }) => {
     const formData = await request.formData();
-    // console.log(formData);
     const data = Object.fromEntries(formData);
     try {
         await customFetch.post('/auth/signup', data);
         toast.success('Registration Successful');
         return redirect('/login');
     } catch (error) {
-        toast.error(error?.response?.data?.msg);
+        toast.error(error?.response?.data?.message);
         return error;
     }
 };
 
 const Register = () => {
     const navigation = useNavigation();
-    console.log(navigation);
     const isSubmitting = navigation.state === 'submitting';
     return (
         <Wrapper>
@@ -29,7 +26,17 @@ const Register = () => {
                 <Logo />
                 <h4>Register</h4>
                 <FormRow type="text" name="name" labelText="name" placeholder="name" />
+                <FormRow type="email" name="email" labelText="email" placeholder="email" />
+                <FormRow
+                    type="password"
+                    name="password"
+                    labelText="password"
+                    placeholder="password"
+                />
                 <div className="form-row">
+                    <label className="form-label" htmlFor="store">
+                        select a store:
+                    </label>
                     <select className="form-input" id="store" name="store" required>
                         <option value="" disabled>
                             -- Choose a store --
@@ -40,7 +47,7 @@ const Register = () => {
                 </div>
                 <div className="form-row">
                     <label className="form-label" htmlFor="role">
-                        select a store roll:
+                        select a role:
                     </label>
                     <select className="form-input" id="role" name="role" required>
                         <option value="" disabled>
@@ -51,13 +58,6 @@ const Register = () => {
                         <option value="clerk">clerk</option>
                     </select>
                 </div>
-                <FormRow type="email" name="email" labelText="email" placeholder="email" />
-                <FormRow
-                    type="password"
-                    name="password"
-                    labelText="password"
-                    placeholder="password"
-                />
                 <button type="submit" className="btn btn-block" disabled={isSubmitting}>
                     {isSubmitting ? 'submitting...' : 'submit'}
                 </button>
