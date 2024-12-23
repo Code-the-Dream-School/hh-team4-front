@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import {
     AdminAddUser,
-    Alerts,
     Dashboard,
     DispenseDrug,
     Landing,

@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { FormRow, Logo } from '../components';
+import { Logo } from '../components';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const User = () => {

@@ -2,12 +2,10 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { FormRow, Logo } from '../components';
 
 import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
-import { FaEye, FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
-import { FaFilter } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
 
 const UserManagement = () => {
     const [allUserData, setAllUserData] = useState([]);
@@ -75,8 +73,9 @@ const UserManagement = () => {
                 }
                 return response.json();
             })
-            .then((data) => {
+            .then(() => {
                 setAllUserData((prevData) => prevData.filter((user) => user._id !== userDelId));
+                toast.success('Data Deleted successfully!');
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -109,9 +108,6 @@ const UserManagement = () => {
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                                 {label === 'view/edit/delete' ? (
                                     <div className="actions">
-                                        {/* <button className="action-button view">
-                                        <FaEye />
-                                    </button> */}
                                         <button
                                             className="action-button edit"
                                             onClick={() => handelEditUser(user._id)}

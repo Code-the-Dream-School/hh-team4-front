@@ -8,7 +8,7 @@ export default function Alarms() {
     const [lowStockData, setLowStockData] = useState([]);
     const [noStockData, setnoStockData] = useState([]);
     const [expiringsoonData, setExpiringData] = useState([]);
-    const [drugsData, setDrugsData] = useState([]);
+    // const [drugsData, setDrugsData] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -27,7 +27,7 @@ export default function Alarms() {
                 return response.json();
             })
             .then((data) => {
-                setDrugsData(data.data);
+                // setDrugsData(data.data);
                 FilterData(data.data);
             })
             .catch((error) => {

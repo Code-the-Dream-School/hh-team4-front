@@ -1,10 +1,10 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { FormRow, Logo } from '../components';
+import { Logo } from '../components';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Install react-icons with: npm install react-icons
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const UserChangePassowrd = () => {
     const [password, setPassword] = useState('');
@@ -105,52 +105,38 @@ const UserChangePassowrd = () => {
                         <label className="form-label" htmlFor="password">
                             New Password{' '}
                         </label>
-                        <input
-                            className="form-input"
-                            type="password"
-                            name="password"
-                            onChange={handleInputChange}
-                        />
-                        <button
-                            type="button"
-                            onClick={togglePasswordVisibility}
-                            style={{
-                                position: 'absolute',
-                                right: '10px',
-                                background: 'none',
-                                border: 'none',
-                                cursor: 'pointer',
-                                color: '#555',
-                            }}
-                        >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
+                        <div className="button-row">
+                            <input
+                                className="form-input"
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                onChange={handleInputChange}
+                            />
+                            <button
+                                type="button"
+                                className="button-row"
+                                onClick={togglePasswordVisibility}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="form-row">
                         <label className="form-label" htmlFor="confirmpassword">
                             Confirm Password{' '}
                         </label>
-                        <input
-                            className="form-input"
-                            type="password"
-                            name="confirmpassword"
-                            onChange={handleInputChange}
-                        />
-                        <button
-                            type="button"
-                            onClick={togglePasswordVisibility}
-                            style={{
-                                position: 'absolute',
-                                right: '10px',
-                                background: 'none',
-                                border: 'none',
-                                cursor: 'pointer',
-                                color: '#555',
-                            }}
-                        >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
+                        <div className="button-row">
+                            <input
+                                className="form-input"
+                                type={showPassword ? 'text' : 'password'}
+                                name="confirmpassword"
+                                onChange={handleInputChange}
+                            />
+                            <button type="button" onClick={togglePasswordVisibility}>
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </div>
                     </div>
                     <div>{error && <p style={{ color: 'red' }}>{error}</p>} </div>
                     <div className="buttons">
@@ -189,13 +175,18 @@ const Wrapper = styled.section`
     .form-input {
         background-color: var(--grey-50);
         background-color: var(--grey-50);
-        width: 100%;
+        width: 95%;
         padding: 0.375rem 0.75rem;
         border-radius: var(--border-radius);
         border: 1px solid var(--grey-300);
         color: var(--text-color);
         height: 35px;
         background-color: white;
+    }
+    .button-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     h4 {
         text-align: center;
