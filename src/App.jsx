@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import {
     AdminAddUser,
-    Alerts,
     Dashboard,
     DispenseDrug,
     Landing,
@@ -11,6 +10,8 @@ import {
     Reports,
     Store,
     User,
+    UserChangePassword,
+    UserManagement,
     Error,
     EditDrug,
     HomeLayout,
@@ -78,6 +79,18 @@ const router = createBrowserRouter([
                         element: <User />,
                     },
                     {
+                        path: 'user/:id',
+                        element: <User />,
+                    },
+                    {
+                        path: 'UserChangePassword',
+                        element: <UserChangePassword />,
+                    },
+                    {
+                        path: 'UserManagement',
+                        element: <UserManagement />,
+                    },
+                    {
                         path: 'edit/:id', // Dynamic parameter for drug ID
                         element: <EditDrug />,
                     },
@@ -92,10 +105,6 @@ const router = createBrowserRouter([
                     {
                         path: 'medication',
                         element: <Medication />,
-                    },
-                    {
-                        path: 'alerts',
-                        element: <Alerts />,
                     },
                 ],
             },
