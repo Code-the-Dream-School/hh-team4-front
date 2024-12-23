@@ -107,7 +107,6 @@ const router = createBrowserRouter([
                         path: 'medication',
                         element: <Medication />,
                     },
-                   
                 ],
             },
         ],

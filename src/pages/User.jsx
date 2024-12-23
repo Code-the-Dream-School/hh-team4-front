@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
-import { useNavigate ,useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const User = () => {
     const [userData, setUserData] = useState({
@@ -19,13 +19,11 @@ const User = () => {
     const token = localStorage.getItem('token');
     const currentUser = localStorage.getItem('userId');
     const navigate = useNavigate();
-    const { id } = useParams(); 
+    const { id } = useParams();
 
     const userId = id ? id : currentUser;
 
     useEffect(() => {
-       
-
         fetch(`http://localhost:8000/api/v1/users/${userId}`, {
             method: 'GET',
             headers: {
@@ -79,87 +77,102 @@ const User = () => {
             })
             .then((data) => {
                 setUserData(data.data);
-              
+
                 toast.success('User profile updated successfully!');
-                if(id){navigate(`/dashboard/UserManagement`);}
+                if (id) {
+                    navigate(`/dashboard/UserManagement`);
+                }
             })
             .catch((error) => {
                 console.error('Error updating user profile:', error.message);
             });
-    
-       };
-       
-    const handelPasswordChange=()=>{
+    };
+
+    const handelPasswordChange = () => {
         navigate(`/dashboard/UserChangePassword`);
-    }
-    
+    };
 
     return (
         <>
-        <Wrapper>
-            <div className="form">
-            <Logo />
-                <h4>User Profile</h4>
-                <div className="form-row">
-                    <label className="form-label" htmlFor="name">Name:</label>
-                    <input className="form-input" name="name" value={userData.name} onChange={handleInputChange} />
-                </div>
-                <div className="form-row">
-                    <label className="form-label">Email:</label>
-                    <input className="form-input" name="email" value={userData.email} onChange={handleInputChange} />
-                </div>
-                <div className="form-row">
-                    <label className="form-label">Roll: </label>
-                    <select
-                        className="form-input"
-                        id="role"
-                        name="role"
-                        value={userData.role}
-                        onChange={handleInputChange}
-                        disabled ={!id}
-                    >
-                        <option value="" disabled>
-                            Select a role
-                        </option>
-                        {role.map((r) => (
-                            <option key={r} value={r}>
-                                {r}
+            <Wrapper>
+                <div className="form">
+                    <Logo />
+                    <h4>User Profile</h4>
+                    <div className="form-row">
+                        <label className="form-label" htmlFor="name">
+                            Name:
+                        </label>
+                        <input
+                            className="form-input"
+                            name="name"
+                            value={userData.name}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className="form-row">
+                        <label className="form-label">Email:</label>
+                        <input
+                            className="form-input"
+                            name="email"
+                            value={userData.email}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className="form-row">
+                        <label className="form-label">Roll: </label>
+                        <select
+                            className="form-input"
+                            id="role"
+                            name="role"
+                            value={userData.role}
+                            onChange={handleInputChange}
+                            disabled={!id}
+                        >
+                            <option value="" disabled>
+                                Select a role
                             </option>
-                        ))}
-                    </select>
-                    
-                </div>
-                <div className="form-row">
-                    <label className="form-label">Store:</label>
-                    <select
-                        name="store"
-                        className="form-input"
-                        value={userData.store}
-                        onChange={handleInputChange}
-                        disabled ={!id}
-                    >
-                        <option value="" disabled>
-                            Select a Store
-                        </option>
-                        {store.map((s) => (
-                            <option key={s} value={s}>
-                                {s}
+                            {role.map((r) => (
+                                <option key={r} value={r}>
+                                    {r}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="form-row">
+                        <label className="form-label">Store:</label>
+                        <select
+                            name="store"
+                            className="form-input"
+                            value={userData.store}
+                            onChange={handleInputChange}
+                            disabled={!id}
+                        >
+                            <option value="" disabled>
+                                Select a Store
                             </option>
-                        ))}
-                    </select>
-                </div >
-                <div className="buttons" >
-                    <button className="btn btn-block" onClick={updateUserInfo}> Save Changes </button>
-                    <button className="btn btn-block" onClick={handelPasswordChange}>Change Password</button>
+                            {store.map((s) => (
+                                <option key={s} value={s}>
+                                    {s}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="buttons">
+                        <button className="btn btn-block" onClick={updateUserInfo}>
+                            {' '}
+                            Save Changes{' '}
+                        </button>
+                        <button className="btn btn-block" onClick={handelPasswordChange}>
+                            Change Password
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </Wrapper>
+            </Wrapper>
         </>
     );
 };
 
 export default User;
-
 
 const Wrapper = styled.section`
     min-height: 100vh;
@@ -239,7 +252,7 @@ const Wrapper = styled.section`
 //     margin: 3rem auto;
 // `;
 
- export const Fieldwrapper = styled.div`
+export const Fieldwrapper = styled.div`
     .form-row {
         margin-bottom: 0.5rem;
     }
@@ -256,7 +269,7 @@ const Wrapper = styled.section`
         font-size: 0.9rem;
         text-transform: lowercase;
     }
- `;
+`;
 
 // export const AddButton = styled.button`
 //     margin-top: 1rem;

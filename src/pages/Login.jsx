@@ -43,7 +43,7 @@ export const action = async ({ request }) => {
         return redirect('/dashboard');
     } catch (error) {
         // Handle errors
-        console.log(error) ;
+        console.log(error);
         toast.error(error?.response?.data?.msg || 'Something went wrong');
     }
 
