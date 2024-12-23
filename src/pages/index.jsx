@@ -9,6 +9,7 @@ export { default as Reports } from './Reports';
 export { default as Store } from './Store';
 export { default as User } from './User';
 export { default as UserChangePassword } from './UserChangePassword';
+export {default as UserManagement} from './UserManagement'
 export { default as Error } from './Error';
 export { default as EditDrug } from './EditDrug';
 export { default as HomeLayout } from './HomeLayout';
