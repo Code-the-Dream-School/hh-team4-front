@@ -27,7 +27,6 @@ const AllDrugs = () => {
     const editNavigate = useNavigate();
 
     const handleEdit = (drugId) => {
-        console.log('Navigate to edit', drugId);
         editNavigate(`/dashboard/edit/${drugId}`); // Navigate to the Edit Page with the drug ID
     };
 
@@ -58,8 +57,6 @@ const AllDrugs = () => {
             })
             .then((data) => {
                 if (alarmFilterData) {
-                    console.log('alarmFilterData');
-                    console.log(alarmFilterData);
                     setData(alarmFilterData);
                     setFilterData(alarmFilterData);
                 } else {

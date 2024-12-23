@@ -6,7 +6,7 @@ import { TbBellFilled } from 'react-icons/tb';
 import { BsGraphUp } from 'react-icons/bs';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsPersonFillAdd } from 'react-icons/bs';
-import { CgProfile } from 'react-icons/cg';
+import { CgProfile, CgUserList } from 'react-icons/cg';
 
 const links = [
     { text: 'dashboard', path: '.', icon: <MdSpaceDashboard /> },
@@ -16,7 +16,8 @@ const links = [
     { text: 'alerts', path: 'alerts', icon: <TbBellFilled /> },
     { text: 'reports', path: 'reports', icon: <BsGraphUp /> },
     { text: 'past dispensed', path: 'past-orders', icon: <FaArrowCircleLeft /> },
-    { text: 'user', path: 'user', icon: <CgProfile /> },
+    { text: 'user profile', path: 'user', icon: <CgProfile /> },
+    { text: 'users management', path: 'userManagement', icon: <CgUserList /> },
 ];
 
 export default links;

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useParams} from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Install react-icons with: npm install react-icons
 
 const UserChangePassowrd=()=>{
@@ -14,6 +14,7 @@ const [confirmPassword , setconfirmPassword] = useState("") ;
 const [error, setError] = useState('');
 const navigate = useNavigate();
 const [showPassword, setShowPassword] = useState(false);
+const { id } = useParams(); // Get drug ID from URL
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -32,8 +33,7 @@ const updatePassword= ()=>{
     } else {
         setError('');
     } 
-    console.log(`eror is${error}`);
-
+ 
     if (error !== ''){
         //setError("Password does'nt match!");
        
@@ -41,8 +41,13 @@ const updatePassword= ()=>{
     }
     
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    
+    const currentUser = localStorage.getItem('userId');
+    let userId="" ;
+    if (id===''){
+        userId = id ;
+    }else{
+        userId=currentUser ;
+    }
 
     fetch(`http://localhost:8000/api/v1/users/${userId}`, {
         method: 'PUT',

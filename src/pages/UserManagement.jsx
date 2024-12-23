@@ -6,23 +6,27 @@ import { FormRow, Logo } from '../components';
 
 import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
-import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEye, FaEdit, FaTrash ,FaUserPlus } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
 
 const UserManagement=()=>{
 
 const [allUserData , setAllUserData] = useState([]) ;
+const [currentPage, setCurrentPage] = useState(1);
+const navigate = useNavigate();
 
     const columnLabels = [
-        'Name',
-        'Email',
-        'Roll',
-        'Inventory',
-        'CreationDate',
-        'UpdateDate',
+        'name',
+        'email',
+        'role',
+        'store',
+        //'creationAt',
+        //'updatedAt',
         'view/edit/delete',
     ];
 
+const token= localStorage.getItem('token') ;
+const currentUserId=localStorage.getItem('userId') ;
 
 useEffect( ()=>{
     fetch('http://localhost:8000/api/v1/users', {
@@ -49,24 +53,60 @@ useEffect( ()=>{
 },[] );
 
     const itemsPerPage = 10;
-    const totalItems = filterData.length;
+    const totalItems = allUserData.length;
 
     const getCurrentItems = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        return filterData.slice(startIndex, endIndex);
+        return allUserData.slice(startIndex, endIndex);
     };
 
 
 const handelEditUser=(userId)=>{
 
+  navigate(`/dashboard/User/${userId}`) ;
+
+}
+const handelDeleteUser=(userDelId)=>{
+    
+    fetch(`http://localhost:8000/api/v1/users/${userDelId}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            setAllUserData(prevData => prevData.filter(user => user._id !== userDelId));
+           
+        })
+        .catch((error) => {
+            console.error('Error fetching data:', error);
+        });
+
+}
+const handelCreateUser=()=>{
+    navigate('/register') ;
 }
 
 return (
 <>
 
-
-<div className="grid-container">
+<Wrapper>
+            <div className="top-container">
+                <button  className='action-button' name="createUser" onClick={handelCreateUser}>
+                <FaUserPlus /><span className="description">Register New User</span>
+                </button>
+                
+            </div>
+           
+            <div className="grid-container">
                 {/* Render column headers */}
                 {columnLabels.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
@@ -74,31 +114,36 @@ return (
                     </div>
                 ))}
                 {/* Render rows dynamically */}
-                {allUserData.map((user, rowIndex) =>
+                {getCurrentItems().map((user, rowIndex) =>
                     columnLabels.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                             {label === 'view/edit/delete' ? (
                                 <div className="actions">
-                                    <button className="action-button view">
+                                    {/* <button className="action-button view">
                                         <FaEye />
-                                    </button>
+                                    </button> */}
                                     <button
                                         className="action-button edit"
                                         onClick={() => handelEditUser(user._id)}
                                     >
                                         <FaEdit />
                                     </button>
-                                    <button className="action-button delete">
+                                    <button className={user._id!==currentUserId ? "action-button delete" :"action-button.delete.disabeld"}
+                                        onClick={()=>handelDeleteUser(user._id)}
+                                        disabled={user._id===currentUserId ? true :false}
+                                    >
                                         <FaTrash />
                                     </button>
                                 </div>
                             ) : (
-                                user[label] || ''
+                                user[label] 
                             )}
                         </div>
                     ))
                 )}
             </div>
+         
+    </Wrapper>
             <Pagination
                 totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
@@ -113,76 +158,15 @@ return (
 export default UserManagement;
 
 const Wrapper = styled.section`
-    .centered-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 10vh;
-        background-color: #f5f5f5;
-        border-radius: 8px;
-        background-color: #fff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .left-filter-box {
-        margin-right: 3rem;
-    }
-    .bell-icon-box {
-        align-self: self-start;
-        padding-top: 2px;
-    }
-    .filter-search-box {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .filter-button {
-        border: 15px solid var(--color-green-light);
-        border-radius: 50%;
-    }
-    .filter-icon {
-        background: var(--color-green-light);
-        color: white;
-        font-size: 1.5rem;
-    }
-
-    .bell-button {
-        border: 15px solid var(--color-alert);
-        border-radius: 50%;
-    }
-    .bell-icon {
-        font-size: 1.5rem;
-        background-color: var(--color-alert);
-        color: white;
-    }
-    .search-icon {
-        font-size: 2rem;
-        padding-right: 1rem;
-        font-weight: bold;
-        color: var(--color-blue-dark);
-    }
-    .search-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
-
-    .search-input {
-        width: 400px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-
-    .search-input:focus {
-        outline: none;
-        border-color: var(--color-blue-dark);
-        box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
-    }
+    .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+       }
+       
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(8, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 10px;
         padding: 10px;
     }
@@ -203,13 +187,7 @@ const Wrapper = styled.section`
         background-color: var(--color-green-med);
         color: var(--color-blue-dark);
     }
-    .advanced-search {
-        align-items: center;
-        justify-content: center;
-        background-color: #f5f5f5;
-        border-radius: 8px;
-        box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
-    }
+   
     .actions {
         display: flex;
         justify-content: space-around;
@@ -217,6 +195,8 @@ const Wrapper = styled.section`
     }
 
     .action-button {
+        display: flex;
+        justify-content:flex-start;
         border: none;
         background: none;
         cursor: pointer;
@@ -239,6 +219,9 @@ const Wrapper = styled.section`
     .action-button.delete {
         color: var(--color-alert);
     }
+    .action-button.delete.disabeld {
+        color: var(--color-gray);
+    }    
     .grid-item {
         padding: 20px;
         border: 1px solid #ccc;
@@ -248,5 +231,10 @@ const Wrapper = styled.section`
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;
+    }
+ 
+
+    .description {
+        margin: 0;
     }
 `;

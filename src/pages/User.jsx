@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useParams} from 'react-router-dom';
 
 const User = () => {
     const [userData, setUserData] = useState({
@@ -17,12 +17,14 @@ const User = () => {
     const store = ['Store 1', 'Store 2'];
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
+    const currentUser = localStorage.getItem('userId');
     const navigate = useNavigate();
+    const { id } = useParams(); 
 
+    const userId = id ? id : currentUser;
 
     useEffect(() => {
-        //const token = localStorage.getItem('token');
+       
 
         fetch(`http://localhost:8000/api/v1/users/${userId}`, {
             method: 'GET',
@@ -39,7 +41,6 @@ const User = () => {
             })
             .then((data) => {
                 setUserData(data.data);
-                console.log(data.data);
                 setLoading(false);
             })
             .catch((error) => {
@@ -71,13 +72,16 @@ const User = () => {
         })
             .then((response) => {
                 if (!response.ok) {
+                    console.log(response);
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then((data) => {
                 setUserData(data.data);
+              
                 toast.success('User profile updated successfully!');
+                if(id){navigate(`/dashboard/UserManagement`);}
             })
             .catch((error) => {
                 console.error('Error updating user profile:', error.message);
@@ -112,7 +116,7 @@ const User = () => {
                         name="role"
                         value={userData.role}
                         onChange={handleInputChange}
-                        disabled
+                        disabled ={!id}
                     >
                         <option value="" disabled>
                             Select a role
@@ -132,7 +136,7 @@ const User = () => {
                         className="form-input"
                         value={userData.store}
                         onChange={handleInputChange}
-                        disabled
+                        disabled ={!id}
                     >
                         <option value="" disabled>
                             Select a Store

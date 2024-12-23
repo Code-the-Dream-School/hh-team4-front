@@ -80,6 +80,10 @@ const router = createBrowserRouter([
                         element: <User />,
                     },
                     {
+                        path: 'user/:id',
+                        element: <User />,
+                    },
+                    {
                         path: 'UserChangePassword',
                         element: <UserChangePassword />,
                     },
@@ -103,10 +107,7 @@ const router = createBrowserRouter([
                         path: 'medication',
                         element: <Medication />,
                     },
-                    {
-                        path: 'alerts',
-                        element: <Alerts />,
-                    },
+                   
                 ],
             },
         ],
