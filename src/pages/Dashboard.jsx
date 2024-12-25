@@ -1,5 +1,5 @@
-import { useState, createContext, useContext } from 'react';
-import { Outlet, useLoaderData } from 'react-router-dom';
+import { useState, createContext, useContext, redirect } from 'react';
+import { Outlet, useLoaderData, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { BigSidebar, Navbar, SmallSidebar } from '../components';
 import customFetch from '../util/customFetch';
@@ -7,34 +7,36 @@ import Alarms from './Alarms';
 
 export const loader = async () => {
     try {
-        // Retrieve the token from localStorage
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
-
-        // Make a GET request to the endpoint
         const response = await customFetch.get(`/users/${userId}`, {
             headers: {
-                Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+                Authorization: `Bearer ${token}`,
             },
         });
-
-        // Handle the response
-        console.log('User Details:', response.data);
-        return response.data; // Return the user details
+        console.log(response.data);
+        return response.data;
     } catch (error) {
-        // Handle errors
         console.error('Error fetching user details:', error?.response?.data || error.message);
-        throw error; // Re-throw the error for further handling if necessary
+        return redirect('/');
     }
 };
 
 const DashboardContext = createContext();
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     const data = useLoaderData();
-    console.log(data.data.name);
 
-    const user = { name: data.data.name };
+    const user = data.data;
+    const userName = data.data.name;
+    const userId = data.data._id;
+    const role = data.data.role;
+    const store = data.data.store;
+    // console.log(`username : ${userName}`);
+    // console.log(`user id : ${userId}`);
+    // console.log(`user role : ${role}`);
+    // console.log(`user store : ${store}`);
     const [showSidebar, setShowSidebar] = useState(false);
     const [showAlarm, setShowAlarm] = useState(false);
 
@@ -48,6 +50,8 @@ const Dashboard = () => {
 
     const logoutUser = async () => {
         console.log('logout user');
+        localStorage.clear();
+        navigate('/');
     };
 
     return (
@@ -59,6 +63,10 @@ const Dashboard = () => {
                 logoutUser,
                 toggleAlarm,
                 showAlarm,
+                role,
+                store,
+                userId,
+                userName,
             }}
         >
             <Wrapper>

@@ -8,7 +8,7 @@ import { FaArrowCircleLeft } from 'react-icons/fa';
 import { BsPersonFillAdd } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 
-const links = [
+const linksAdmin = [
     { text: 'dashboard', path: '.', icon: <MdSpaceDashboard /> },
     { text: 'add employee', path: 'adduser', icon: <BsPersonFillAdd /> },
     { text: 'add product', path: 'add', icon: <IoAddCircle /> },
@@ -19,4 +19,21 @@ const links = [
     { text: 'user', path: 'user', icon: <CgProfile /> },
 ];
 
-export default links;
+const linksInventoryManager = [
+    { text: 'dashboard', path: '.', icon: <MdSpaceDashboard /> },
+    { text: 'add product', path: 'add', icon: <IoAddCircle /> },
+    { text: 'dispense drug', path: 'dispense', icon: <AiFillMinusCircle /> },
+    { text: 'alerts', path: 'alerts', icon: <TbBellFilled /> },
+    { text: 'past dispensed', path: 'past-orders', icon: <FaArrowCircleLeft /> },
+    { text: 'user', path: 'user', icon: <CgProfile /> },
+];
+
+const linksClerk = [
+    { text: 'dashboard', path: '.', icon: <MdSpaceDashboard /> },
+    { text: 'dispense drug', path: 'dispense', icon: <AiFillMinusCircle /> },
+    { text: 'alerts', path: 'alerts', icon: <TbBellFilled /> },
+    { text: 'past dispensed', path: 'past-orders', icon: <FaArrowCircleLeft /> },
+    { text: 'user', path: 'user', icon: <CgProfile /> },
+];
+
+export { linksAdmin, linksInventoryManager, linksClerk };
