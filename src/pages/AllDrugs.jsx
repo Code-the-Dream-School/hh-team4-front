@@ -27,7 +27,6 @@ const AllDrugs = () => {
     const editNavigate = useNavigate();
 
     const handleEdit = (drugId) => {
-        console.log('Navigate to edit', drugId);
         editNavigate(`/dashboard/edit/${drugId}`); // Navigate to the Edit Page with the drug ID
     };
 
@@ -39,6 +38,7 @@ const AllDrugs = () => {
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
+
     useEffect(() => {
         const token = localStorage.getItem('token');
 
@@ -51,12 +51,13 @@ const AllDrugs = () => {
         })
             .then((response) => {
                 if (!response) {
-                    throw new error('Network response was not ok');
+                    throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then((data) => {
                 if (alarmFilterData) {
+                    setData(alarmFilterData);
                     setFilterData(alarmFilterData);
                 } else {
                     setData(data.data);

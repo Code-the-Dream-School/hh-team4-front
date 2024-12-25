@@ -8,9 +8,18 @@ export default function Alarms() {
     const [lowStockData, setLowStockData] = useState([]);
     const [noStockData, setnoStockData] = useState([]);
     const [expiringsoonData, setExpiringData] = useState([]);
+    // const [drugsData, setDrugsData] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/inventory')
+        const token = localStorage.getItem('token');
+
+        fetch('http://localhost:8000/api/v1/inventory', {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -18,6 +27,7 @@ export default function Alarms() {
                 return response.json();
             })
             .then((data) => {
+                // setDrugsData(data.data);
                 FilterData(data.data);
             })
             .catch((error) => {
@@ -40,7 +50,6 @@ export default function Alarms() {
             const today = new Date();
             return expirationDate - today < 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
         });
-
         setExpiringData(expirationDateData); //Data for Date checking
     };
 
@@ -52,21 +61,21 @@ export default function Alarms() {
                     message={`Low Stock on ${lowStockData.length} products`}
                     imagepath="../images/low-stock.png"
                     filterTitle="LowStock"
-                    filterData={lowStockData}
+                    alarmFilterData={lowStockData}
                     targetPage="dashboard"
                 />
                 <Alarmbutton
                     message={`No Stock on ${noStockData.length} products`}
                     imagepath="../images/out-of-stock.png"
                     filterTitle="No Stock"
-                    filterData={noStockData}
+                    alarmFilterData={noStockData}
                     targetPage="dashboard"
                 />
                 <Alarmbutton
                     message={`Expiration soon on ${expiringsoonData.length} products`}
                     imagepath="../images/expire-soon.png"
                     filterTitle="Expire"
-                    filterData={expiringsoonData}
+                    alarmFilterData={expiringsoonData}
                     targetPage="dashboard"
                 />
             </div>

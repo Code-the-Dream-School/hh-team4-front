@@ -21,7 +21,8 @@ export const action = async ({ request }) => {
         toast.success('Login Successful');
         return redirect('/dashboard');
     } catch (error) {
-        toast.error(error?.response?.data?.message || 'Something went wrong');
+        console.log(error);
+        toast.error(error?.response?.data?.msg || 'Something went wrong');
     }
     return null;
 };
