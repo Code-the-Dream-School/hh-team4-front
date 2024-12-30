@@ -6,29 +6,41 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
     const inputRef = useRef();
 
     useEffect(() => {
-        if (inputRef.current) {
+        if (id === 'name' && inputRef.current) {
             inputRef.current.focus();
         }
-    }, []);
+    }, [id]);
+
+    const formatForDatetimeLocal = (isoDate) => {
+        if (!isoDate) return '';
+        const date = new Date(isoDate);
+        if (isNaN(date.getTime())) {
+            console.warn(`Invalid ISO date provided: ${isoDate}`);
+            return '';
+        }
+        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return offsetDate.toISOString().slice(0, 16);
+    };
+
+    // Format value for datetime-local if it's for expirationDate
+    const formattedValue = id === 'expirationDate' ? formatForDatetimeLocal(value) : value;
 
     return (
-        <>
-            <StyleInput
-                type={
-                    id === 'expirationDate'
-                        ? 'date'
-                        : ['quantity', 'minAmount'].includes(id)
-                          ? 'number'
-                          : 'text'
-                }
-                key={id}
-                id={id}
-                value={value || ''}
-                onChange={handleInputChange}
-                placeholder={placeholder}
-                ref={inputRef}
-            />
-        </>
+        <StyleInput
+            type={
+                id === 'expirationDate'
+                    ? 'datetime-local'
+                    : ['quantity', 'minAmount'].includes(id)
+                      ? 'number'
+                      : 'text'
+            }
+            key={id}
+            id={id}
+            value={formattedValue || ''} // Ensure empty string for falsy values
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            ref={inputRef}
+        />
     );
 };
 
@@ -53,11 +65,9 @@ export const StyleInput = styled.input`
     border: 1px solid var(--grey-300);
     color: black;
     height: 35px;
-    margin-bottom: 15px;
 
     /* Placeholder text color */
     &::placeholder {
         color: black; /* Set placeholder text to black */
-        margin-bottom: 0px;
     }
 `;

@@ -13,7 +13,7 @@ const AddMedicineForm = ({ id, value, handleMedChange, placeholder }) => {
         <StyleInput
             type={
                 id === 'expirationDate'
-                    ? 'date'
+                    ? 'datetime-local'
                     : ['quantity', 'minAmount'].includes(id)
                       ? 'number'
                       : 'text'

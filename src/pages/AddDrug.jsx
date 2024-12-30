@@ -27,9 +27,15 @@ export default function AddDrug({ addDrugs }) {
         lot: '',
     });
 
+    const formatForDatetimeLocal = (isoDate) => {
+        const date = new Date(isoDate);
+        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return offsetDate.toISOString().slice(0, 16);
+    };
+
     const formatDate = (date) => {
         if (!date) return '';
-        return new Date(date).toISOString().split('T')[0];
+        return formatForDatetimeLocal(date);
     };
 
     const drugClasses = [
@@ -42,6 +48,82 @@ export default function AddDrug({ addDrugs }) {
     ];
 
     const handleMedChange = ({ target: { id, value } }) => {
+        if (id === 'name') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    name: 'Please provide Medication Name',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'genericName') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    genericName: 'Please provide Generic Medication Name',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'quantity') {
+            if (parseInt(value) < 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    quantity: 'Please provide Quantity must be a non-negative number',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'threshold') {
+            if (parseInt(value) < 10) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    threshold: 'Please provide threshold quantity greater than 10',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'expirationDate') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    expirationDate: 'Please provide Expiration Date',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'ndcNumber') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    ndcNumber: 'Please provide NDC Number',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'lot') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    lot: 'Please provide LOT Number',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
         setFormData((prev) => ({
             ...prev,
             [id]:
@@ -81,11 +163,10 @@ export default function AddDrug({ addDrugs }) {
         return errors;
     };
     const isEmpty = (obj) => Object.keys(obj).length === 0;
+
     const handleAddMed = (event) => {
         event.preventDefault();
-
         const errors = validate(formData);
-
         setErrorsForm(errors);
 
         addDrugs = {
@@ -93,28 +174,28 @@ export default function AddDrug({ addDrugs }) {
         };
 
         const token = localStorage.getItem('token');
-        if (formData.threshold > 10) {
-            fetch('http://localhost:8000/api/v1/inventory', {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(addDrugs),
+
+        fetch('http://localhost:8000/api/v1/inventory', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(addDrugs),
+        })
+            .then((response) => {
+                return response.json();
             })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Failed to add drug, please try again.');
-                    }
-                    return response.json();
-                })
-                .then(() => {
+            .then((data) => {
+                if (data.success) {
                     toast.success('Registration Successful');
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
+                } else {
+                    toast.error(data.error);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
         if (isEmpty(errors)) {
             console.log('this are errors', errors);
@@ -217,7 +298,6 @@ export default function AddDrug({ addDrugs }) {
                             </div>
                         ))}
                     </div>
-
                     <AddButton type="submit">SAVE DRUG </AddButton>
                 </AddForm>
             </div>
@@ -227,23 +307,22 @@ export default function AddDrug({ addDrugs }) {
 
 AddDrug.propTypes = {
     addDrugs: PropTypes.func.isRequired,
-    drugs: PropTypes.arrayOf(PropTypes.object),
 };
 
 export const Wrapper = styled.section`
-                min-height: 100vh;
-                display: grid;
-                align-items: center;
-                h4 {
-                    text - align: center;
-                margin-bottom: 1.38rem;
-    }
-                .logo {
-                    display: block;
-                margin: 0 auto;
-                margin-bottom: 1.38rem;
-    }
-                `;
+              min-height: 100vh;
+              display: grid;
+              align-items: center;
+              h4 {
+                  text - align: center;
+              margin-bottom: 1.38rem;
+  }
+              .logo {
+                  display: block;
+              margin: 0 auto;
+              margin-bottom: 1.38rem;
+  }
+              `;
 
 export const FormField = styled.div``;
 
@@ -277,23 +356,23 @@ export const FormSection = styled.div`
 `;
 
 export const Fieldwrapper = styled.div`
-                .form-row {
-                    margin - bottom: 0.5rem;
-    }
-                input {
-                    width: 100%;
-                padding: 0.375rem 0.75rem;
-                border-radius: var(--border-radius);
-                border: 1px solid var(--grey-300);
-                color: var(--text-color);
-                height: 35px;
-                background-color: white;
-    }
-                label {
-                    font - size: 0.9rem;
-                text-transform: lowercase;
-    }
-                `;
+              .form-row {
+                  margin - bottom: 0.5rem;
+  }
+              input {
+                  width: 100%;
+              padding: 0.375rem 0.75rem;
+              border-radius: var(--border-radius);
+              border: 1px solid var(--grey-300);
+              color: var(--text-color);
+              height: 35px;
+              background-color: white;
+  }
+              label {
+                  font - size: 0.9rem;
+              text-transform: lowercase;
+  }
+              `;
 
 export const AddButton = styled.button`
     margin-top: 1rem;
