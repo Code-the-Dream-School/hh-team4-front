@@ -9,8 +9,14 @@ import LiveSearch from '../components/LiveSearch';
 import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import { useDashboardContext } from './Dashboard';
+// import { TbChevronsDownLeft } from 'react-icons/tb';
 
 const AllDrugs = () => {
+    const { user, store } = useDashboardContext();
+    const roleOfUser = user.role;
+    console.log(roleOfUser);
+    console.log(store);
     const columnLabels = [
         'name',
         'genericName',
@@ -25,7 +31,7 @@ const AllDrugs = () => {
     const editNavigate = useNavigate();
 
     const handleEdit = (drugId) => {
-        editNavigate(`/dashboard/edit/${drugId}`); // Navigate to the Edit Page with the drug ID
+        editNavigate(`/dashboard/edit/${drugId}`);
     };
     const handleDispense = (drugId) => {
         editNavigate(`/dashboard/dispense/${drugId}`);
@@ -57,6 +63,7 @@ const AllDrugs = () => {
                 return response.json();
             })
             .then((data) => {
+                //  const filteredData = data.data.filter((item) => item.store === store);
                 if (alarmFilterData) {
                     setData(alarmFilterData);
                     setFilterData(alarmFilterData);
@@ -92,8 +99,6 @@ const AllDrugs = () => {
 
     return (
         <Wrapper>
-            {/*  */}
-
             <div className="centered-container">
                 <div className="filter-search-box">
                     <div className="left-filter-box">
@@ -118,15 +123,12 @@ const AllDrugs = () => {
                     </div>
                 )}
             </div>
-            {/*  */}
             <div className="grid-container">
-                {/* Render column headers */}
                 {columnLabels.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
                         {label}
                     </div>
                 ))}
-                {/* Render rows dynamically */}
                 {getCurrentItems().map((drug, rowIndex) =>
                     columnLabels.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
@@ -145,7 +147,7 @@ const AllDrugs = () => {
                                         <FaTrash />
                                     </button>
                                     <button
-                                        className="action-button view"
+                                        className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}
                                     >
                                         <AiFillMinusCircle />
@@ -287,6 +289,9 @@ const Wrapper = styled.section`
     }
 
     .action-button.view {
+        color: var(--color-blue-dark);
+    }
+    .action-button.dispense {
         color: var(--color-blue-dark);
     }
 
