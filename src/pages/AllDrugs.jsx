@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
 import { FaFilter } from 'react-icons/fa';
-
+import { AiFillMinusCircle } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
-
 import { useLocation } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
-//import { dataListAnatomy } from '@chakra-ui/react/anatomy';
 import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
@@ -21,13 +19,16 @@ const AllDrugs = () => {
         'expirationDate',
         'lot',
         'ndcNumber',
-        'view/edit/delete',
+        'view/edit/delete/dispense',
     ];
 
     const editNavigate = useNavigate();
 
     const handleEdit = (drugId) => {
         editNavigate(`/dashboard/edit/${drugId}`); // Navigate to the Edit Page with the drug ID
+    };
+    const handleDispense = (drugId) => {
+        editNavigate(`/dashboard/dispense/${drugId}`);
     };
 
     const [data, setData] = useState([]);
@@ -129,7 +130,7 @@ const AllDrugs = () => {
                 {getCurrentItems().map((drug, rowIndex) =>
                     columnLabels.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {label === 'view/edit/delete' ? (
+                            {label === 'view/edit/delete/dispense' ? (
                                 <div className="actions">
                                     <button className="action-button view">
                                         <FaEye />
@@ -142,6 +143,12 @@ const AllDrugs = () => {
                                     </button>
                                     <button className="action-button delete">
                                         <FaTrash />
+                                    </button>
+                                    <button
+                                        className="action-button view"
+                                        onClick={() => handleDispense(drug._id)}
+                                    >
+                                        <AiFillMinusCircle />
                                     </button>
                                 </div>
                             ) : (
