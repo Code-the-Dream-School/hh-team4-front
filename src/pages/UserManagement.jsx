@@ -82,7 +82,7 @@ const UserManagement = () => {
             });
     };
     const handelCreateUser = () => {
-        navigate('/register');
+        navigate('/AdminAddUser');
     };
 
     return (
