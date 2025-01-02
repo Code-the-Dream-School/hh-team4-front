@@ -20,6 +20,7 @@ import {
     AddDrug,
     Medication,
     Alarms,
+    DispenseDrugByID,
 } from './pages';
 
 import { action as registerAction } from './pages/Register';
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
                     {
                         path: 'dispense',
                         element: <DispenseDrug />,
+                    },
+                    {
+                        path: 'dispense/:id',
+                        element: <DispenseDrugByID />,
                     },
                     {
                         path: 'alerts',
