@@ -73,6 +73,7 @@ const DispenseDrugByID = () => {
             lot: '',
         });
     };
+    console.log(`name of drug dispensed ${drugToBeDispensed.name}`);
     return (
         <Wrapper>
             <form className="form" onSubmit={handleDispensedDrug}>
