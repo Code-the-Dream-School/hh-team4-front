@@ -137,15 +137,20 @@ const AllDrugs = () => {
                                     <button className="action-button view">
                                         <FaEye />
                                     </button>
-                                    <button
-                                        className="action-button edit"
-                                        onClick={() => handleEdit(drug._id)}
-                                    >
-                                        <FaEdit />
-                                    </button>
-                                    <button className="action-button delete">
-                                        <FaTrash />
-                                    </button>
+                                    {(roleOfUser === 'admin' ||
+                                        roleOfUser === 'inventoryManager') && (
+                                        <>
+                                            <button
+                                                className="action-button edit"
+                                                onClick={() => handleEdit(drug._id)}
+                                            >
+                                                <FaEdit />
+                                            </button>
+                                            <button className="action-button delete">
+                                                <FaTrash />
+                                            </button>
+                                        </>
+                                    )}
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}
