@@ -201,7 +201,7 @@ const Wrapper = styled.section`
         padding-left: 1rem;
     }
     .form-input {
-        padding: 0rem 0.25rem;
+         padding: 0rem 0.25rem;
     }
     .form-container {
         align-items: center;
@@ -209,12 +209,14 @@ const Wrapper = styled.section`
         border-radius: 8px;
         background-color: #fff;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border:'solid';
     }
-    .grid-container {
+   .grid-container {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns:1fr 1fr; // repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
         padding: 1rem;
+        
     }
     .date {
     }
