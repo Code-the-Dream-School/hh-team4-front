@@ -13,7 +13,7 @@ const User = () => {
         role: '',
     });
 
-    const role = ['Admin', 'inventoryManager', 'clerk'];
+    const role = ['admin', 'inventoryManager', 'clerk'];
     const store = ['Store 1', 'Store 2'];
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('token');
@@ -89,7 +89,7 @@ const User = () => {
     };
 
     const handelPasswordChange = () => {
-        navigate(`/dashboard/UserChangePassword`);
+        navigate(`/dashboard/UserChangePassword`,{ state: { userId: id } });
     };
 
     return (
@@ -119,7 +119,7 @@ const User = () => {
                         />
                     </div>
                     <div className="form-row">
-                        <label className="form-label">Roll: </label>
+                        <label className="form-label">Role: </label>
                         <select
                             className="form-input"
                             id="role"

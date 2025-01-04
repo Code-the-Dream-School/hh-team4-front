@@ -10,10 +10,14 @@ import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import { useDashboardContext } from './Dashboard';
+import  Modal from'../components/Modal';
+import { useEmptyStateStyles } from '@chakra-ui/react';
 // import { TbChevronsDownLeft } from 'react-icons/tb';
 
 const AllDrugs = () => {
     const { user, store } = useDashboardContext();
+   
+
     const roleOfUser = user.role;
     console.log(roleOfUser);
     console.log(store);
@@ -27,15 +31,39 @@ const AllDrugs = () => {
         'ndcNumber',
         'view/edit/delete/dispense',
     ];
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [ record, setRecord ] = useState({
+        name: '',
+        genericName: '',
+        class: '',
+        quantity: '',
+        expirationDate: '',
+        lot: '',
+        ndcNumber: '',
+    });
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleView=(drugId)=>{
+        const selectedDrug = data.find((drug) => drug._id === drugId);
+        setRecord(selectedDrug);
+        openModal();
+
+    }
     const editNavigate = useNavigate();
-
     const handleEdit = (drugId) => {
         editNavigate(`/dashboard/edit/${drugId}`);
     };
     const handleDispense = (drugId) => {
         editNavigate(`/dashboard/dispense/${drugId}`);
     };
+
+    
 
     const [data, setData] = useState([]);
     const [filterData, setFilterData] = useState([]);
@@ -69,6 +97,7 @@ const AllDrugs = () => {
                     setFilterData(alarmFilterData);
                 } else {
                     setData(data.data);
+                    console.log(data.data) ;
                     setFilterData(data.data);
                 }
 
@@ -84,6 +113,10 @@ const AllDrugs = () => {
     const handleFilter = (filteredData) => {
         setFilterData(filteredData);
     };
+
+    
+
+
 
     const itemsPerPage = 10;
     const totalItems = filterData.length;
@@ -106,7 +139,6 @@ const AllDrugs = () => {
                             <FaFilter className="filter-icon" />
                         </button>
                     </div>
-                    <div></div>
                     <div className="search-box">
                         <div className="search-icon">
                             <IoIosSearch />
@@ -134,9 +166,14 @@ const AllDrugs = () => {
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                             {label === 'view/edit/delete/dispense' ? (
                                 <div className="actions">
-                                    <button className="action-button view">
+                                    <button className="action-button view" onClick={() => handleView(drug._id)}>
                                         <FaEye />
                                     </button>
+                                        < Modal
+                                            isOpen={isModalOpen}
+                                            onClose={closeModal}
+                                            record={record}
+                                        />
                                     <button
                                         className="action-button edit"
                                         onClick={() => handleEdit(drug._id)}
@@ -269,6 +306,8 @@ const Wrapper = styled.section`
         background-color: #f5f5f5;
         border-radius: 8px;
         box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
+       
+       
     }
     .actions {
         display: flex;

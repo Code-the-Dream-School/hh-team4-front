@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { Logo } from '../components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams , useLocation } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const UserChangePassowrd = () => {
@@ -12,7 +12,19 @@ const UserChangePassowrd = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-    const { id } = useParams(); // Get drug ID from URL
+    //const { id } = useParams(); 
+    const location = useLocation();
+    const id = location.state?.userId;
+
+    const token = localStorage.getItem('token');
+    const currentUser = localStorage.getItem('userId');
+    
+    let userId = '';
+    if (id !== '') {
+        userId = id;
+    } else {
+        userId = currentUser;
+    }
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -35,14 +47,7 @@ const UserChangePassowrd = () => {
             return;
         }
 
-        const token = localStorage.getItem('token');
-        const currentUser = localStorage.getItem('userId');
-        let userId = '';
-        if (id === '') {
-            userId = id;
-        } else {
-            userId = currentUser;
-        }
+       
 
         fetch(`http://localhost:8000/api/v1/users/${userId}`, {
             method: 'PUT',
@@ -62,7 +67,7 @@ const UserChangePassowrd = () => {
                 if (data.success) {
                     setPassword(password);
                     toast.success('Password updated successfully!');
-                    navigate('/dashboard/user');
+                    navigate(`/dashboard/User/${userId}`);
                 } else {
                     throw new Error(data.message || 'Password update failed.');
                 }
@@ -74,7 +79,7 @@ const UserChangePassowrd = () => {
 
     const cancelPassword = () => {
         setError('');
-        navigate('/dashboard/user');
+        navigate(`/dashboard/User/${userId}`);
     };
 
     const handleInputChange = (e) => {

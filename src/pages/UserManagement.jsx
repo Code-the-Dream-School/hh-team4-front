@@ -60,6 +60,14 @@ const UserManagement = () => {
         navigate(`/dashboard/User/${userId}`);
     };
     const handelDeleteUser = (userDelId) => {
+
+        const confirmDelete = window.confirm('Do you want to delete user ? This action cannot be undone.');
+        if (!confirmDelete) {
+           alert('Deletion cancelled.');
+           return;
+        }   
+
+
         fetch(`http://localhost:8000/api/v1/users/${userDelId}`, {
             method: 'DELETE',
             headers: {
@@ -82,7 +90,7 @@ const UserManagement = () => {
             });
     };
     const handelCreateUser = () => {
-        navigate('/AdminAddUser');
+        navigate('/dashboard/adduser');
     };
 
     return (

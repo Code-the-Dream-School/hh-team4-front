@@ -14,6 +14,7 @@ export const action = async ({ request }) => {
     try {
         await customFetch.post('/auth/signup', data);
         toast.success('Adding Employee Successful');
+
         return redirect('/dashboard/UserManagement');
     } catch (error) {
         toast.error(error?.response?.data?.msg);
@@ -37,6 +38,9 @@ const AdminAddUser = () => {
                 <h4>Add Employee </h4>
                 <FormRow type="text" name="name" labelText="name" placeholder="name" defaultValue="" />
                 <div className="form-row">
+                    <label className="form-label" htmlFor="role">
+                        store:
+                    </label>
                     <select className="form-input" id="store" name="store" defaultValue="" required >
                         <option value="" disabled>
                             -- Choose a store --
@@ -47,7 +51,7 @@ const AdminAddUser = () => {
                 </div>
                 <div className="form-row">
                     <label className="form-label" htmlFor="role">
-                        select a store roll:
+                        role:
                     </label>
                     <select className="form-input" id="role" name="role"  defaultValue="" required>
                         <option value="" disabled>
