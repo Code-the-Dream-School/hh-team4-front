@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { Logo } from '../components';
-import { useNavigate, useParams , useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const UserChangePassowrd = () => {
@@ -12,13 +12,13 @@ const UserChangePassowrd = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-    //const { id } = useParams(); 
+
     const location = useLocation();
     const id = location.state?.userId;
 
     const token = localStorage.getItem('token');
     const currentUser = localStorage.getItem('userId');
-    
+
     let userId = '';
     if (id !== '') {
         userId = id;
@@ -46,8 +46,6 @@ const UserChangePassowrd = () => {
 
             return;
         }
-
-       
 
         fetch(`http://localhost:8000/api/v1/users/${userId}`, {
             method: 'PUT',

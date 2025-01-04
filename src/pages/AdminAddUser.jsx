@@ -1,4 +1,4 @@
-import { Form, redirect, useNavigation, Link } from 'react-router-dom';
+import { Form, redirect, useNavigation } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
 import customFetch from '../util/customFetch';
@@ -10,7 +10,7 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
     console.log(formData);
     const data = Object.fromEntries(formData);
-    console.log(data)
+    console.log(data);
     try {
         await customFetch.post('/auth/signup', data);
         toast.success('Adding Employee Successful');
@@ -25,23 +25,28 @@ export const action = async ({ request }) => {
 const AdminAddUser = () => {
     useEffect(() => {
         document.querySelector('form').reset();
-   
     }, []);
 
     const navigation = useNavigation();
-    
+
     const isSubmitting = navigation.state === 'submitting';
     return (
         <Wrapper>
-            <Form method="post" className="form" autoComplete="off"  key={Date.now()} >
+            <Form method="post" className="form" autoComplete="off" key={Date.now()}>
                 <Logo />
                 <h4>Add Employee </h4>
-                <FormRow type="text" name="name" labelText="name" placeholder="name" defaultValue="" />
+                <FormRow
+                    type="text"
+                    name="name"
+                    labelText="name"
+                    placeholder="name"
+                    defaultValue=""
+                />
                 <div className="form-row">
                     <label className="form-label" htmlFor="role">
                         store:
                     </label>
-                    <select className="form-input" id="store" name="store" defaultValue="" required >
+                    <select className="form-input" id="store" name="store" defaultValue="" required>
                         <option value="" disabled>
                             -- Choose a store --
                         </option>
@@ -53,7 +58,7 @@ const AdminAddUser = () => {
                     <label className="form-label" htmlFor="role">
                         role:
                     </label>
-                    <select className="form-input" id="role" name="role"  defaultValue="" required>
+                    <select className="form-input" id="role" name="role" defaultValue="" required>
                         <option value="" disabled>
                             -- Choose a role --
                         </option>
@@ -62,19 +67,25 @@ const AdminAddUser = () => {
                         <option value="clerk">clerk</option>
                     </select>
                 </div>
-                <FormRow type="email" name="email" labelText="email" placeholder="email"  defaultValue="" autoComplete="off"/>
+                <FormRow
+                    type="email"
+                    name="email"
+                    labelText="email"
+                    placeholder="email"
+                    defaultValue=""
+                    autoComplete="off"
+                />
                 <FormRow
                     type="password"
                     name="password"
                     labelText="password"
                     placeholder="password"
                     defaultValue=""
-                    autoComplete='new-password'
+                    autoComplete="new-password"
                 />
                 <button type="submit" className="btn btn-block" disabled={isSubmitting}>
                     {isSubmitting ? 'submitting...' : 'submit'}
                 </button>
-               
             </Form>
         </Wrapper>
     );

@@ -5,7 +5,6 @@ import { BigSidebar, Navbar, SmallSidebar } from '../components';
 import customFetch from '../util/customFetch';
 import Alarms from './Alarms';
 
-
 export const loader = async () => {
     try {
         const token = localStorage.getItem('token');

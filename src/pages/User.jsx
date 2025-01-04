@@ -89,7 +89,7 @@ const User = () => {
     };
 
     const handelPasswordChange = () => {
-        navigate(`/dashboard/UserChangePassword`,{ state: { userId: id } });
+        navigate(`/dashboard/UserChangePassword`, { state: { userId: id } });
     };
 
     return (
