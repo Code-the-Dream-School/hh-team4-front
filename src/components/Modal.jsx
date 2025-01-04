@@ -12,12 +12,14 @@ const Modal = ({ isOpen, onClose, record }) => {
                 </button>
                 <h2 style={h2Style}>Medication Details</h2>
                 {Object.entries(record)
-                .filter(([key]) => key.toUpperCase() !== '__V' && key.toUpperCase() !== 'CREATEDBY') // Exclude unwanted keys
-                .map(([key, value]) => (
-                    <p style={pStyle} key={key}>
-                        <strong>{key}:</strong> {value}
-                    </p>
-                ))}
+                    .filter(
+                        ([key]) => key.toUpperCase() !== '__V' && key.toUpperCase() !== 'CREATEDBY'
+                    ) // Exclude unwanted keys
+                    .map(([key, value]) => (
+                        <p style={pStyle} key={key}>
+                            <strong>{key}:</strong> {value}
+                        </p>
+                    ))}
                 {/* <p style={pStyle}>
                     <strong>name:</strong> {record.name}
                 </p>
