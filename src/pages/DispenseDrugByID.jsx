@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FormRow, Logo } from '../components';
+import { Logo } from '../components';
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
@@ -8,10 +8,7 @@ const DispenseDrugByID = () => {
     const url = `http://localhost:8000/api/v1/inventory/${id}`;
 
     const [drugToBeDispensed, setDrugToBeDispensed] = useState({
-        name: '',
         quantity: '',
-        ndcNumber: '',
-        lot: '',
     });
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -27,7 +24,7 @@ const DispenseDrugByID = () => {
                 return response.json();
             })
             .then((data) => {
-                console.log(data.data);
+                // console.log(data.data);
                 setDrugToBeDispensed(data.data);
             })
             .catch((error) => console.error('Error:', error));
@@ -67,41 +64,29 @@ const DispenseDrugByID = () => {
             });
 
         setDrugToBeDispensed({
-            name: '',
             quantity: '',
-            ndcNumber: '',
-            lot: '',
         });
     };
-    console.log(`name of drug dispensed ${drugToBeDispensed.name}`);
     return (
         <Wrapper>
             <form className="form" onSubmit={handleDispensedDrug}>
                 <Logo />
-                <h4>Dispense Drug</h4>
-                <FormRow
-                    type="text"
-                    name="name"
-                    labelText="name"
-                    value={drugToBeDispensed.name || ''}
-                    onChange={handleChange}
-                />
-                <FormRow
-                    type="number"
-                    name="quantity"
-                    labelText="Quantity"
-                    value={drugToBeDispensed.quantity || ''}
-                    onChange={handleChange}
-                />
-                <FormRow type="text" name="lot" labelText="lot #" value={drugToBeDispensed.lot} />
-                <FormRow
-                    type="text"
-                    name="ndcNumber"
-                    labelText="ndc #"
-                    placeholder="NDC Number"
-                    value={drugToBeDispensed.ndcNumber || ''}
-                    onChange={handleChange}
-                />
+                <h4>Dispense</h4>
+                <h5>{`- ${drugToBeDispensed.name} -`}</h5>
+                <h6>{`${drugToBeDispensed.location}`}</h6>
+                <div className="form-row">
+                    <label htmlFor="quantity" className="form-label">
+                        quantity to be dispensed
+                    </label>
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        className="form-input"
+                        value={drugToBeDispensed.quantity || ''}
+                        onChange={handleChange}
+                    />
+                </div>
                 <button type="submit" className="btn btn-block">
                     Dispense Medication
                 </button>
@@ -132,6 +117,14 @@ const Wrapper = styled.section`
         background-color: var(--grey-50);
     }
     h4 {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    h5 {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    h6 {
         text-align: center;
         margin-bottom: 1.38rem;
     }
