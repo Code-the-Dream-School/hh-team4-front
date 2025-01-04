@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 const DispenseDrugByID = () => {
     const { id } = useParams();
     const url = `http://localhost:8000/api/v1/inventory/${id}`;
+    const urlDispense = `http://localhost:8000/api/v1/dispense`;
 
     const [drugToBeDispensed, setDrugToBeDispensed] = useState({
         quantity: '',
@@ -42,13 +43,19 @@ const DispenseDrugByID = () => {
         event.preventDefault();
 
         const token = localStorage.getItem('token');
-        fetch(url, {
-            method: 'PATCH',
+
+        const payload = {
+            medicationID: id,
+            quantity: drugToBeDispensed.quantity,
+        };
+
+        fetch(urlDispense, {
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(drugToBeDispensed),
+            body: JSON.stringify(payload),
         })
             .then((response) => {
                 if (!response.ok) {
@@ -62,11 +69,8 @@ const DispenseDrugByID = () => {
             .catch((error) => {
                 console.error('Error:', error);
             });
-
-        setDrugToBeDispensed({
-            quantity: '',
-        });
     };
+
     return (
         <Wrapper>
             <form className="form" onSubmit={handleDispensedDrug}>
