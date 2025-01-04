@@ -11,8 +11,14 @@ const Modal = ({ isOpen, onClose, record }) => {
                     X
                 </button>
                 <h2 style={h2Style}>Medication Details</h2>
-
-                <p style={pStyle}>
+                {Object.entries(record)
+                .filter(([key]) => key.toUpperCase() !== '__V' && key.toUpperCase() !== 'CREATEDBY') // Exclude unwanted keys
+                .map(([key, value]) => (
+                    <p style={pStyle} key={key}>
+                        <strong>{key}:</strong> {value}
+                    </p>
+                ))}
+                {/* <p style={pStyle}>
                     <strong>name:</strong> {record.name}
                 </p>
                 <p style={pStyle}>
@@ -32,7 +38,7 @@ const Modal = ({ isOpen, onClose, record }) => {
                 </p>
                 <p style={pStyle}>
                     <strong>ndcNumber:</strong> {record.ndcNumber}
-                </p>
+                </p> */}
             </div>
         </div>
     );
@@ -74,15 +80,15 @@ const pStyle = {
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'left',
-    lineHeight: 1.5,
-    padding: '10px',
+    lineHeight: 1,
+    padding: '8px',
     margin: '20px',
     textTransform: 'uppercase',
 };
 
 const h2Style = {
     alignItems: 'center',
-    padding: '20px',
+    padding: '0px',
     margin: '40px',
     color: 'blue',
 };
