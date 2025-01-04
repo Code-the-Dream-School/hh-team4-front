@@ -43,7 +43,9 @@ const DispenseDrugByID = () => {
         event.preventDefault();
 
         const token = localStorage.getItem('token');
-
+        console.log(id);
+        console.log(drugToBeDispensed.quantity);
+        console.log(token);
         const payload = {
             medicationID: id,
             quantity: drugToBeDispensed.quantity,
