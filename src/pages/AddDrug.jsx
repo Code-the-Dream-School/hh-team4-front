@@ -360,7 +360,7 @@ export const Fieldwrapper = styled.div`
                   margin - bottom: 0.5rem;
   }
               input {
-                  width: 100%;
+                width: 100%;
               padding: 0.375rem 0.75rem;
               border-radius: var(--border-radius);
               border: 1px solid var(--grey-300);

@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const Modal = ({ isOpen, onClose, record }) => {
     if (!isOpen) return null;
 
     return (
-        <div style={overlayStyle}>
-            <div style={modalStyle}>
-                <button onClick={onClose} style={closeButtonStyle}>
+        <Wrapper style={overlayStyle}>
+            <div className="modal-box" style={modalStyle}>
+                <button className="close-btn" onClick={onClose} style={closeButtonStyle}>
                     X
                 </button>
                 <h2 style={h2Style}>Medication Details</h2>
@@ -20,31 +21,30 @@ const Modal = ({ isOpen, onClose, record }) => {
                             <strong>{key}:</strong> {value}
                         </p>
                     ))}
-                {/* <p style={pStyle}>
-                    <strong>name:</strong> {record.name}
-                </p>
-                <p style={pStyle}>
-                    <strong>genericName:</strong> {record.genericName}
-                </p>
-                <p style={pStyle}>
-                    <strong>class:</strong> {record.class}
-                </p>
-                <p style={pStyle}>
-                    <strong>quantity:</strong> {record.quantity}
-                </p>
-                <p style={pStyle}>
-                    <strong>expirationDate:</strong> {record.expirationDate}
-                </p>
-                <p style={pStyle}>
-                    <strong>lot:</strong> {record.lot}
-                </p>
-                <p style={pStyle}>
-                    <strong>ndcNumber:</strong> {record.ndcNumber}
-                </p> */}
             </div>
-        </div>
+        </Wrapper>
     );
 };
+
+export const Wrapper = styled.div`
+    .modal-box {
+        border-radius: var(--border-radius);
+        border: 4px solid var(--color-blue-dark);
+    }
+    h2 {
+        color: var(--color-blue-dark);
+    }
+    p {
+        font-size: 1.6rem;
+        padding-bottom: 0.9rem;
+    }
+    .close-btn {
+        color: var(--color-blue-dark);
+    }
+    strong {
+        padding-right: 0.6rem;
+    }
+`;
 
 const overlayStyle = {
     position: 'fixed',
@@ -52,47 +52,38 @@ const overlayStyle = {
     left: 700,
     right: 700,
     bottom: 300,
-    backgroundColor: '#f5f5f5',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    border: 'solid',
 };
 
 const modalStyle = {
     backgroundColor: 'white',
     padding: '20px',
-    borderRadius: '8px',
-    minWidth: '60%',
-    minHeight: '80%',
-    border: 'solid',
+    // minWidth: '60%',
+    // minHeight: '80%',
+    position: 'relative',
 };
 
 const closeButtonStyle = {
     position: 'absolute',
     top: '10px',
-    right: '10px',
+    right: '20px',
     background: 'none',
     border: 'none',
-    fontSize: '20px',
+    fontSize: '30px',
     cursor: 'pointer',
+    fontWeight: 'bold',
 };
 
 const pStyle = {
-    fontSize: 14,
-    fontWeight: 'bold',
     textAlign: 'left',
-    lineHeight: 1,
-    padding: '8px',
-    margin: '20px',
-    textTransform: 'uppercase',
 };
 
 const h2Style = {
     alignItems: 'center',
     padding: '0px',
     margin: '40px',
-    color: 'blue',
 };
 Modal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
