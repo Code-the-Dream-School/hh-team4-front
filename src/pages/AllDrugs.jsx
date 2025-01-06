@@ -1,18 +1,25 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
 import { FaFilter } from 'react-icons/fa';
-
+import { AiFillMinusCircle } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
-
 import { useLocation } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
-//import { dataListAnatomy } from '@chakra-ui/react/anatomy';
 import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import { useDashboardContext } from './Dashboard';
+import Modal from '../components/Modal';
+
+// import { TbChevronsDownLeft } from 'react-icons/tb';
 
 const AllDrugs = () => {
+    const { user, store } = useDashboardContext();
+
+    const roleOfUser = user.role;
+    console.log(roleOfUser);
+    console.log(store);
     const columnLabels = [
         'name',
         'genericName',
@@ -21,13 +28,37 @@ const AllDrugs = () => {
         'expirationDate',
         'lot',
         'ndcNumber',
-        'view/edit/delete',
+        'view/edit/delete/dispense',
     ];
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [record, setRecord] = useState({
+        name: '',
+        genericName: '',
+        class: '',
+        quantity: '',
+        expirationDate: '',
+        lot: '',
+        ndcNumber: '',
+    });
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleView = (drugId) => {
+        const selectedDrug = data.find((drug) => drug._id === drugId);
+        setRecord(selectedDrug);
+        openModal();
+    };
     const editNavigate = useNavigate();
-
     const handleEdit = (drugId) => {
-        editNavigate(`/dashboard/edit/${drugId}`); // Navigate to the Edit Page with the drug ID
+        editNavigate(`/dashboard/edit/${drugId}`);
+    };
+    const handleDispense = (drugId) => {
+        editNavigate(`/dashboard/dispense/${drugId}`);
     };
 
     const [data, setData] = useState([]);
@@ -56,11 +87,13 @@ const AllDrugs = () => {
                 return response.json();
             })
             .then((data) => {
+                //  const filteredData = data.data.filter((item) => item.store === store);
                 if (alarmFilterData) {
                     setData(alarmFilterData);
                     setFilterData(alarmFilterData);
                 } else {
                     setData(data.data);
+                    console.log(data.data);
                     setFilterData(data.data);
                 }
 
@@ -91,8 +124,6 @@ const AllDrugs = () => {
 
     return (
         <Wrapper>
-            {/*  */}
-
             <div className="centered-container">
                 <div className="filter-search-box">
                     <div className="left-filter-box">
@@ -100,7 +131,6 @@ const AllDrugs = () => {
                             <FaFilter className="filter-icon" />
                         </button>
                     </div>
-                    <div></div>
                     <div className="search-box">
                         <div className="search-icon">
                             <IoIosSearch />
@@ -117,23 +147,28 @@ const AllDrugs = () => {
                     </div>
                 )}
             </div>
-            {/*  */}
             <div className="grid-container">
-                {/* Render column headers */}
                 {columnLabels.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
                         {label}
                     </div>
                 ))}
-                {/* Render rows dynamically */}
                 {getCurrentItems().map((drug, rowIndex) =>
                     columnLabels.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {label === 'view/edit/delete' ? (
+                            {label === 'view/edit/delete/dispense' ? (
                                 <div className="actions">
-                                    <button className="action-button view">
+                                    <button
+                                        className="action-button view"
+                                        onClick={() => handleView(drug._id)}
+                                    >
                                         <FaEye />
                                     </button>
+                                    <Modal
+                                        isOpen={isModalOpen}
+                                        onClose={closeModal}
+                                        record={record}
+                                    />
                                     <button
                                         className="action-button edit"
                                         onClick={() => handleEdit(drug._id)}
@@ -142,6 +177,12 @@ const AllDrugs = () => {
                                     </button>
                                     <button className="action-button delete">
                                         <FaTrash />
+                                    </button>
+                                    <button
+                                        className="action-button dispense"
+                                        onClick={() => handleDispense(drug._id)}
+                                    >
+                                        <AiFillMinusCircle />
                                     </button>
                                 </div>
                             ) : (
@@ -280,6 +321,9 @@ const Wrapper = styled.section`
     }
 
     .action-button.view {
+        color: var(--color-blue-dark);
+    }
+    .action-button.dispense {
         color: var(--color-blue-dark);
     }
 

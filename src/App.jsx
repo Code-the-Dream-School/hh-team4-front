@@ -20,8 +20,10 @@ import {
     AddDrug,
     Medication,
     Alarms,
+    DispenseDrugByID,
 } from './pages';
 
+import { action as AdminAddUserAction } from './pages/AdminAddUser';
 import { action as registerAction } from './pages/Register';
 import { action as loginAction } from './pages/Login';
 import { loader as dashboardLoader } from './pages/Dashboard';
@@ -57,10 +59,15 @@ const router = createBrowserRouter([
                     {
                         path: 'adduser',
                         element: <AdminAddUser />,
+                        action: AdminAddUserAction,
                     },
                     {
                         path: 'dispense',
                         element: <DispenseDrug />,
+                    },
+                    {
+                        path: 'dispense/:id',
+                        element: <DispenseDrugByID />,
                     },
                     {
                         path: 'alerts',

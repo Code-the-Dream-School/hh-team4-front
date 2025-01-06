@@ -17,3 +17,4 @@ export { default as Medication } from './Medication';
 export { default as AllDrugs } from './AllDrugs';
 export { default as PastOrders } from './PastOrders';
 export { default as AddDrug } from './AddDrug';
+export { default as DispenseDrugByID } from './DispenseDrugByID';
