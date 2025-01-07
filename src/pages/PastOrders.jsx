@@ -1,20 +1,71 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
 import { FaFilter } from 'react-icons/fa';
-import { drugData } from '../../data';
 import { TbBellFilled } from 'react-icons/tb';
+import { useEffect , useState } from 'react';
+import { useDashboardContext } from './Dashboard';
+import Modal from '../components/Modal';
+
 
 const PastOrders = () => {
     const columnLabels = [
-        'name',
-        'generic',
-        'class',
-        'quantity',
-        'expiration date',
-        'lot #',
-        'ndc #',
-        'view/edit/delete',
+        'drugName',
+        'lot',
+        'className', 
+        'dispensedQuantity',
+        'dispensedDate',
+        'dispenseId',
+        'drugId',
+        'view',
+        
     ];
+
+    const [logs, setLogs] = useState([]);
+    const { store } = useDashboardContext();
+
+
+
+   
+    console.log(`storeid is ${store}`)
+    const token = localStorage.getItem('token') ;
+   
+
+    useEffect( () => {fetch(`http://localhost:8000/api/v1/dispense-logs`,{
+        method: 'GET' ,
+        headers:{
+            Authorization:`Bearer ${token}`,
+            'Contetnt-Type': 'application/json',
+        }
+    }
+    ).then((response) => {
+        if (!response) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    }).then((data)=> {
+        console.log(data.logs) ;
+        const extractLogs= data.logs
+            .filter((log) => log.medicationId?.location === store) 
+            .map((log) => ({
+
+                drugName: log.medicationId?.name,
+                lot: log.medicationId?.lot,
+                className: log.medicationId?.class, 
+                dispensedQuantity: log.quantity,
+                dispensedDate: log.dispenseDate,
+                dispenseId: log._id,
+                drugId: log.medicationId?._id,
+                
+                
+                
+            }));
+            console.log(extractLogs) ;
+         setLogs(extractLogs) ;
+        
+    }
+    ).catch((error)=>{
+        console.error('Error accessing Dispense data')
+    })} , []);
 
     return (
         <Wrapper>
@@ -49,12 +100,17 @@ const PastOrders = () => {
                     </div>
                 ))}
                 {/* Render rows dynamically */}
-                {drugData.map((drug, rowIndex) =>
-                    columnLabels.map((label, colIndex) => (
+                
+                {logs.map((drug, rowIndex) =>
+                    columnLabels.map((label, colIndex) =>
+                        
+                        (
+                            
+
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                             {drug[label] || ''}
                         </div>
-                    ))
+))
                 )}
             </div>
         </Wrapper>
