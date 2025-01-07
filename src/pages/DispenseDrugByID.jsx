@@ -6,10 +6,12 @@ import React, { useState, useEffect } from 'react';
 const DispenseDrugByID = () => {
     const { id } = useParams();
     console.log(`id is ${id}`);
+    
     //const url = `http://localhost:8000/api/v1/inventory/${id}`;
-    const urlDispense = `http://localhost:8000/api/v1/dispense`;
-    const token = localStorage.getItem('token');
+   
 
+    const token = localStorage.getItem('token');
+    //console.log(token);
     const [drugToBeDispensed, setDrugToBeDispensed] = useState({
         medicationId: id ,
         quantity: '',
@@ -47,27 +49,7 @@ const DispenseDrugByID = () => {
             console.error('Error:', error);
         });
     };
-        // fetch(`http://localhost:8000/api/v1/dispense`, {
-        //     method: 'POST',
-        //     headers: {
-        //         Authorization: `Bearer ${token}`,
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(drugToBeDispensed),
-        // })
-        //     .then((response) => {
-        //         if (!response.ok) {
-        //             throw new Error('Network response was not ok');
-        //         }
-        //         return response.json();
-        //     })
-        //     .then((data) => {
-        //         console.log(data);
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
-   // };
+      
 
     return (
         <Wrapper>
