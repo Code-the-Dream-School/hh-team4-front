@@ -12,8 +12,32 @@ const DispenseDrugByID = () => {
 
     const [drugToBeDispensed, setDrugToBeDispensed] = useState({
         medicationId: id ,
+        medicationId: id,
         quantity: '',
     });
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error('Failed to fetch drug data');
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data.data);
+                setDrugToBeDispensed(data.data);
+            })
+            .catch((error) => {
+                alert('Failed to fetch drug data. Please try again.');
+                console.error('Error:', error);
+            });
+    }, [id]);
+
     
     const handleChange = (event) => {
         const { name, value } = event.target;
