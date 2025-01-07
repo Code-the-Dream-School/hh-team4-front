@@ -68,8 +68,13 @@ const AllDrugs = () => {
                     setData(alarmFilterData);
                     setFilterData(alarmFilterData);
                 } else {
-                    setData(data.data);
-                    setFilterData(data.data);
+
+                    //const storeData = data.data.filter( d=> d.location === ) ;
+                    const storeData = data.data.filter((item) => item.location === store);
+                    // console.log(data)
+                    // console.log(storeData)
+                    setData(storeData);
+                    setFilterData(storeData);
                 }
 
                 setLoading(false);
