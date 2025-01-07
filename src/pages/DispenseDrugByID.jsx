@@ -25,10 +25,13 @@ const DispenseDrugByID = () => {
                 return response.json();
             })
             .then((data) => {
-                // console.log(data.data);
+                console.log(data.data);
                 setDrugToBeDispensed(data.data);
             })
-            .catch((error) => console.error('Error:', error));
+            .catch((error) => {
+                alert('Failed to fetch drug data. Please try again.');
+                console.error('Error:', error);
+            });
     }, [id]);
 
     const handleChange = (event) => {
@@ -41,6 +44,7 @@ const DispenseDrugByID = () => {
 
     const handleDispensedDrug = (event) => {
         const token = localStorage.getItem('token');
+        console.log(token);
         event.preventDefault();
         fetch(`http://localhost:8000/api/v1/dispense`, {
             method: 'POST',
@@ -60,6 +64,7 @@ const DispenseDrugByID = () => {
                 console.log(data);
             })
             .catch((error) => {
+                alert('Failed to send drug data. Please try again.');
                 console.error('Error:', error);
             });
     };
