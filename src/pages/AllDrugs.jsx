@@ -68,7 +68,6 @@ const AllDrugs = () => {
                     setData(alarmFilterData);
                     setFilterData(alarmFilterData);
                 } else {
-
                     //const storeData = data.data.filter( d=> d.location === ) ;
                     const storeData = data.data.filter((item) => item.location === store);
                     // console.log(data)

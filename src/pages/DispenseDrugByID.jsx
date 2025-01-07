@@ -1,22 +1,50 @@
 import styled from 'styled-components';
 import { Logo } from '../components';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DispenseDrugByID = () => {
     const { id } = useParams();
-    console.log(`id is ${id}`);
-    
-    //const url = `http://localhost:8000/api/v1/inventory/${id}`;
-   
-
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    //console.log(token);
+
     const [drugToBeDispensed, setDrugToBeDispensed] = useState({
-        medicationId: id ,
+        medicationId: id,
         quantity: '',
     });
-    
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+                const data = await response.json();
+
+                if (typeof data === 'object' && data !== null) {
+                    setDrugToBeDispensed((prevState) => ({
+                        ...prevState,
+                        ...data.data,
+                    }));
+                } else {
+                    throw new Error('Invalid data format received');
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        };
+        fetchData();
+    }, [id, token]);
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setDrugToBeDispensed((prevState) => ({
@@ -26,8 +54,7 @@ const DispenseDrugByID = () => {
     };
 
     const handleDispensedDrug = (event) => {
-       event.preventDefault();
-          
+        event.preventDefault();
         fetch(`http://localhost:8000/api/v1/dispense`, {
             method: 'POST',
             headers: {
@@ -36,20 +63,30 @@ const DispenseDrugByID = () => {
             },
             body: JSON.stringify(drugToBeDispensed),
         })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(() => {
+                toast.success('Drug dispensed successfully!', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                });
+
+                setTimeout(() => {
+                    navigate('/dashboard/past-orders');
+                }, 3500);
+            })
+            .catch((error) => {
+                toast.error('Failed to dispense drug. Please try again.', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                });
+                console.error('Error:', error);
+            });
     };
-      
 
     return (
         <Wrapper>
@@ -75,12 +112,14 @@ const DispenseDrugByID = () => {
                     Dispense Medication
                 </button>
             </form>
+            <ToastContainer />
         </Wrapper>
     );
 };
 
 export default DispenseDrugByID;
 
+// Styled Components
 const Wrapper = styled.section`
     min-height: 100vh;
     display: grid;
