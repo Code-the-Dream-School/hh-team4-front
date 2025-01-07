@@ -289,12 +289,6 @@ const Wrapper = styled.section`
         border-radius: var(--border-radius);
         background-color: #fff;
     }
-
-    .grid-header {
-        font-weight: bold;
-        background-color: var(--color-green-med);
-        color: var(--color-blue-dark);
-    }
     .advanced-search {
         align-items: center;
         justify-content: center;
@@ -343,5 +337,10 @@ const Wrapper = styled.section`
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;
+    }
+    .grid-header {
+        font-weight: bold;
+        background-color: var(--color-green-med);
+        color: var(--color-blue-dark);
     }
 `;

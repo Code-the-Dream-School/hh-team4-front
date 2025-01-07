@@ -19,7 +19,7 @@ const UserManagement = () => {
         'store',
         //'creationAt',
         //'updatedAt',
-        'view/edit/delete',
+        'edit/delete',
     ];
 
     const token = localStorage.getItem('token');
@@ -114,7 +114,7 @@ const UserManagement = () => {
                     {getCurrentItems().map((user, rowIndex) =>
                         columnLabels.map((label, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                                {label === 'view/edit/delete' ? (
+                                {label === 'edit/delete' ? (
                                     <div className="actions">
                                         <button
                                             className="action-button edit"
@@ -179,12 +179,6 @@ const Wrapper = styled.section`
         background-color: #fff;
     }
 
-    .grid-header {
-        font-weight: bold;
-        background-color: var(--color-green-med);
-        color: var(--color-blue-dark);
-    }
-
     .actions {
         display: flex;
         justify-content: space-around;
@@ -232,5 +226,10 @@ const Wrapper = styled.section`
 
     .description {
         margin: 0;
+    }
+    .grid-header {
+        font-weight: bold;
+        background-color: var(--color-green-med);
+        color: var(--color-blue-dark);
     }
 `;

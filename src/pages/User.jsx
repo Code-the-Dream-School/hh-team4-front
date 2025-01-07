@@ -4,8 +4,12 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { Logo } from '../components';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDashboardContext } from './Dashboard';
 
 const User = () => {
+    const { user } = useDashboardContext();
+    const currUserRole = user.role;
+    console.log(currUserRole);
     const [userData, setUserData] = useState({
         name: '',
         email: '',
@@ -118,45 +122,49 @@ const User = () => {
                             onChange={handleInputChange}
                         />
                     </div>
-                    <div className="form-row">
-                        <label className="form-label">Role: </label>
-                        <select
-                            className="form-input"
-                            id="role"
-                            name="role"
-                            value={userData.role}
-                            onChange={handleInputChange}
-                            disabled={!id}
-                        >
-                            <option value="" disabled>
-                                Select a role
-                            </option>
-                            {role.map((r) => (
-                                <option key={r} value={r}>
-                                    {r}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="form-row">
-                        <label className="form-label">Store:</label>
-                        <select
-                            name="store"
-                            className="form-input"
-                            value={userData.store}
-                            onChange={handleInputChange}
-                            disabled={!id}
-                        >
-                            <option value="" disabled>
-                                Select a Store
-                            </option>
-                            {store.map((s) => (
-                                <option key={s} value={s}>
-                                    {s}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    {userId !== currentUser && currUserRole === 'admin' && (
+                        <>
+                            <div className="form-row">
+                                <label className="form-label">Role: </label>
+                                <select
+                                    className="form-input"
+                                    id="role"
+                                    name="role"
+                                    value={userData.role}
+                                    onChange={handleInputChange}
+                                    disabled={!id}
+                                >
+                                    <option value="" disabled>
+                                        Select a role
+                                    </option>
+                                    {role.map((r) => (
+                                        <option key={r} value={r}>
+                                            {r}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-row">
+                                <label className="form-label">Store:</label>
+                                <select
+                                    name="store"
+                                    className="form-input"
+                                    value={userData.store}
+                                    onChange={handleInputChange}
+                                    disabled={!id}
+                                >
+                                    <option value="" disabled>
+                                        Select a Store
+                                    </option>
+                                    {store.map((s) => (
+                                        <option key={s} value={s}>
+                                            {s}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </>
+                    )}
                     <div className="buttons">
                         <button className="btn btn-block" onClick={updateUserInfo}>
                             {' '}
@@ -221,37 +229,6 @@ const Wrapper = styled.section`
     }
 `;
 
-// export const FormField = styled.div``;
-
-// export const AddForm = styled.form`
-//     width: 90vw;
-//     max-width: 400px;
-//     border-top: 5px solid var(--color-blue-dark);
-//     border-radius: var(--border-radius);
-//     box-shadow: var(--shadow-2);
-//     padding: 2rem 2.5rem;
-//     margin: 3rem auto;
-// `;
-
-// export const StyledLabel = styled.label`
-//     text-transform: lowercase;
-//     display: block;
-//     font-size: var(--small-text);
-//     margin-bottom: 0.75rem;
-//     text-transform: capitalize;
-//     letter-spacing: var(--letter-spacing);
-//     line-height: 1.5;
-// `;
-
-// export const FormSection = styled.div`
-//     width: 90vw;
-//     max-width: var(--fixed-width);
-//     border-radius: var(--border-radius);
-//     box-shadow: var(--shadow-2);
-//     padding: 2rem 2.5rem;
-//     margin: 3rem auto;
-// `;
-
 export const Fieldwrapper = styled.div`
     .form-row {
         margin-bottom: 0.5rem;
@@ -270,42 +247,3 @@ export const Fieldwrapper = styled.div`
         text-transform: lowercase;
     }
 `;
-
-// export const AddButton = styled.button`
-//     margin-top: 1rem;
-//     background-color: var(--color-blue-dark);
-//     width: 100%;
-//     cursor: pointer;
-//     color: var(--white);
-//     border: transparent;
-//     border-radius: var(--border-radius);
-//     letter-spacing: var(--letter-spacing);
-//     padding: 1rem 4rem;
-//     box-shadow: var(--shadow-1);
-//     transition: var(--transition);
-//     text-transform: capitalize;
-//     display: inline-block;
-// `;
-
-// export const Overlay = styled.div`
-//     width: 100vw;
-//     height: 100vh;
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-// `;
-
-// export const DeleteButton = styled.button`
-//     background-color: rgb(34, 63, 75);
-//     color: white;
-//     border-radius: 8px;
-//     border: 1px solid transparent;
-//     padding: 0.6em 1.2em;
-//     padding: 0.2em 3em; /* Smaller padding */
-//     font-size: 0.8em; /* Smaller font size */
-//     font-family: inherit;
-//     cursor: pointer;
-//     transition: border-color 0.25s;
-// `;
