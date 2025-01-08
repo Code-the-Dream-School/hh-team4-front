@@ -31,8 +31,8 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
                 id === 'expirationDate'
                     ? 'datetime-local'
                     : ['quantity', 'minAmount'].includes(id)
-                      ? 'number'
-                      : 'text'
+                        ? 'number'
+                        : 'text'
             }
             key={id}
             id={id}

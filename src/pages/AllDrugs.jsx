@@ -20,6 +20,11 @@ const AllDrugs = () => {
     const roleOfUser = user.role;
     console.log(roleOfUser);
     console.log(store);
+    const formatForDatetimeLocal = (isoDate) => {
+        const date = new Date(isoDate);
+        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return offsetDate.toISOString().slice(0, 10);
+    };
     const columnLabels = [
         'name',
         'genericName',
@@ -185,9 +190,9 @@ const AllDrugs = () => {
                                         <AiFillMinusCircle />
                                     </button>
                                 </div>
-                            ) : (
-                                drug[label] || ''
-                            )}
+                            ) : (label === 'expirationDate') ? (
+                                formatForDatetimeLocal(drug[label])) :
+                                (drug[label] || '')}
                         </div>
                     ))
                 )}

@@ -30,7 +30,7 @@ export default function AddDrug({ addDrugs }) {
     const formatForDatetimeLocal = (isoDate) => {
         const date = new Date(isoDate);
         const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return offsetDate.toISOString().slice(0, 16);
+        return offsetDate.toISOString().slice(0, 10);
     };
 
     const formatDate = (date) => {
@@ -126,12 +126,7 @@ export default function AddDrug({ addDrugs }) {
         }
         setFormData((prev) => ({
             ...prev,
-            [id]:
-                id === 'quantity' || id === 'threshold'
-                    ? Math.max(0, parseInt(value, 10)) || ''
-                    : id === 'expirationDate'
-                      ? formatDate(value)
-                      : value,
+            [id]: value,
         }));
     };
     const validate = (values) => {
@@ -198,7 +193,6 @@ export default function AddDrug({ addDrugs }) {
             });
 
         if (isEmpty(errors)) {
-            console.log('this are errors', errors);
 
             setFormData({
                 name: '',

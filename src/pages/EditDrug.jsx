@@ -157,8 +157,8 @@ export default function EditDrug() {
                 id === 'quantity' || id === 'threshold'
                     ? Math.max(0, parseInt(value, 10)) || ''
                     : id === 'expirationDate'
-                      ? value
-                      : value,
+                        ? value
+                        : value,
         }));
     };
 
