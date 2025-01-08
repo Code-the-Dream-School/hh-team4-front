@@ -19,7 +19,8 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
             return '';
         }
         const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return offsetDate.toISOString().slice(0, 16);
+        console.log(offsetDate)
+        return offsetDate.toISOString().slice(0, 10);
     };
 
     // Format value for datetime-local if it's for expirationDate
@@ -29,14 +30,14 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
         <StyleInput
             type={
                 id === 'expirationDate'
-                    ? 'datetime-local'
+                    ? 'date'
                     : ['quantity', 'minAmount'].includes(id)
                         ? 'number'
                         : 'text'
             }
             key={id}
             id={id}
-            value={formattedValue || ''} // Ensure empty string for falsy values
+            value={id === 'expirationDate' ? (value ? new Date(value).toISOString().split('T')[0] : '') : value} // Format date correctly for the date input
             onChange={handleInputChange}
             placeholder={placeholder}
             ref={inputRef}

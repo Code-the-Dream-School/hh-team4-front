@@ -33,7 +33,7 @@ export default function EditDrug() {
     const formatForDatetimeLocal = (isoDate) => {
         const date = new Date(isoDate);
         const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return offsetDate.toISOString().slice(0, 16);
+        return offsetDate.toISOString().slice(0, 10);
     };
 
     const drugClasses = [
@@ -157,7 +157,7 @@ export default function EditDrug() {
                 id === 'quantity' || id === 'threshold'
                     ? Math.max(0, parseInt(value, 10)) || ''
                     : id === 'expirationDate'
-                        ? value
+                        ? new Date(value).toISOString()
                         : value,
         }));
     };
