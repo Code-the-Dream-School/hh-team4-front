@@ -178,11 +178,10 @@ export default function AddDrug({ addDrugs }) {
                     toast.error(data.error);
                 }
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((error) => setError(error.message));
 
         if (isEmpty(errors)) {
+
             setFormData({
                 name: '',
                 genericName: '',
