@@ -130,8 +130,8 @@ export default function AddDrug({ addDrugs }) {
                 id === 'quantity' || id === 'threshold'
                     ? Math.max(0, parseInt(value, 10)) || ''
                     : id === 'expirationDate'
-                      ? formatDate(value)
-                      : value,
+                        ? formatDate(value)
+                        : value,
         }));
     };
     const validate = (values) => {
@@ -193,12 +193,9 @@ export default function AddDrug({ addDrugs }) {
                     toast.error(data.error);
                 }
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((error) => setError(error.message));
 
         if (isEmpty(errors)) {
-            console.log('this are errors', errors);
 
             setFormData({
                 name: '',
