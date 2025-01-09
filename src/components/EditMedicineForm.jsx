@@ -17,18 +17,16 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
         return parsedDate.toISOString().split('T')[0];
     };
 
-    const formattedValue =
-        id === 'expirationDate' ? formatDateForInput(value) : value;
+    const formattedValue = id === 'expirationDate' ? formatDateForInput(value) : value;
     return (
         <StyleInput
             type={
                 id === 'expirationDate'
                     ? 'date'
                     : ['quantity', 'minAmount'].includes(id)
-                        ? 'number'
-                        : 'text'
+                      ? 'number'
+                      : 'text'
             }
-
             key={id}
             id={id}
             value={formattedValue} // Format date correctly for the date input

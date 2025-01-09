@@ -191,9 +191,11 @@ const AllDrugs = () => {
                                         <AiFillMinusCircle />
                                     </button>
                                 </div>
-                            ) : (label === 'expirationDate') ? (
-                                formatForDatetimeLocal(drug[label])) :
-                                (drug[label] || '')}
+                            ) : label === 'expirationDate' ? (
+                                formatForDatetimeLocal(drug[label])
+                            ) : (
+                                drug[label] || ''
+                            )}
                         </div>
                     ))
                 )}

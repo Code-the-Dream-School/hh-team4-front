@@ -113,7 +113,7 @@ export default function AddDrug({ addDrugs }) {
                 setErrorsForm({});
             }
         }
-        console.log('AddDrug date', value)
+        console.log('AddDrug date', value);
         setFormData((prev) => ({
             ...prev,
             [id]: value,
@@ -183,7 +183,6 @@ export default function AddDrug({ addDrugs }) {
             });
 
         if (isEmpty(errors)) {
-
             setFormData({
                 name: '',
                 genericName: '',
