@@ -21,9 +21,10 @@ const AllDrugs = () => {
     console.log(roleOfUser);
     console.log(store);
     const formatForDatetimeLocal = (isoDate) => {
+        if (!isoDate) return ''; // Handle empty or invalid input gracefully
         const date = new Date(isoDate);
-        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return offsetDate.toISOString().slice(0, 10);
+        // Ensure the local date is correctly represented as 'yyyy-MM-dd'
+        return date.toISOString().split('T')[0];
     };
     const columnLabels = [
         'name',

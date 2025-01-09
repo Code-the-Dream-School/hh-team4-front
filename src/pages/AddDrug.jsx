@@ -27,17 +27,6 @@ export default function AddDrug({ addDrugs }) {
         lot: '',
     });
 
-    const formatForDatetimeLocal = (isoDate) => {
-        const date = new Date(isoDate);
-        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return offsetDate.toISOString().slice(0, 10);
-    };
-
-    const formatDate = (date) => {
-        if (!date) return '';
-        return formatForDatetimeLocal(date);
-    };
-
     const drugClasses = [
         'Analgesic',
         'Antiinflammatory',
@@ -124,6 +113,7 @@ export default function AddDrug({ addDrugs }) {
                 setErrorsForm({});
             }
         }
+        console.log('AddDrug date', value)
         setFormData((prev) => ({
             ...prev,
             [id]: value,
