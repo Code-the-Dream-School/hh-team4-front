@@ -203,8 +203,10 @@ const AllDrugs = () => {
                                     >
                                         <FaEdit />
                                     </button>
-                                    <button className="action-button delete"
-                                        onClick={() => handleDelete(drug._id)}>
+                                    <button
+                                        className="action-button delete"
+                                        onClick={() => handleDelete(drug._id)}
+                                    >
                                         <FaTrash />
                                     </button>
                                     <button
