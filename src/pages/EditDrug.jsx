@@ -145,7 +145,6 @@ export default function EditDrug() {
                 setErrorsForm({});
             }
         }
-        console.log('EditDrug date', value);
 
         setEditData((prev) => ({
             ...prev,

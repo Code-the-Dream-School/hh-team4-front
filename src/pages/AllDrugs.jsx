@@ -21,9 +21,8 @@ const AllDrugs = () => {
     console.log(roleOfUser);
     console.log(store);
     const formatForDatetimeLocal = (isoDate) => {
-        if (!isoDate) return ''; // Handle empty or invalid input gracefully
+        if (!isoDate) return '';
         const date = new Date(isoDate);
-        // Ensure the local date is correctly represented as 'yyyy-MM-dd'
         return date.toISOString().split('T')[0];
     };
     const columnLabels = [

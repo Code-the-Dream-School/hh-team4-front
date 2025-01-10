@@ -5,6 +5,7 @@ import Logo from '../components/Logo';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 export default function AddDrug({ addDrugs }) {
+    const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         genericName: '',
@@ -113,7 +114,6 @@ export default function AddDrug({ addDrugs }) {
                 setErrorsForm({});
             }
         }
-        console.log('AddDrug date', value);
         setFormData((prev) => ({
             ...prev,
             [id]: value,
@@ -178,9 +178,7 @@ export default function AddDrug({ addDrugs }) {
                     toast.error(data.error);
                 }
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((error) => setError(error.message));
 
         if (isEmpty(errors)) {
             setFormData({
@@ -199,6 +197,7 @@ export default function AddDrug({ addDrugs }) {
     return (
         <Wrapper>
             <div>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
                 <AddForm onSubmit={handleAddMed}>
                     <div>
                         <Logo />
