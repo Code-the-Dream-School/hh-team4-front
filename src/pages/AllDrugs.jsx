@@ -127,6 +127,29 @@ const AllDrugs = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
+    const handleDelete = (drugId) => {
+        const token = localStorage.getItem('token');
+        fetch(`http://localhost:8000/api/v1/inventory/${drugId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error('Failed to delete drug');
+                return response.json();
+            })
+            .then(() => {
+                // Remove deleted drug from the state
+                setData((prevData) => prevData.filter((drug) => drug._id !== drugId));
+                setFilterData((prevFilterData) =>
+                    prevFilterData.filter((drug) => drug._id !== drugId)
+                );
+            })
+            .catch((error) => setError(error.message));
+    };
+
     return (
         <Wrapper>
             <div className="centered-container">
@@ -180,7 +203,8 @@ const AllDrugs = () => {
                                     >
                                         <FaEdit />
                                     </button>
-                                    <button className="action-button delete">
+                                    <button className="action-button delete"
+                                        onClick={() => handleDelete(drug._id)}>
                                         <FaTrash />
                                     </button>
                                     <button
