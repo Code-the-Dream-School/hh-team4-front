@@ -9,6 +9,7 @@ const AddMedicineForm = ({ id, value, handleMedChange, placeholder }) => {
         inputRef.current.focus();
     }, [value]);
 
+    console.log('add', value);
     return (
         <StyleInput
             type={

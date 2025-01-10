@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import EditMedicineForm from '../components/EditMedicineForm';
 import styled from 'styled-components';
-import { FaEdit } from 'react-icons/fa';
+import Logo from '../components/Logo';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function EditDrug() {
-    const { id } = useParams(); // Get drug ID from URL
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [editData, setEditData] = useState({
         name: '',
         genericName: '',
@@ -16,6 +19,18 @@ export default function EditDrug() {
         ndcNumber: '',
         lot: '',
     });
+
+    const [errorsForm, setErrorsForm] = useState({
+        name: '',
+        genericName: '',
+        class: '',
+        quantity: '',
+        threshold: '',
+        expirationDate: '',
+        ndcNumber: '',
+        lot: '',
+    });
+
     const drugClasses = [
         'Antibiotic',
         'Analgesic',
@@ -27,7 +42,6 @@ export default function EditDrug() {
     ];
 
     useEffect(() => {
-        // Fetch existing drug data to populate form
         const token = localStorage.getItem('token');
         fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
             method: 'GET',
@@ -55,129 +69,195 @@ export default function EditDrug() {
     const handleInputChange = (event) => {
         const { id, value } = event.target;
 
+        if (id === 'name') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    name: 'Please provide Medication Name',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'genericName') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    genericName: 'Please provide Generic Medication Name',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'quantity') {
+            if (parseInt(value) < 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    quantity: 'Please provide Quantity must be a non-negative number',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'threshold') {
+            if (parseInt(value) < 10) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    threshold: 'Please provide threshold quantity greater than 10',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'expirationDate') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    expirationDate: 'Please provide Expiration Date',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'ndcNumber') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    ndcNumber: 'Please provide NDC Number',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+
+        if (id === 'lot') {
+            if (value.length <= 0) {
+                setErrorsForm((prevErrors) => ({
+                    ...prevErrors,
+                    lot: 'Please provide LOT Number',
+                }));
+            } else {
+                setErrorsForm({});
+            }
+        }
+        console.log('EditDrug date', value);
+
         setEditData((prev) => ({
             ...prev,
-            [id]: id === 'quantity' || id === 'threshold' ? parseInt(value, 10) || '' : value,
+            [id]: value,
         }));
     };
 
+    const validate = (values) => {
+        const errors = {};
+
+        if (!values.name) {
+            errors.name = 'Please provide Medication Name';
+        }
+        if (!values.genericName) {
+            errors.genericName = 'Please provide Generic Medication Name';
+        }
+        if (!values.quantity) {
+            errors.quantity = 'Please provide Quantity must be a non-negative number';
+        }
+        if (!values.threshold) {
+            errors.threshold = 'Please provide threshold quantity';
+        } else if (values.threshold < 10) {
+            errors.threshold = 'Threshold must be higher than 10';
+        }
+        if (!values.expirationDate) {
+            errors.expirationDate = 'Please provide Expiration Date';
+        }
+        if (!values.ndcNumber) {
+            errors.ndcNumber = 'Please provide NDC Number';
+        }
+        if (!values.lot) {
+            errors.lot = 'Please provide Lot Code';
+        }
+        return errors;
+    };
+    const isEmpty = (obj) => Object.keys(obj).length === 0;
+
     const handleSaveChanges = (event) => {
         event.preventDefault();
-
-        const token = localStorage.getItem('token');
-        fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
-            method: 'PATCH', // Or other HTTP methods like POST, PUT, DELETE, etc.
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(editData),
-        })
-            .then((response) => {
-                // Handle the response
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json(); // Assuming the response is JSON
+        const errors = validate(editData);
+        setErrorsForm(errors);
+        if (isEmpty(errors)) {
+            const token = localStorage.getItem('token');
+            fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...editData,
+                }),
             })
-            .then((data) => {
-                // Do something with the data
-                console.log(data);
-            })
-            .catch((error) => {
-                // Handle errors
-                console.error('Error:', error);
-            });
-
-        setEditData({
-            name: '',
-            genericName: '',
-            class: '',
-            quantity: '',
-            threshold: '',
-            expirationDate: '',
-            ndcNumber: '',
-            lot: '',
-        });
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.success) {
+                        toast.success('Changes saved successfully');
+                        navigate('/dashboard');
+                    } else {
+                        toast.error(data.error || 'Failed to save changes');
+                    }
+                })
+                .catch((error) => console.error('Error:', error));
+        }
     };
+
+    const renderFormRow = (id, value) => (
+        <div className="form-row" key={id}>
+            <StyledLabel htmlFor={id}>{id.replace(/([A-Z])/g, ' $1').toLowerCase()}</StyledLabel>
+            {id === 'class' ? (
+                <select className="form-input" id={id} value={value} onChange={handleInputChange}>
+                    <option value="" disabled>
+                        Select a class
+                    </option>
+                    {drugClasses.map((drugClass) => (
+                        <option key={drugClass} value={drugClass}>
+                            {drugClass}
+                        </option>
+                    ))}
+                </select>
+            ) : (
+                <EditMedicineForm
+                    type={id === 'expirationDate' ? 'date' : 'text'}
+                    id={id}
+                    value={value}
+                    handleInputChange={handleInputChange}
+                    placeholder={id.replace(/([A-Z])/g, ' $1')}
+                />
+            )}
+            {errorsForm[id] && (
+                <p style={{ color: 'red', fontSize: '0.9rem', marginTop: '0.2rem' }}>
+                    {errorsForm[id]}
+                </p>
+            )}
+        </div>
+    );
 
     return (
         <Wrapper>
-            <div>
-                <form onSubmit={handleSaveChanges}>
-                    <div className="icon-heading">
-                        <h2 className="heading">Edit Medication</h2>
-                        <FaEdit className="icon" />
-                    </div>
-                    {Object.entries(editData).map(([id, value]) => (
-                        <div key={id}>
-                            <StyledLabel className="form-label" htmlFor={id}>
-                                {id.replace(/([A-Z])/g, ' $1').toLowerCase()}{' '}
-                                {/* This will render the label text */}
-                            </StyledLabel>
-                            {id === 'class' ? (
-                                <div className="form-row">
-                                    <select
-                                        className="form-input"
-                                        id={id}
-                                        value={value}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="" disabled>
-                                            Select a class
-                                        </option>
-                                        {drugClasses.map((drugClass) => (
-                                            <option key={drugClass} value={drugClass}>
-                                                {drugClass}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            ) : (
-                                <EditMedicineForm
-                                    type={id === 'expirationDate' ? 'date' : 'text'}
-                                    id={id}
-                                    value={value}
-                                    handleInputChange={handleInputChange}
-                                    placeholder={id.replace(/([A-Z])/g, ' $1')}
-                                >
-                                    <FormSection>
-                                        <Fieldwrapper>
-                                            <StyledLabel htmlFor="quantity">Quantity</StyledLabel>
-                                            <EditMedicineForm
-                                                type="text"
-                                                id="quantity"
-                                                value={editData.quantity}
-                                                handleSaveChanges={handleSaveChanges}
-                                                placeholder="Quantity"
-                                            />
-                                        </Fieldwrapper>
-                                        <Fieldwrapper>
-                                            <div className="form-row">
-                                                <StyledLabel htmlFor="threshold">
-                                                    Min Amount
-                                                </StyledLabel>
-                                                <EditMedicineForm
-                                                    type="text"
-                                                    id="threshold"
-                                                    value={editData.threshold}
-                                                    handleInputChange={handleInputChange}
-                                                    placeholder="Min Amount"
-                                                />
-                                            </div>
-                                        </Fieldwrapper>
-                                    </FormSection>
-                                </EditMedicineForm>
-                            )}
-                        </div>
-                    ))}
-
-                    {/* Add other form fields as needed */}
-                    <button className="btn btn-block" type="submit">
-                        Save Changes
-                    </button>
-                </form>
-            </div>
+            <AddForm onSubmit={handleSaveChanges}>
+                <div>
+                    <Logo />
+                    <h4>EDIT DRUG</h4>
+                    {Object.entries(editData).map(([id, value]) => renderFormRow(id, value))}
+                </div>
+                <SaveButton type="submit">Save Changes</SaveButton>
+            </AddForm>
         </Wrapper>
     );
 }
@@ -186,20 +266,6 @@ export const Wrapper = styled.section`
     min-height: 100vh;
     display: grid;
     align-items: center;
-    .icon-heading {
-        display: flex;
-    }
-    .heading {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        font-weight: bold;
-        color: var(--color-blue-dark);
-    }
-    .icon {
-        font-size: 2rem;
-        margin-left: 1rem;
-        color: var(--color-green-dark);
-    }
     h4 {
         text-align: center;
         margin-bottom: 1.38rem;
@@ -223,7 +289,15 @@ export const AddForm = styled.form`
     margin: 3rem auto;
 `;
 
-export const StyledLabel = styled.label``;
+export const StyledLabel = styled.label`
+    text-transform: lowercase;
+    display: block;
+    font-size: var(--small-text);
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+    letter-spacing: var(--letter-spacing);
+    line-height: 1.5;
+`;
 
 export const FormSection = styled.div`
     width: 90vw;
@@ -253,7 +327,7 @@ export const Fieldwrapper = styled.div`
     }
 `;
 
-export const AddButton = styled.button`
+export const SaveButton = styled.button`
     margin-top: 1rem;
     background-color: var(--color-blue-dark);
     width: 100%;

@@ -10,13 +10,22 @@ import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import { useDashboardContext } from './Dashboard';
+import Modal from '../components/Modal';
+
 // import { TbChevronsDownLeft } from 'react-icons/tb';
 
 const AllDrugs = () => {
     const { user, store } = useDashboardContext();
+
     const roleOfUser = user.role;
     console.log(roleOfUser);
     console.log(store);
+    const formatForDatetimeLocal = (isoDate) => {
+        if (!isoDate) return ''; // Handle empty or invalid input gracefully
+        const date = new Date(isoDate);
+        // Ensure the local date is correctly represented as 'yyyy-MM-dd'
+        return date.toISOString().split('T')[0];
+    };
     const columnLabels = [
         'name',
         'genericName',
@@ -27,9 +36,30 @@ const AllDrugs = () => {
         'ndcNumber',
         'view/edit/delete/dispense',
     ];
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [record, setRecord] = useState({
+        name: '',
+        genericName: '',
+        class: '',
+        quantity: '',
+        expirationDate: '',
+        lot: '',
+        ndcNumber: '',
+    });
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleView = (drugId) => {
+        const selectedDrug = data.find((drug) => drug._id === drugId);
+        setRecord(selectedDrug);
+        openModal();
+    };
     const editNavigate = useNavigate();
-
     const handleEdit = (drugId) => {
         editNavigate(`/dashboard/edit/${drugId}`);
     };
@@ -68,12 +98,14 @@ const AllDrugs = () => {
                     setData(alarmFilterData);
                     setFilterData(alarmFilterData);
                 } else {
+
                     //const storeData = data.data.filter( d=> d.location === ) ;
                     const storeData = data.data.filter((item) => item.location === store);
                     // console.log(data)
                     // console.log(storeData)
                     setData(storeData);
                     setFilterData(storeData);
+
                 }
 
                 setLoading(false);
@@ -110,7 +142,6 @@ const AllDrugs = () => {
                             <FaFilter className="filter-icon" />
                         </button>
                     </div>
-                    <div></div>
                     <div className="search-box">
                         <div className="search-icon">
                             <IoIosSearch />
@@ -138,9 +169,18 @@ const AllDrugs = () => {
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                             {label === 'view/edit/delete/dispense' ? (
                                 <div className="actions">
-                                    <button className="action-button view">
+                                    <button
+                                        className="action-button view"
+                                        onClick={() => handleView(drug._id)}
+                                    >
                                         <FaEye />
                                     </button>
+                                    <Modal
+                                        isOpen={isModalOpen}
+                                        onClose={closeModal}
+                                        record={record}
+                                    />
+
                                     {(roleOfUser === 'admin' ||
                                         roleOfUser === 'inventoryManager') && (
                                         <>
@@ -155,6 +195,8 @@ const AllDrugs = () => {
                                             </button>
                                         </>
                                     )}
+                                    
+
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}
@@ -162,6 +204,8 @@ const AllDrugs = () => {
                                         <AiFillMinusCircle />
                                     </button>
                                 </div>
+                            ) : label === 'expirationDate' ? (
+                                formatForDatetimeLocal(drug[label])
                             ) : (
                                 drug[label] || ''
                             )}
