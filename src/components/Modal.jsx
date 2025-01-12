@@ -13,7 +13,10 @@ const Modal = ({ isOpen, onClose, record, title }) => {
                 <h2 style={h2Style}>{title}</h2>
                 {Object.entries(record)
                     .filter(
-                        ([key]) => key.toUpperCase() !== '__V' && key.toUpperCase() !== 'CREATEDBY' && key.toUpperCase() !== 'VIEW'
+                        ([key]) =>
+                            key.toUpperCase() !== '__V' &&
+                            key.toUpperCase() !== 'CREATEDBY' &&
+                            key.toUpperCase() !== 'VIEW'
                     ) // Exclude unwanted keys
                     .map(([key, value]) => (
                         <p style={pStyle} key={key}>

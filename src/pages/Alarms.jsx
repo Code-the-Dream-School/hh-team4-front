@@ -10,7 +10,7 @@ export default function Alarms() {
     const [noStockData, setnoStockData] = useState([]);
     const [expiringsoonData, setExpiringData] = useState([]);
     const [expiredData, setExpiredData] = useState([]);
-    const { user, store } = useDashboardContext();
+    const { store } = useDashboardContext();
 
     useEffect(() => {
         const token = localStorage.getItem('token');

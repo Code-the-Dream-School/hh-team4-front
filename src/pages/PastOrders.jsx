@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDashboardContext } from './Dashboard';
 import Modal from '../components/Modal';
 import FilterSearch from './FilterSearch';
-import { useLocation } from 'react-router-dom';
+//import { useLocation } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
 import Pagination from '../components/Pagination';
 
@@ -36,7 +36,7 @@ const PastOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [filterData, setFilterData] = useState([]);
     const [error, setError] = useState(false);
-    const location = useLocation();
+    //const location = useLocation();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
@@ -71,7 +71,7 @@ const PastOrders = () => {
                 return response.json();
             })
             .then((data) => {
-               // setLogs(data.logs);
+                // setLogs(data.logs);
                 const extractLogs = data.logs
                     .filter((log) => log.medicationId?.location === store)
                     .map((log) => ({
