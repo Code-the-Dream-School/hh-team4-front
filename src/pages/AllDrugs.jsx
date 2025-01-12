@@ -172,7 +172,7 @@ const AllDrugs = () => {
                                     >
                                         <FaEye />
                                     </button>
-                                        <Modal
+                                    <Modal
                                         isOpen={isModalOpen}
                                         onClose={closeModal}
                                         record={record}
@@ -191,7 +191,6 @@ const AllDrugs = () => {
                                             </button>
                                         </>
                                     )}
-
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}
