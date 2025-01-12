@@ -8,9 +8,7 @@ import { useEffect } from 'react';
 //formData - is an api, gives back an array of arrays, must have name same as database
 export const action = async ({ request }) => {
     const formData = await request.formData();
-    console.log(formData);
     const data = Object.fromEntries(formData);
-    console.log(data);
     try {
         await customFetch.post('/auth/signup', data);
         toast.success('Adding Employee Successful');

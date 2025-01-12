@@ -18,7 +18,12 @@ const AllDrugs = () => {
     const { user, store } = useDashboardContext();
 
     const roleOfUser = user.role;
-
+    
+    const formatForDatetimeLocal = (isoDate) => {
+        if (!isoDate) return '';
+        const date = new Date(isoDate);
+        return date.toISOString().split('T')[0];
+    };
     const columnLabels = [
         'name',
         'genericName',
@@ -209,6 +214,8 @@ const AllDrugs = () => {
                                         <AiFillMinusCircle />
                                     </button>
                                 </div>
+                            ) : label === 'expirationDate' ? (
+                                formatForDatetimeLocal(drug[label])
                             ) : (
                                 drug[label] || ''
                             )}

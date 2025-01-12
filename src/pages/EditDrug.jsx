@@ -30,11 +30,6 @@ export default function EditDrug() {
         ndcNumber: '',
         lot: '',
     });
-    const formatForDatetimeLocal = (isoDate) => {
-        const date = new Date(isoDate);
-        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return offsetDate.toISOString().slice(0, 16);
-    };
 
     const drugClasses = [
         'Antibiotic',
@@ -153,12 +148,7 @@ export default function EditDrug() {
 
         setEditData((prev) => ({
             ...prev,
-            [id]:
-                id === 'quantity' || id === 'threshold'
-                    ? Math.max(0, parseInt(value, 10)) || ''
-                    : id === 'expirationDate'
-                      ? value
-                      : value,
+            [id]: value,
         }));
     };
 
@@ -206,7 +196,6 @@ export default function EditDrug() {
                 },
                 body: JSON.stringify({
                     ...editData,
-                    expirationDate: formatForDatetimeLocal(editData.expirationDate), // Format the date before sending
                 }),
             })
                 .then((response) => {

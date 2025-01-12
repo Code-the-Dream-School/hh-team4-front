@@ -5,6 +5,7 @@ import Logo from '../components/Logo';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 export default function AddDrug({ addDrugs }) {
+    const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         genericName: '',
@@ -26,17 +27,6 @@ export default function AddDrug({ addDrugs }) {
         ndcNumber: '',
         lot: '',
     });
-
-    const formatForDatetimeLocal = (isoDate) => {
-        const date = new Date(isoDate);
-        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return offsetDate.toISOString().slice(0, 16);
-    };
-
-    const formatDate = (date) => {
-        if (!date) return '';
-        return formatForDatetimeLocal(date);
-    };
 
     const drugClasses = [
         'Analgesic',
@@ -126,12 +116,7 @@ export default function AddDrug({ addDrugs }) {
         }
         setFormData((prev) => ({
             ...prev,
-            [id]:
-                id === 'quantity' || id === 'threshold'
-                    ? Math.max(0, parseInt(value, 10)) || ''
-                    : id === 'expirationDate'
-                      ? formatDate(value)
-                      : value,
+            [id]: value,
         }));
     };
     const validate = (values) => {
@@ -193,13 +178,9 @@ export default function AddDrug({ addDrugs }) {
                     toast.error(data.error);
                 }
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((error) => setError(error.message));
 
         if (isEmpty(errors)) {
-            console.log('this are errors', errors);
-
             setFormData({
                 name: '',
                 genericName: '',
@@ -216,6 +197,7 @@ export default function AddDrug({ addDrugs }) {
     return (
         <Wrapper>
             <div>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
                 <AddForm onSubmit={handleAddMed}>
                     <div>
                         <Logo />
