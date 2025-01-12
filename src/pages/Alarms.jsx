@@ -1,6 +1,7 @@
 import React from 'react';
 import Alarmbutton from './AlarmButton.jsx';
 import { useEffect, useState } from 'react';
+import { useDashboardContext } from './Dashboard';
 
 import styles from './AlarmButton.module.css';
 
@@ -8,7 +9,8 @@ export default function Alarms() {
     const [lowStockData, setLowStockData] = useState([]);
     const [noStockData, setnoStockData] = useState([]);
     const [expiringsoonData, setExpiringData] = useState([]);
-    // const [drugsData, setDrugsData] = useState([]);
+    const [expiredData, setExpiredData] = useState([]);
+    const { user, store } = useDashboardContext();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -27,8 +29,8 @@ export default function Alarms() {
                 return response.json();
             })
             .then((data) => {
-                // setDrugsData(data.data);
-                FilterData(data.data);
+                const StoreData = data.data.filter((item) => item.location === store);
+                FilterData(StoreData);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -48,9 +50,21 @@ export default function Alarms() {
             const expirationDate = new Date(drug.expirationDate);
             if (isNaN(expirationDate)) return false;
             const today = new Date();
-            return expirationDate - today < 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+            //return expirationDate - today < 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+
+            const next30Days = new Date(); // Clone current date
+            next30Days.setDate(today.getDate() + 30); // Add 30 days
+
+            return expirationDate >= today && expirationDate <= next30Days;
         });
         setExpiringData(expirationDateData); //Data for Date checking
+
+        const expireddata = drugsData.filter((drug) => {
+            const today = new Date();
+            const expirationDate = new Date(drug.expirationDate);
+            return expirationDate <= today;
+        });
+        setExpiredData(expireddata); //Data for Date checking
     };
 
     return (
@@ -72,9 +86,16 @@ export default function Alarms() {
                     targetPage="dashboard"
                 />
                 <Alarmbutton
-                    message={`Expiration soon on ${expiringsoonData.length} products`}
-                    imagepath="../images/expire-soon.png"
+                    message={`Expired ${expiredData.length} products`}
+                    imagepath="../images/expired.png"
                     filterTitle="Expire"
+                    alarmFilterData={expiredData}
+                    targetPage="dashboard"
+                />
+                <Alarmbutton
+                    message={`Expiration soon ${expiringsoonData.length} products`}
+                    imagepath="../images/expire-soon.png"
+                    filterTitle="Expire soon"
                     alarmFilterData={expiringsoonData}
                     targetPage="dashboard"
                 />

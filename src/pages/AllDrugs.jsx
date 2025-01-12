@@ -18,8 +18,7 @@ const AllDrugs = () => {
     const { user, store } = useDashboardContext();
 
     const roleOfUser = user.role;
-    console.log(roleOfUser);
-    console.log(store);
+
     const columnLabels = [
         'name',
         'genericName',
@@ -40,6 +39,7 @@ const AllDrugs = () => {
         lot: '',
         ndcNumber: '',
     });
+
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -69,6 +69,8 @@ const AllDrugs = () => {
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
+    const [originalData, setOriginalData] = useState([]);
+    const [isFilteredByAlarm, setIsFilteredByAlarm] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -88,19 +90,29 @@ const AllDrugs = () => {
             })
             .then((data) => {
                 //  const filteredData = data.data.filter((item) => item.store === store);
+
                 if (alarmFilterData) {
-                    setData(alarmFilterData);
-                    setFilterData(alarmFilterData);
+                    setOriginalData(data.data);
+                    setData(location.state ? alarmFilterData : null);
+                    setFilterData(location.state ? alarmFilterData : null);
+                    setIsFilteredByAlarm(true);
                 } else {
+                    setOriginalData(data.data);
                     setData(data.data);
-                    console.log(data.data);
                     setFilterData(data.data);
+                    setIsFilteredByAlarm(false);
                 }
 
                 setLoading(false);
             })
             .catch((error) => setError(error.message));
-    }, [alarmFilterData]);
+    }, [location.state]);
+
+    const resetToOriginalData = () => {
+        setData(originalData);
+        setFilterData(originalData);
+        setIsFilteredByAlarm(false);
+    };
 
     const toggleSearch = () => {
         setSearchSection((prevState) => !prevState);
@@ -128,14 +140,25 @@ const AllDrugs = () => {
                 <div className="filter-search-box">
                     <div className="left-filter-box">
                         <button className="filter-button" onClick={toggleSearch}>
-                            <FaFilter className="filter-icon" />
+                            <FaFilter className="filter-icon" title="advanced search" />
                         </button>
                     </div>
                     <div className="search-box">
                         <div className="search-icon">
                             <IoIosSearch />
                         </div>
-                        <LiveSearch data={data} liveSearchFilter={handleFilter} />
+                        <LiveSearch
+                            data={data}
+                            formName="allDrug"
+                            liveSearchFilter={handleFilter}
+                        />
+                    </div>
+                    <div>
+                        {isFilteredByAlarm && (
+                            <button onClick={resetToOriginalData} className="reset-button">
+                                Reset to Original Data
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -143,7 +166,7 @@ const AllDrugs = () => {
                 {searchsection && (
                     <div>
                         <br />
-                        <FilterSearch data={data} onFilter={handleFilter} />
+                        <FilterSearch data={data} formName="allDrug" onFilter={handleFilter} />
                     </div>
                 )}
             </div>
@@ -168,6 +191,7 @@ const AllDrugs = () => {
                                         isOpen={isModalOpen}
                                         onClose={closeModal}
                                         record={record}
+                                        title="Medication Details"
                                     />
                                     <button
                                         className="action-button edit"

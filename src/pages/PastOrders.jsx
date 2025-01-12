@@ -1,84 +1,125 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
-import { FaFilter } from 'react-icons/fa';
-import { TbBellFilled } from 'react-icons/tb';
-import { useEffect , useState } from 'react';
+import { FaFilter, FaEye } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 import { useDashboardContext } from './Dashboard';
 import Modal from '../components/Modal';
-
+import FilterSearch from './FilterSearch';
+import { useLocation } from 'react-router-dom';
+import LiveSearch from '../components/LiveSearch';
+import Pagination from '../components/Pagination';
 
 const PastOrders = () => {
     const columnLabels = [
         'drugName',
+        'genericName',
         'lot',
-        'className', 
+        'className',
         'dispensedQuantity',
         'dispensedDate',
-        'dispenseId',
-        'drugId',
         'view',
-        
     ];
 
-    const [logs, setLogs] = useState([]);
+    const [record, setRecord] = useState({
+        drugName: '',
+        genericName: '',
+        lot: '',
+        className: '',
+        dispensedQuantity: '',
+        dispensedDate: '',
+    });
+    //const [logs, setLogs] = useState([]);
+    const [filteredlogs, setFilteredLogs] = useState([]);
     const { store } = useDashboardContext();
+    const [loading, setLoading] = useState(true);
+    const [searchsection, setSearchSection] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [filterData, setFilterData] = useState([]);
+    const [error, setError] = useState(false);
+    const location = useLocation();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
-   
-    console.log(`storeid is ${store}`)
-    const token = localStorage.getItem('token') ;
-   
+    const handleView = (dispensedDrugId) => {
+        const selectedDrug = filteredlogs.find((drug) => drug.dispensedId === dispensedDrugId);
 
-    useEffect( () => {fetch(`http://localhost:8000/api/v1/dispense-logs`,{
-        method: 'GET' ,
-        headers:{
-            Authorization:`Bearer ${token}`,
-            'Contetnt-Type': 'application/json',
-        }
-    }
-    ).then((response) => {
-        if (!response) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    }).then((data)=> {
-        console.log(data.logs) ;
-        const extractLogs= data.logs
-            .filter((log) => log.medicationId?.location === store) 
-            .map((log) => ({
+        setRecord(selectedDrug);
+        openModal();
+    };
 
-                drugName: log.medicationId?.name,
-                lot: log.medicationId?.lot,
-                className: log.medicationId?.class, 
-                dispensedQuantity: log.quantity,
-                dispensedDate: log.dispenseDate,
-                dispenseId: log._id,
-                drugId: log.medicationId?._id,
-                
-                
-                
-            }));
-            console.log(extractLogs) ;
-         setLogs(extractLogs) ;
-        
-    }
-    ).catch((error)=>{
-        console.error('Error accessing Dispense data')
-    })} , []);
+    const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        fetch(`http://localhost:8000/api/v1/dispense-logs`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Contetnt-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (!response) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+               // setLogs(data.logs);
+                const extractLogs = data.logs
+                    .filter((log) => log.medicationId?.location === store)
+                    .map((log) => ({
+                        drugName: log.medicationId?.name || 'N/A',
+                        genericName: log.medicationId?.genericName || 'N/A',
+
+                        className: log.medicationId?.class || 'N/A',
+                        lot: log.medicationId?.lot || 'N/A',
+                        dispensedQuantity: log.quantity || 0,
+                        dispensedDate: log.dispenseDate || 'N/A',
+                        dispensedId: log._id,
+                        view: '', // Keep this for the action column
+                    }));
+
+                setFilteredLogs(extractLogs);
+                setFilterData(extractLogs);
+                setLoading(false);
+            })
+            .catch((error) => setError(error.message));
+    }, []);
+
+    const toggleSearch = () => {
+        setSearchSection((prevState) => !prevState);
+    };
+
+    const handleFilter = (filteredData) => {
+        setFilterData(filteredData);
+    };
+
+    const itemsPerPage = 10;
+    const totalItems = filterData.length;
+
+    const getCurrentItems = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return filterData.slice(startIndex, endIndex);
+    };
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
     return (
         <Wrapper>
             {/*  */}
             <div className="centered-container">
-                <div className="bell-icon-box">
-                    <button className="bell-button">
-                        <TbBellFilled className="bell-icon" />
-                    </button>
-                </div>
                 <div className="filter-search-box">
                     <div className="left-filter-box">
-                        <button className="filter-button">
+                        <button className="filter-button" onClick={toggleSearch}>
                             <FaFilter className="filter-icon" />
                         </button>
                     </div>
@@ -86,10 +127,25 @@ const PastOrders = () => {
                         <div className="search-icon">
                             <IoIosSearch />
                         </div>
-                        <input type="text" placeholder="Search ..." className="search-input" />
+                        <LiveSearch
+                            data={filteredlogs}
+                            liveSearchFilter={handleFilter}
+                            formName="pastOrders"
+                        />
                     </div>
                 </div>
-                <div className="blank"></div>
+            </div>
+            <div className="advanced-search">
+                {searchsection && (
+                    <div>
+                        <br />
+                        <FilterSearch
+                            data={filteredlogs}
+                            onFilter={handleFilter}
+                            formName="pastOrders"
+                        />
+                    </div>
+                )}
             </div>
             {/*  */}
             <div className="grid-container">
@@ -100,19 +156,38 @@ const PastOrders = () => {
                     </div>
                 ))}
                 {/* Render rows dynamically */}
-                
-                {logs.map((drug, rowIndex) =>
-                    columnLabels.map((label, colIndex) =>
-                        
-                        (
-                            
 
+                {getCurrentItems().map((drug, rowIndex) =>
+                    columnLabels.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {drug[label] || ''}
+                            {label === 'view' ? (
+                                <div className="actions">
+                                    <button
+                                        className="action-button view"
+                                        onClick={() => handleView(drug.dispensedId)}
+                                    >
+                                        <FaEye />
+                                    </button>
+                                    <Modal
+                                        isOpen={isModalOpen}
+                                        onClose={closeModal}
+                                        record={record}
+                                        title="Dispensed Medication Details"
+                                    />
+                                </div>
+                            ) : (
+                                drug[label] || 'N/A' // Use a fallback for missing values
+                            )}
                         </div>
-))
+                    ))
                 )}
             </div>
+            <Pagination
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+            />
         </Wrapper>
     );
 };
@@ -189,7 +264,7 @@ const Wrapper = styled.section`
     }
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(8, 1fr);
+        grid-template-columns: repeat(7, 1fr);
         gap: 10px;
         padding: 10px;
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Modal = ({ isOpen, onClose, record }) => {
+const Modal = ({ isOpen, onClose, record, title }) => {
     if (!isOpen) return null;
 
     return (
@@ -10,37 +10,16 @@ const Modal = ({ isOpen, onClose, record }) => {
                 <button onClick={onClose} style={closeButtonStyle}>
                     X
                 </button>
-                <h2 style={h2Style}>Medication Details</h2>
+                <h2 style={h2Style}>{title}</h2>
                 {Object.entries(record)
                     .filter(
-                        ([key]) => key.toUpperCase() !== '__V' && key.toUpperCase() !== 'CREATEDBY'
+                        ([key]) => key.toUpperCase() !== '__V' && key.toUpperCase() !== 'CREATEDBY' && key.toUpperCase() !== 'VIEW'
                     ) // Exclude unwanted keys
                     .map(([key, value]) => (
                         <p style={pStyle} key={key}>
                             <strong>{key}:</strong> {value}
                         </p>
                     ))}
-                {/* <p style={pStyle}>
-                    <strong>name:</strong> {record.name}
-                </p>
-                <p style={pStyle}>
-                    <strong>genericName:</strong> {record.genericName}
-                </p>
-                <p style={pStyle}>
-                    <strong>class:</strong> {record.class}
-                </p>
-                <p style={pStyle}>
-                    <strong>quantity:</strong> {record.quantity}
-                </p>
-                <p style={pStyle}>
-                    <strong>expirationDate:</strong> {record.expirationDate}
-                </p>
-                <p style={pStyle}>
-                    <strong>lot:</strong> {record.lot}
-                </p>
-                <p style={pStyle}>
-                    <strong>ndcNumber:</strong> {record.ndcNumber}
-                </p> */}
             </div>
         </div>
     );
