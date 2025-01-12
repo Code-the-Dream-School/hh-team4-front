@@ -4,31 +4,36 @@ import styled from 'styled-components';
 
 const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
     const inputRef = useRef();
-
     useEffect(() => {
-        if (inputRef.current) {
+        if (id === 'name' && inputRef.current) {
             inputRef.current.focus();
         }
-    }, []);
+    }, [id]);
 
+    const formatDateForInput = (date) => {
+        if (!date) return '';
+        const parsedDate = new Date(date);
+        // Format the date to 'yyyy-MM-dd' without timezone effects
+        return parsedDate.toISOString().split('T')[0];
+    };
+
+    const formattedValue = id === 'expirationDate' ? formatDateForInput(value) : value;
     return (
-        <>
-            <StyleInput
-                type={
-                    id === 'expirationDate'
-                        ? 'date'
-                        : ['quantity', 'minAmount'].includes(id)
-                          ? 'number'
-                          : 'text'
-                }
-                key={id}
-                id={id}
-                value={value || ''}
-                onChange={handleInputChange}
-                placeholder={placeholder}
-                ref={inputRef}
-            />
-        </>
+        <StyleInput
+            type={
+                id === 'expirationDate'
+                    ? 'date'
+                    : ['quantity', 'minAmount'].includes(id)
+                      ? 'number'
+                      : 'text'
+            }
+            key={id}
+            id={id}
+            value={formattedValue} // Format date correctly for the date input
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            ref={inputRef}
+        />
     );
 };
 
@@ -53,11 +58,9 @@ export const StyleInput = styled.input`
     border: 1px solid var(--grey-300);
     color: black;
     height: 35px;
-    margin-bottom: 15px;
 
     /* Placeholder text color */
     &::placeholder {
         color: black; /* Set placeholder text to black */
-        margin-bottom: 0px;
     }
 `;

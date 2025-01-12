@@ -8,7 +8,6 @@ const AddMedicineForm = ({ id, value, handleMedChange, placeholder }) => {
     useEffect(() => {
         inputRef.current.focus();
     }, [value]);
-
     return (
         <StyleInput
             type={
@@ -29,7 +28,7 @@ const AddMedicineForm = ({ id, value, handleMedChange, placeholder }) => {
 
 AddMedicineForm.propTypes = {
     id: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Accept string or number
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     handleMedChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string.isRequired,
 };

@@ -1,51 +1,90 @@
+import { Form, redirect, useNavigation } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormRow, Logo } from '../components';
+import customFetch from '../util/customFetch';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
+
+//formData - is an api, gives back an array of arrays, must have name same as database
+export const action = async ({ request }) => {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+    try {
+        await customFetch.post('/auth/signup', data);
+        toast.success('Adding Employee Successful');
+
+        return redirect('/dashboard/UserManagement');
+    } catch (error) {
+        toast.error(error?.response?.data?.msg);
+        return error;
+    }
+};
 
 const AdminAddUser = () => {
+    useEffect(() => {
+        document.querySelector('form').reset();
+    }, []);
+
+    const navigation = useNavigation();
+
+    const isSubmitting = navigation.state === 'submitting';
     return (
         <Wrapper>
-            <form className="form">
+            <Form method="post" className="form" autoComplete="off" key={Date.now()}>
                 <Logo />
-                <h4>Add Employee</h4>
+                <h4>Add Employee </h4>
                 <FormRow
                     type="text"
                     name="name"
                     labelText="name"
-                    defaultValue="DefaultName"
-                    placeholder="NAME"
+                    placeholder="name"
+                    defaultValue=""
                 />
-                <FormRow
-                    type="text"
-                    name="lastName"
-                    labelText="lastname"
-                    defaultValue="DefaultLastName"
-                    placeholder="LAST NAME"
-                />
-                <FormRow
-                    type="text"
-                    name="store"
-                    labelText="store"
-                    defaultValue="DefaultStore"
-                    placeholder="STORE"
-                />
-                <FormRow
-                    type="text"
-                    name="role"
-                    labelText="role"
-                    defaultValue="Admin"
-                    placeholder="ROLE"
-                />
+                <div className="form-row">
+                    <label className="form-label" htmlFor="role">
+                        store:
+                    </label>
+                    <select className="form-input" id="store" name="store" defaultValue="" required>
+                        <option value="" disabled>
+                            -- Choose a store --
+                        </option>
+                        <option value="Store 1">Store 1</option>
+                        <option value="Store 2">Store 2</option>
+                    </select>
+                </div>
+                <div className="form-row">
+                    <label className="form-label" htmlFor="role">
+                        role:
+                    </label>
+                    <select className="form-input" id="role" name="role" defaultValue="" required>
+                        <option value="" disabled>
+                            -- Choose a role --
+                        </option>
+                        <option value="admin">admin</option>
+                        <option value="inventoryManager">inventoryManager</option>
+                        <option value="clerk">clerk</option>
+                    </select>
+                </div>
                 <FormRow
                     type="email"
                     name="email"
                     labelText="email"
-                    defaultValue="defaultEmail@gmail.com"
-                    placeholder="EMAIL"
+                    placeholder="email"
+                    defaultValue=""
+                    autoComplete="off"
                 />
-                <button type="submit" className="btn btn-block">
-                    Send Permissions Email
+                <FormRow
+                    type="password"
+                    name="password"
+                    labelText="password"
+                    placeholder="password"
+                    defaultValue=""
+                    autoComplete="new-password"
+                />
+                <button type="submit" className="btn btn-block" disabled={isSubmitting}>
+                    {isSubmitting ? 'submitting...' : 'submit'}
                 </button>
-            </form>
+            </Form>
         </Wrapper>
     );
 };
@@ -53,7 +92,9 @@ const AdminAddUser = () => {
 export default AdminAddUser;
 
 const Wrapper = styled.section`
+    min-height: 100vh;
     display: grid;
+    align-items: center;
     .logo {
         display: block;
         margin: 0 auto;
@@ -68,7 +109,6 @@ const Wrapper = styled.section`
     }
     .form-input {
         background-color: var(--grey-50);
-        text-transform: uppercase;
     }
     h4 {
         text-align: center;
@@ -86,5 +126,7 @@ const Wrapper = styled.section`
         color: var(--primary-500);
         letter-spacing: var(--letter-spacing);
         margin-left: 0.25rem;
+    }
+    .custom-select {
     }
 `;
