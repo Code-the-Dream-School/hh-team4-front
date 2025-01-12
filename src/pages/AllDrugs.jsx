@@ -15,7 +15,8 @@ import Modal from '../components/Modal';
 // import { TbChevronsDownLeft } from 'react-icons/tb';
 
 const AllDrugs = () => {
-    const { user, store } = useDashboardContext();
+   // const { user, store } = useDashboardContext();
+    const {  store } = useDashboardContext();
 
     //const roleOfUser = user.role;
 
