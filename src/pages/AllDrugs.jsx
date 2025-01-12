@@ -159,11 +159,11 @@ const AllDrugs = () => {
                         />
                     </div>
                     <div>
-                        {isFilteredByAlarm && (
+                        {/* {isFilteredByAlarm && (
                             <button onClick={resetToOriginalData} className="reset-button">
                                 Reset to Original Data
                             </button>
-                        )}
+                        )} */}
                     </div>
                 </div>
             </div>
