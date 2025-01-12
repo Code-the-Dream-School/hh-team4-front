@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
-import { FaHome, FaFilter ,FaWindowRestore } from 'react-icons/fa';
+import { FaHome, FaFilter } from 'react-icons/fa';
 import { AiFillMinusCircle } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
@@ -17,7 +17,7 @@ import Modal from '../components/Modal';
 const AllDrugs = () => {
     const { user, store } = useDashboardContext();
 
-    const roleOfUser = user.role;
+    //const roleOfUser = user.role;
 
     const formatForDatetimeLocal = (isoDate) => {
         if (!isoDate) return '';
@@ -94,21 +94,16 @@ const AllDrugs = () => {
                 return response.json();
             })
             .then((data) => {
-               
-                             
-                if (alarmFilterData  
-
-                 ) {
+                if (alarmFilterData) {
                     setOriginalData(data.data);
                     setData(location.state ? alarmFilterData : null);
                     setFilterData(location.state ? alarmFilterData : null);
                     setIsFilteredByAlarm(true);
-                } else 
-                    {
-                    const filteredData = data.data.filter((item) => item.store === store);
-                    setOriginalData(data.data);
-                    setData(data.data);
-                    setFilterData(data.data);
+                } else {
+                    const filteredData = data.data.filter((item) => item.location === store);
+                    setOriginalData(filteredData);
+                    setData(filteredData);
+                    setFilterData(filteredData);
                     setIsFilteredByAlarm(false);
                 }
 
@@ -165,7 +160,7 @@ const AllDrugs = () => {
                     <div>
                         {isFilteredByAlarm && (
                             <button onClick={resetToOriginalData} className="reset-button">
-                                <FaHome className="filter-icon" title="Back to original data"/>
+                                <FaHome className="filter-icon" title="Back to original data" />
                             </button>
                         )}
                     </div>

@@ -1,6 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 import {
     AdminAddUser,
@@ -31,8 +29,8 @@ import { action as loginAction } from './pages/Login';
 import { loader as dashboardLoader } from './pages/Dashboard';
 
 const AllDrugsWithState = () => {
- window.history.replaceState({}, '');
- return  <AllDrugs/>;
+    window.history.replaceState({}, '');
+    return <AllDrugs />;
 };
 
 const router = createBrowserRouter([
@@ -62,9 +60,7 @@ const router = createBrowserRouter([
                 children: [
                     {
                         index: 'true',
-                       element: <AllDrugsWithState  />,
-                      
-                      
+                        element: <AllDrugsWithState />,
                     },
                     {
                         path: 'adduser',
