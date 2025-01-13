@@ -88,7 +88,7 @@ const PastOrders = () => {
                     .sort((a, b) => {
                         const dateA = new Date(a.dispensedDate);
                         const dateB = new Date(b.dispensedDate);
-                        return dateA - dateB;
+                        return dateB - dateA;
                     });
 
                 setFilteredLogs(extractLogs);
