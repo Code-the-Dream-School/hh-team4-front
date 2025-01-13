@@ -8,17 +8,58 @@ import FilterSearch from './FilterSearch';
 //import { useLocation } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
 import Pagination from '../components/Pagination';
+const useResponsiveView = () => {
+    const [view, setView] = useState('mobile');
+
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+
+            if (width < 600) {
+                setView('mobile');
+            } else if (width >= 600 && width < 1024) {
+                setView('tablet');
+            } else if (width >= 1024 && width < 1440) {
+                setView('desktop');
+            } else {
+                setView('largeDesktop');
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return view;
+};
 
 const PastOrders = () => {
-    const columnLabels = [
-        'drugName',
-        'genericName',
-        'lot',
-        'className',
-        'dispensedQuantity',
-        'dispensedDate',
-        'view',
-    ];
+    const view = useResponsiveView();
+    const allowedFields = () => {
+        switch (view) {
+            case 'mobile':
+                return ['drugName', 'view'];
+            case 'tablet':
+                return ['drugName', 'lot', 'dispensedQuantity', 'view'];
+            case 'desktop':
+                return ['drugName', 'lot', 'dispensedQuantity', 'dispensedDate', 'view'];
+            case 'largeDesktop':
+                return [
+                    'drugName',
+                    'genericName',
+                    'lot',
+                    'className',
+                    'dispensedQuantity',
+                    'dispensedDate',
+                    'view',
+                ];
+            default:
+                return [];
+        }
+    };
+    const fields = allowedFields();
 
     const [record, setRecord] = useState({
         drugName: '',
@@ -110,6 +151,12 @@ const PastOrders = () => {
         return filterData.slice(startIndex, endIndex);
     };
 
+    const formatForDatetimeLocal = (isoDate) => {
+        if (!isoDate) return '';
+        const date = new Date(isoDate);
+        return date.toISOString().split('T')[0];
+    };
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
@@ -150,7 +197,7 @@ const PastOrders = () => {
             {/*  */}
             <div className="grid-container">
                 {/* Render column headers */}
-                {columnLabels.map((label, index) => (
+                {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
                         {label}
                     </div>
@@ -158,7 +205,7 @@ const PastOrders = () => {
                 {/* Render rows dynamically */}
 
                 {getCurrentItems().map((drug, rowIndex) =>
-                    columnLabels.map((label, colIndex) => (
+                    fields.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                             {label === 'view' ? (
                                 <div className="actions">
@@ -175,6 +222,8 @@ const PastOrders = () => {
                                         title="Dispensed Medication Details"
                                     />
                                 </div>
+                            ) : label === 'dispensedDate' ? (
+                                formatForDatetimeLocal(drug[label])
                             ) : (
                                 drug[label] || 'N/A' // Use a fallback for missing values
                             )}
@@ -195,6 +244,9 @@ const PastOrders = () => {
 export default PastOrders;
 
 const Wrapper = styled.section`
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     .centered-container {
         display: flex;
         justify-content: space-between;
@@ -226,7 +278,9 @@ const Wrapper = styled.section`
         color: white;
         font-size: 1.5rem;
     }
-
+    .view {
+        color: var(--color-blue-dark);
+    }
     .bell-button {
         border: 15px solid var(--color-alert);
         border-radius: 50%;
@@ -264,7 +318,7 @@ const Wrapper = styled.section`
     }
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
         padding: 10px;
     }
@@ -284,5 +338,20 @@ const Wrapper = styled.section`
         font-weight: bold;
         background-color: var(--color-green-med);
         color: var(--color-blue-dark);
+    }
+    @media (min-width: 600px) {
+        .grid-container {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+    @media (min-width: 1024px) {
+        .grid-container {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+    @media (min-width: 1440px) {
+        .grid-container {
+            grid-template-columns: repeat(7, 1fr);
+        }
     }
 `;
