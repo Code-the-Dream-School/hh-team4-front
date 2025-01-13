@@ -73,7 +73,7 @@ const AllDrugs = () => {
     const [error, setError] = useState(false);
     const [searchsection, setSearchSection] = useState(false);
     const location = useLocation();
-    const { alarmFilterData: alarmFilterData , filterTitle} = location.state || {};
+    const { alarmFilterData: alarmFilterData, filterTitle } = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
     const [originalData, setOriginalData] = useState([]);
     const [isFilteredByAlarm, setIsFilteredByAlarm] = useState(false);
@@ -130,7 +130,6 @@ const AllDrugs = () => {
         setFilterData(filteredData);
     };
 
-
     const itemsPerPage = 10;
     const totalItems = filterData.length;
 
@@ -177,12 +176,9 @@ const AllDrugs = () => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
-const closeFilter=()=>{
-    
-    toggleSearch();
-
-}
-
+    const closeFilter = () => {
+        toggleSearch();
+    };
 
     return (
         <Wrapper>
@@ -210,16 +206,19 @@ const closeFilter=()=>{
                             </button>
                         )}
                     </div>
-                    <div className="form-title">
-                        {filterTitle}
-                    </div>
+                    <div className="form-title">{filterTitle}</div>
                 </div>
             </div>
             <div className="advanced-search">
                 {searchsection && (
                     <div>
                         <br />
-                        <FilterSearch data={data} formName="allDrug" onFilter={handleFilter}  onClose={closeFilter} />
+                        <FilterSearch
+                            data={data}
+                            formName="allDrug"
+                            onFilter={handleFilter}
+                            onClose={closeFilter}
+                        />
                     </div>
                 )}
             </div>
@@ -481,11 +480,11 @@ const Wrapper = styled.section`
         background-color: var(--color-alert);
         color: white;
     }
-    .form-title{
-    text-align: center;       
-    font-size: 90%;           
-    font-weight: bold;        
-    margin-left: 200px ;   
-      color: var(--color-blue-dark);
+    .form-title {
+        text-align: center;
+        font-size: 90%;
+        font-weight: bold;
+        margin-left: 200px;
+        color: var(--color-blue-dark);
     }
 `;

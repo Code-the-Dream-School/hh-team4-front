@@ -11,8 +11,7 @@ export default function AlarmButton({
     const Navigate = useNavigate();
 
     function loadingPage() {
-        
-        Navigate(`/${targetPage}`, { state: { alarmFilterData ,filterTitle} });
+        Navigate(`/${targetPage}`, { state: { alarmFilterData, filterTitle } });
     }
 
     return (

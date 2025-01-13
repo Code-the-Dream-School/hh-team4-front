@@ -4,7 +4,7 @@ import { MdSearch } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
 //import { drugData } from './data.jsx'; // Update path accordingly
 
-export default function FilterSearch({ formName, data, onFilter , onClose}) {
+export default function FilterSearch({ formName, data, onFilter, onClose }) {
     const [formValues, setFormValues] = useState({
         drugName: '',
         genericName: '',
@@ -16,7 +16,7 @@ export default function FilterSearch({ formName, data, onFilter , onClose}) {
         Expirationdateto: '',
     });
 
-    const [sortField, setSortField] = useState(''); 
+    const [sortField, setSortField] = useState('');
 
     const handleSortChange = (e) => {
         setSortField(e.target.value);
@@ -26,9 +26,9 @@ export default function FilterSearch({ formName, data, onFilter , onClose}) {
                 if (a[e.target.value] > b[e.target.value]) return 1;
                 return 0;
             });
-            onFilter(sortedData); 
+            onFilter(sortedData);
         } else {
-            onFilter(data); 
+            onFilter(data);
         }
     };
 
@@ -36,8 +36,6 @@ export default function FilterSearch({ formName, data, onFilter , onClose}) {
         e.preventDefault();
 
         let filteredData = data;
-
-       
 
         if (formValues.drugName) {
             if (formName === 'allDrug')
@@ -224,25 +222,25 @@ export default function FilterSearch({ formName, data, onFilter , onClose}) {
                         </button>
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 <div className="sort-container">
-                        <label htmlFor="sortField" className="form-label">
-                            Sort By:{' '}
-                        </label>
-                        <select
-                            name="sortField"
-                            className="form-input"
-                            value={sortField}
-                            onChange={handleSortChange}
-                        >
-                            <option value="">Select</option>
-                            {sortOptions.map((option) => (
-                                <option key={option} value={option}>
-                                    {option.charAt(0).toUpperCase() + option.slice(1)}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <label htmlFor="sortField" className="form-label">
+                        Sort By:{' '}
+                    </label>
+                    <select
+                        name="sortField"
+                        className="form-input"
+                        value={sortField}
+                        onChange={handleSortChange}
+                    >
+                        <option value="">Select</option>
+                        {sortOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option.charAt(0).toUpperCase() + option.slice(1)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </form>
         </Wrapper>
     );
@@ -281,7 +279,7 @@ const Wrapper = styled.section`
     //     display: grid;
     //     grid-template-columns: 1fr 1fr; // repeat(2, 1fr);
     //     grid-template-rows: repeat(2, 1fr);
-        
+
     // }
     // .date {
     // }
@@ -308,10 +306,10 @@ const Wrapper = styled.section`
     //         justify-items:center ;
     //     }
     //     .sort-container .form-input {
-    //     width: auto; 
+    //     width: auto;
     //     padding: 0.25rem 0.5rem;
     // }
-     .inside-button {
+    .inside-button {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -328,8 +326,7 @@ const Wrapper = styled.section`
         padding: 1rem;
     }
     .form-container {
-       
-        margin: auto; 
+        margin: auto;
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -337,12 +334,12 @@ const Wrapper = styled.section`
     }
     .grid-container {
         display: grid;
-        grid-template-columns: 1fr 1fr; 
-        grid-gap: 1rem; 
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1rem;
     }
     .form-input {
         padding: 0.5rem;
-        width: 100%; 
+        width: 100%;
         border: 1px solid #ccc;
         border-radius: 4px;
     }
@@ -354,7 +351,7 @@ const Wrapper = styled.section`
     }
     .buttons-box {
         display: flex;
-        gap: 1rem; 
+        gap: 1rem;
         margin-top: 1rem;
         justify-content: center;
     }
@@ -373,11 +370,11 @@ const Wrapper = styled.section`
         display: flex;
         align-items: center;
         margin-top: 1rem;
-        gap: 1rem; 
+        gap: 1rem;
         justify-content: flex-start;
     }
     .sort-container .form-input {
-        width: auto; 
+        width: auto;
         padding: 0.25rem 0.5rem;
     }
 `;
