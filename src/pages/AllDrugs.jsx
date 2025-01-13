@@ -75,6 +75,9 @@ const AllDrugs = () => {
     const { alarmFilterData: alarmFilterData } = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
 
+    const [showModal, setShowModal] = useState(false);
+    const [drugToDelete, setDrugToDelete] = useState(null);
+
     useEffect(() => {
         const token = localStorage.getItem('token');
 
@@ -129,6 +132,41 @@ const AllDrugs = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
+
+    const handleDelete = (drugId, drugName) => {
+        setDrugToDelete({ drugId, drugName });
+        setShowModal(true);
+    };
+
+    const handleConfirmDelete = () => {
+        const token = localStorage.getItem('token');
+        fetch(`http://localhost:8000/api/v1/inventory/${drugToDelete?.drugId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error('Failed to delete drug');
+                return response.json();
+            })
+            .then(() => {
+                setData((prevData) => prevData.filter((drug) => drug._id !== drugToDelete?.drugId));
+                setFilterData((prevFilterData) =>
+                    prevFilterData.filter((drug) => drug._id !== drugToDelete?.drugId)
+                );
+                setShowModal(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setShowModal(false);
+            });
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
     return (
         <Wrapper>
@@ -191,6 +229,7 @@ const AllDrugs = () => {
                                             </button>
                                         </>
                                     )}
+                                
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}
@@ -207,6 +246,19 @@ const AllDrugs = () => {
                     ))
                 )}
             </div>
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h5>Are you sure you want to delete {drugToDelete?.drugName}?</h5>
+                        <button className="modal-buttons" onClick={handleConfirmDelete}>
+                            Yes
+                        </button>
+                        <button className="modal-buttons" onClick={handleCloseModal}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
             <Pagination
                 totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
@@ -358,5 +410,46 @@ const Wrapper = styled.section`
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;
+    }
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 26px;
+        width: 300px;
+    }
+
+    .modal-buttons {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 15px;
+        cursor: pointer;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        transition:
+            background-color 0.3s,
+            transform 0.2s; /* Smooth transition */
+    }
+    .modal-buttons:nth-of-type(1) {
+        background-color: var(--color-green-dark);
+        color: white;
+    }
+
+    .modal-buttons:last-child {
+        background-color: var(--color-alert);
+        color: white;
     }
 `;
