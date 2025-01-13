@@ -1,16 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const Modal = ({ isOpen, onClose, record, title }) => {
     if (!isOpen) return null;
 
     return (
-        <div style={overlayStyle}>
+        <Wrapper style={overlayStyle}>
             <div style={modalStyle}>
                 <button onClick={onClose} style={closeButtonStyle}>
                     X
                 </button>
-                <h2 style={h2Style}>{title}</h2>
+                <h2 className="heading" style={h2Style}>
+                    {title}
+                </h2>
                 {Object.entries(record)
                     .filter(
                         ([key]) =>
@@ -19,35 +22,49 @@ const Modal = ({ isOpen, onClose, record, title }) => {
                             key.toUpperCase() !== 'VIEW'
                     ) // Exclude unwanted keys
                     .map(([key, value]) => (
-                        <p style={pStyle} key={key}>
-                            <strong>{key}:</strong> {value}
+                        <p className="paragraph" style={pStyle} key={key}>
+                            <strong className="key">{key}:</strong> {value}
                         </p>
                     ))}
             </div>
-        </div>
+        </Wrapper>
     );
 };
 
+const Wrapper = styled.div`
+    .paragraph {
+        color: var(--grey-700);
+    }
+    .key {
+        color: var(--color-blue-dark);
+        padding-right: 0.25rem;
+    }
+`;
+
 const overlayStyle = {
     position: 'fixed',
-    top: 300,
-    left: 700,
-    right: 700,
-    bottom: 300,
-    backgroundColor: '#f5f5f5',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     border: 'solid',
+    zIndex: 1000,
 };
 
 const modalStyle = {
     backgroundColor: 'white',
     padding: '20px',
     borderRadius: '8px',
-    minWidth: '60%',
-    minHeight: '80%',
-    border: 'solid',
+    width: '90%',
+    maxWidth: '500px',
+    height: 'auto',
+    maxHeight: '90vh',
+    overflowY: 'auto',
+    position: 'relative',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
 };
 
 const closeButtonStyle = {
@@ -61,20 +78,19 @@ const closeButtonStyle = {
 };
 
 const pStyle = {
-    fontSize: 14,
+    fontSize: '14px',
     fontWeight: 'bold',
     textAlign: 'left',
-    lineHeight: 1,
+    lineHeight: 1.5,
     padding: '8px',
-    margin: '20px',
+    margin: '10px 0',
     textTransform: 'uppercase',
 };
 
 const h2Style = {
-    alignItems: 'center',
-    padding: '0px',
-    margin: '40px',
-    color: 'blue',
+    textAlign: 'center',
+    margin: '20px 0',
+    color: '#28535c',
 };
 Modal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
