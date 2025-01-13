@@ -73,7 +73,7 @@ const AllDrugs = () => {
     const [error, setError] = useState(false);
     const [searchsection, setSearchSection] = useState(false);
     const location = useLocation();
-    const { alarmFilterData: alarmFilterData } = location.state || {};
+    const { alarmFilterData: alarmFilterData , filterTitle} = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
     const [originalData, setOriginalData] = useState([]);
     const [isFilteredByAlarm, setIsFilteredByAlarm] = useState(false);
@@ -209,6 +209,9 @@ const closeFilter=()=>{
                                 <FaHome className="filter-icon" title="Back to original data" />
                             </button>
                         )}
+                    </div>
+                    <div className="form-title">
+                        {filterTitle}
                     </div>
                 </div>
             </div>
@@ -477,5 +480,12 @@ const Wrapper = styled.section`
     .modal-buttons:last-child {
         background-color: var(--color-alert);
         color: white;
+    }
+    .form-title{
+    text-align: center;       
+    font-size: 90%;           
+    font-weight: bold;        
+    margin-left: 200px ;   
+      color: var(--color-blue-dark);
     }
 `;
