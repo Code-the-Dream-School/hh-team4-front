@@ -84,7 +84,12 @@ const PastOrders = () => {
                         dispensedDate: log.dispenseDate || 'N/A',
                         dispensedId: log._id,
                         view: '', // Keep this for the action column
-                    }));
+                    })).sort((a, b) => {
+                        
+                        const dateA = new Date(a.dispensedDate);
+                        const dateB = new Date(b.dispensedDate);
+                        return dateA - dateB; 
+                      });
 
                 setFilteredLogs(extractLogs);
                 setFilterData(extractLogs);
