@@ -64,6 +64,16 @@ const Wrapper = styled.nav`
         display: flex;
         align-items: center;
     }
+    .bell-icon {
+        font-size: 1.5rem;
+        background-color: var(--color-alert);
+        color: white;
+    }
+    .bell-button {
+        border: 15px solid var(--color-alert);
+        border-radius: 50%;
+        margin-right: 1rem;
+    }
     @media (min-width: 992px) {
         position: sticky;
         top: 0;
@@ -76,16 +86,6 @@ const Wrapper = styled.nav`
         .logo-text {
             display: block;
             color: var(--color-blue-dark);
-        }
-        .bell-button {
-            border: 15px solid var(--color-alert);
-            border-radius: 50%;
-            margin-right: 1rem;
-        }
-        .bell-icon {
-            font-size: 1.5rem;
-            background-color: var(--color-alert);
-            color: white;
         }
     }
 `;
