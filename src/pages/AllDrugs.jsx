@@ -130,6 +130,7 @@ const AllDrugs = () => {
         setFilterData(filteredData);
     };
 
+
     const itemsPerPage = 10;
     const totalItems = filterData.length;
 
@@ -176,6 +177,12 @@ const AllDrugs = () => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+const closeFilter=()=>{
+    
+    toggleSearch();
+
+}
+
 
     return (
         <Wrapper>
@@ -209,7 +216,7 @@ const AllDrugs = () => {
                 {searchsection && (
                     <div>
                         <br />
-                        <FilterSearch data={data} formName="allDrug" onFilter={handleFilter} />
+                        <FilterSearch data={data} formName="allDrug" onFilter={handleFilter}  onClose={closeFilter} />
                     </div>
                 )}
             </div>
@@ -301,7 +308,7 @@ const Wrapper = styled.section`
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .left-filter-box {
-        margin-right: 3rem;
+        margin-right: 0.1rem;
     }
     .bell-icon-box {
         align-self: self-start;
@@ -315,6 +322,7 @@ const Wrapper = styled.section`
     .filter-button {
         border: 15px solid var(--color-green-light);
         border-radius: 50%;
+        margin-right: 1rem;
     }
     .filter-icon {
         background: var(--color-green-light);

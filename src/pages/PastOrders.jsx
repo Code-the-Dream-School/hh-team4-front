@@ -109,7 +109,11 @@ const PastOrders = () => {
         const endIndex = startIndex + itemsPerPage;
         return filterData.slice(startIndex, endIndex);
     };
-
+    const closeFilter=()=>{
+    
+        toggleSearch();
+    
+    }
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
@@ -143,6 +147,7 @@ const PastOrders = () => {
                             data={filteredlogs}
                             onFilter={handleFilter}
                             formName="pastOrders"
+                            onClose={closeFilter}
                         />
                     </div>
                 )}
