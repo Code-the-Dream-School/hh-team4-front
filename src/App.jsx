@@ -27,6 +27,12 @@ import { action as AdminAddUserAction } from './pages/AdminAddUser';
 import { action as registerAction } from './pages/Register';
 import { action as loginAction } from './pages/Login';
 import { loader as dashboardLoader } from './pages/Dashboard';
+
+const AllDrugsWithState = () => {
+    window.history.replaceState({}, '');
+    return <AllDrugs />;
+};
+
 const router = createBrowserRouter([
     {
         path: '/',
@@ -54,7 +60,7 @@ const router = createBrowserRouter([
                 children: [
                     {
                         index: 'true',
-                        element: <AllDrugs />,
+                        element: <AllDrugsWithState />,
                     },
                     {
                         path: 'adduser',

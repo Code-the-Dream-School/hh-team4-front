@@ -4,7 +4,7 @@ import { MdSearch } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
 //import { drugData } from './data.jsx'; // Update path accordingly
 
-export default function FilterSearch({ data, onFilter }) {
+export default function FilterSearch({ formName, data, onFilter }) {
     const [formValues, setFormValues] = useState({
         drugName: '',
         genericName: '',
@@ -24,9 +24,14 @@ export default function FilterSearch({ data, onFilter }) {
         // Apply filters
 
         if (formValues.drugName) {
-            filteredData = filteredData.filter((item) =>
-                item.name.toLowerCase().includes(formValues.drugName.toLowerCase())
-            );
+            if (formName === 'allDrug')
+                filteredData = filteredData = filteredData.filter((item) =>
+                    item.name.toLowerCase().includes(formValues.drugName.toLowerCase())
+                );
+            if (formName === 'pastOrders')
+                filteredData = filteredData = filteredData.filter((item) =>
+                    item.drugName.toLowerCase().includes(formValues.drugName.toLowerCase())
+                );
         }
         if (formValues.genericName) {
             filteredData = filteredData.filter((item) =>
@@ -43,17 +48,33 @@ export default function FilterSearch({ data, onFilter }) {
             filteredData = filteredData.filter((item) => item.lot === formValues.lot);
         }
         if (formValues.ndcNumber) {
-            filteredData = filteredData.filter((item) => item.ndcNumber === formValues.ndcNumber);
+            if (formName === 'allDrug')
+                filteredData = filteredData.filter(
+                    (item) => item.ndcNumber === formValues.ndcNumber
+                );
+            if (formName === 'pastOrders')
+                filteredData = filteredData.filter(
+                    (item) => item.dispensedQuantity === formValues.ndcNumber
+                );
         }
 
-        if (formValues.ExpirationdateFrom && formValues.Expirationdateto) {
-            filteredData = filteredData.filter(
-                (item) =>
-                    new Date(item.expirationDate) >= new Date(formValues.ExpirationdateFrom) &&
-                    new Date(item.expirationDate) <= new Date(formValues.Expirationdateto)
-            );
+        if (formName === 'allDrug') {
+            if (formValues.ExpirationdateFrom && formValues.Expirationdateto) {
+                filteredData = filteredData.filter(
+                    (item) =>
+                        new Date(item.expirationDate) >= new Date(formValues.ExpirationdateFrom) &&
+                        new Date(item.expirationDate) <= new Date(formValues.Expirationdateto)
+                );
+            }
+        } else if (formName === 'pastOrders') {
+            if (formValues.ExpirationdateFrom && formValues.Expirationdateto) {
+                filteredData = filteredData.filter(
+                    (item) =>
+                        new Date(item.dispensedDate) >= new Date(formValues.ExpirationdateFrom) &&
+                        new Date(item.dispensedDate) <= new Date(formValues.Expirationdateto)
+                );
+            }
         }
-
         if (formValues.type) {
             filteredData = filteredData.filter((item) =>
                 item.type.toLowerCase().includes(formValues.type.toLowerCase())
@@ -135,7 +156,7 @@ export default function FilterSearch({ data, onFilter }) {
                     </div>
                     <div>
                         <label htmlFor="ndcNumber" className="form-label">
-                            NDC #:{' '}
+                            {formName === 'allDrug' ? 'NDC#:' : 'dispenseQuantity:'}
                         </label>
                         <input
                             name="ndcNumber"
@@ -146,7 +167,9 @@ export default function FilterSearch({ data, onFilter }) {
                     </div>
                     <div>
                         <label htmlFor="ExpirationdateFrom" className="form-label">
-                            expiration date from:{' '}
+                            {formName === 'allDrug'
+                                ? 'Expiration date from:'
+                                : 'Dispense date from:'}
                         </label>
                         <input
                             name="ExpirationdateFrom"
@@ -158,7 +181,7 @@ export default function FilterSearch({ data, onFilter }) {
                     </div>
                     <div>
                         <label htmlFor="Expirationdateto" className="form-label date">
-                            expiration date to:{' '}
+                            {formName === 'allDrug' ? 'expiration date to:' : 'Dispense date to:'}
                         </label>
                         <input
                             name="Expirationdateto"
