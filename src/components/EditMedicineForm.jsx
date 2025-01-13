@@ -4,39 +4,32 @@ import styled from 'styled-components';
 
 const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
     const inputRef = useRef();
-
     useEffect(() => {
         if (id === 'name' && inputRef.current) {
             inputRef.current.focus();
         }
     }, [id]);
 
-    const formatForDatetimeLocal = (isoDate) => {
-        if (!isoDate) return '';
-        const date = new Date(isoDate);
-        if (isNaN(date.getTime())) {
-            console.warn(`Invalid ISO date provided: ${isoDate}`);
-            return '';
-        }
-        const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        return offsetDate.toISOString().slice(0, 16);
+    const formatDateForInput = (date) => {
+        if (!date) return '';
+        const parsedDate = new Date(date);
+        // Format the date to 'yyyy-MM-dd' without timezone effects
+        return parsedDate.toISOString().split('T')[0];
     };
 
-    // Format value for datetime-local if it's for expirationDate
-    const formattedValue = id === 'expirationDate' ? formatForDatetimeLocal(value) : value;
-
+    const formattedValue = id === 'expirationDate' ? formatDateForInput(value) : value;
     return (
         <StyleInput
             type={
                 id === 'expirationDate'
-                    ? 'datetime-local'
+                    ? 'date'
                     : ['quantity', 'minAmount'].includes(id)
                       ? 'number'
                       : 'text'
             }
             key={id}
             id={id}
-            value={formattedValue || ''} // Ensure empty string for falsy values
+            value={formattedValue} // Format date correctly for the date input
             onChange={handleInputChange}
             placeholder={placeholder}
             ref={inputRef}

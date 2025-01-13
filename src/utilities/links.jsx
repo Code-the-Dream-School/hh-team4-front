@@ -12,7 +12,7 @@ const linksAdmin = [
     { text: 'dashboard', path: '.', icon: <MdSpaceDashboard /> },
     { text: 'add employee', path: 'adduser', icon: <BsPersonFillAdd /> },
     { text: 'add product', path: 'add', icon: <IoAddCircle /> },
-    { text: 'dispense drug', path: 'dispense', icon: <AiFillMinusCircle /> },
+    // { text: 'dispense drug', path: 'dispense', icon: <AiFillMinusCircle /> },
     { text: 'alerts', path: 'alerts', icon: <TbBellFilled /> },
     { text: 'reports', path: 'reports', icon: <BsGraphUp /> },
     { text: 'past dispensed', path: 'past-orders', icon: <FaArrowCircleLeft /> },

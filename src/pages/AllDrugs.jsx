@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
-import { FaFilter } from 'react-icons/fa';
+import { FaHome, FaFilter } from 'react-icons/fa';
 import { AiFillMinusCircle } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
@@ -15,11 +15,16 @@ import Modal from '../components/Modal';
 // import { TbChevronsDownLeft } from 'react-icons/tb';
 
 const AllDrugs = () => {
-    const { user, store } = useDashboardContext();
+    // const { user, store } = useDashboardContext();
+    const { store } = useDashboardContext();
 
-    const roleOfUser = user.role;
-    console.log(roleOfUser);
-    console.log(store);
+    //const roleOfUser = user.role;
+
+    const formatForDatetimeLocal = (isoDate) => {
+        if (!isoDate) return '';
+        const date = new Date(isoDate);
+        return date.toISOString().split('T')[0];
+    };
     const columnLabels = [
         'name',
         'genericName',
@@ -40,6 +45,7 @@ const AllDrugs = () => {
         lot: '',
         ndcNumber: '',
     });
+
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -69,6 +75,11 @@ const AllDrugs = () => {
     const location = useLocation();
     const { alarmFilterData: alarmFilterData } = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
+    const [originalData, setOriginalData] = useState([]);
+    const [isFilteredByAlarm, setIsFilteredByAlarm] = useState(false);
+
+    const [showModal, setShowModal] = useState(false);
+    const [drugToDelete, setDrugToDelete] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -87,20 +98,29 @@ const AllDrugs = () => {
                 return response.json();
             })
             .then((data) => {
-                //  const filteredData = data.data.filter((item) => item.store === store);
                 if (alarmFilterData) {
-                    setData(alarmFilterData);
-                    setFilterData(alarmFilterData);
+                    setOriginalData(data.data);
+                    setData(location.state ? alarmFilterData : null);
+                    setFilterData(location.state ? alarmFilterData : null);
+                    setIsFilteredByAlarm(true);
                 } else {
-                    setData(data.data);
-                    console.log(data.data);
-                    setFilterData(data.data);
+                    const filteredData = data.data.filter((item) => item.location === store);
+                    setOriginalData(filteredData);
+                    setData(filteredData);
+                    setFilterData(filteredData);
+                    setIsFilteredByAlarm(false);
                 }
 
                 setLoading(false);
             })
             .catch((error) => setError(error.message));
     }, [alarmFilterData]);
+
+    const resetToOriginalData = () => {
+        setData(originalData);
+        setFilterData(originalData);
+        setIsFilteredByAlarm(false);
+    };
 
     const toggleSearch = () => {
         setSearchSection((prevState) => !prevState);
@@ -122,20 +142,66 @@ const AllDrugs = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
+    const handleDelete = (drugId, drugName) => {
+        setDrugToDelete({ drugId, drugName });
+        setShowModal(true);
+    };
+
+    const handleConfirmDelete = () => {
+        const token = localStorage.getItem('token');
+        fetch(`http://localhost:8000/api/v1/inventory/${drugToDelete?.drugId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error('Failed to delete drug');
+                return response.json();
+            })
+            .then(() => {
+                setData((prevData) => prevData.filter((drug) => drug._id !== drugToDelete?.drugId));
+                setFilterData((prevFilterData) =>
+                    prevFilterData.filter((drug) => drug._id !== drugToDelete?.drugId)
+                );
+                setShowModal(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setShowModal(false);
+            });
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
     return (
         <Wrapper>
             <div className="centered-container">
                 <div className="filter-search-box">
                     <div className="left-filter-box">
                         <button className="filter-button" onClick={toggleSearch}>
-                            <FaFilter className="filter-icon" />
+                            <FaFilter className="filter-icon" title="advanced search" />
                         </button>
                     </div>
                     <div className="search-box">
                         <div className="search-icon">
                             <IoIosSearch />
                         </div>
-                        <LiveSearch data={data} liveSearchFilter={handleFilter} />
+                        <LiveSearch
+                            data={data}
+                            formName="allDrug"
+                            liveSearchFilter={handleFilter}
+                        />
+                    </div>
+                    <div>
+                        {isFilteredByAlarm && (
+                            <button onClick={resetToOriginalData} className="reset-button">
+                                <FaHome className="filter-icon" title="Back to original data" />
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -143,7 +209,7 @@ const AllDrugs = () => {
                 {searchsection && (
                     <div>
                         <br />
-                        <FilterSearch data={data} onFilter={handleFilter} />
+                        <FilterSearch data={data} formName="allDrug" onFilter={handleFilter} />
                     </div>
                 )}
             </div>
@@ -168,6 +234,7 @@ const AllDrugs = () => {
                                         isOpen={isModalOpen}
                                         onClose={closeModal}
                                         record={record}
+                                        title="Medication Details"
                                     />
                                     <button
                                         className="action-button edit"
@@ -175,7 +242,10 @@ const AllDrugs = () => {
                                     >
                                         <FaEdit />
                                     </button>
-                                    <button className="action-button delete">
+                                    <button
+                                        className="action-button delete"
+                                        onClick={() => handleDelete(drug._id, drug.name)}
+                                    >
                                         <FaTrash />
                                     </button>
                                     <button
@@ -185,6 +255,8 @@ const AllDrugs = () => {
                                         <AiFillMinusCircle />
                                     </button>
                                 </div>
+                            ) : label === 'expirationDate' ? (
+                                formatForDatetimeLocal(drug[label])
                             ) : (
                                 drug[label] || ''
                             )}
@@ -192,6 +264,19 @@ const AllDrugs = () => {
                     ))
                 )}
             </div>
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h5>Are you sure you want to delete {drugToDelete?.drugName}?</h5>
+                        <button className="modal-buttons" onClick={handleConfirmDelete}>
+                            Yes
+                        </button>
+                        <button className="modal-buttons" onClick={handleCloseModal}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
             <Pagination
                 totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
@@ -342,5 +427,45 @@ const Wrapper = styled.section`
         font-weight: bold;
         background-color: var(--color-green-med);
         color: var(--color-blue-dark);
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 26px;
+        width: 300px;
+    }
+
+    .modal-buttons {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 15px;
+        cursor: pointer;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        transition:
+            background-color 0.3s,
+            transform 0.2s; /* Smooth transition */
+    }
+    .modal-buttons:nth-of-type(1) {
+        background-color: var(--color-green-dark);
+        color: white;
+    }
+
+    .modal-buttons:last-child {
+        background-color: var(--color-alert);
+        color: white;
     }
 `;
