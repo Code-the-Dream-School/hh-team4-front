@@ -15,10 +15,8 @@ import Modal from '../components/Modal';
 // import { TbChevronsDownLeft } from 'react-icons/tb';
 
 const AllDrugs = () => {
-    // const { user, store } = useDashboardContext();
-    const { store } = useDashboardContext();
-
-    //const roleOfUser = user.role;
+    const { user, store } = useDashboardContext();
+    const roleOfUser = user.role;
 
     const formatForDatetimeLocal = (isoDate) => {
         if (!isoDate) return '';
@@ -250,7 +248,6 @@ const AllDrugs = () => {
                                             </button>
                                         </>
                                     )}
-                                
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}
