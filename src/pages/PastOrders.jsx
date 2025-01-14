@@ -84,7 +84,12 @@ const PastOrders = () => {
                         dispensedDate: log.dispenseDate || 'N/A',
                         dispensedId: log._id,
                         view: '', // Keep this for the action column
-                    }));
+                    }))
+                    .sort((a, b) => {
+                        const dateA = new Date(a.dispensedDate);
+                        const dateB = new Date(b.dispensedDate);
+                        return dateB - dateA;
+                    });
 
                 setFilteredLogs(extractLogs);
                 setFilterData(extractLogs);
@@ -109,7 +114,9 @@ const PastOrders = () => {
         const endIndex = startIndex + itemsPerPage;
         return filterData.slice(startIndex, endIndex);
     };
-
+    const closeFilter = () => {
+        toggleSearch();
+    };
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
@@ -143,6 +150,7 @@ const PastOrders = () => {
                             data={filteredlogs}
                             onFilter={handleFilter}
                             formName="pastOrders"
+                            onClose={closeFilter}
                         />
                     </div>
                 )}
