@@ -43,7 +43,16 @@ export default function Alarms() {
         });
         setLowStockData(lowStockFilter); // Data drugs matching LowStuck
 
-        const noStockFilter = drugsData.filter((drug) => parseInt(drug.quantity) === 0);
+        const noStockFilter = drugsData
+            .filter((drug) => parseInt(drug.quantity) === 0)
+            .map((drug) => ({
+                ...drug,
+                quantity:
+                    parseInt(drug.quantity, 10) === 0
+                        ? 'Out of Stock'
+                        : `Quantity: ${drug.quantity}`,
+            }));
+
         setnoStockData(noStockFilter); // Data drugs matching no Stock
 
         const expirationDateData = drugsData.filter((drug) => {
@@ -81,7 +90,7 @@ export default function Alarms() {
                 <Alarmbutton
                     message={`No Stock on ${noStockData.length} products`}
                     imagepath="../images/out-of-stock.png"
-                    filterTitle="No Stock Drugs"
+                    filterTitle="Out of Stock Drugs"
                     alarmFilterData={noStockData}
                     targetPage="dashboard"
                 />
