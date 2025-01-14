@@ -60,7 +60,14 @@ const PastOrders = () => {
         }
     };
     const fields = allowedFields();
-
+    const labelMap = {
+        drugName: 'Drug Name',
+        genericName: 'Generic Name',
+        className: 'Class Name',
+        dispensedQuantity: 'Dispense Quantity',
+        dispensedDate: 'Dispensed Date',
+        view: 'view',
+    };
     const [record, setRecord] = useState({
         drugName: '',
         genericName: '',
@@ -207,7 +214,7 @@ const PastOrders = () => {
                 {/* Render column headers */}
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
-                        {label}
+                        {labelMap[label] || label}
                     </div>
                 ))}
                 {/* Render rows dynamically */}

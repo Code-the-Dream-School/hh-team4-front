@@ -72,6 +72,18 @@ const AllDrugs = () => {
         }
     };
     const fields = allowedFields();
+
+    const labelMap = {
+        name: 'drug dame',
+        genericName: 'generic name',
+        class: 'class',
+        quantity: 'quantity',
+        expirationDate: 'expiration date',
+        lot: 'lot',
+        ndcNumber: 'ndc number',
+        'view/edit/delete/dispense':
+            roleOfUser === 'clerk' ? 'View/Dispense' : 'View/Edit/Delete/Dispense',
+    };
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [record, setRecord] = useState({
         name: '',
@@ -262,7 +274,7 @@ const AllDrugs = () => {
             <div className="grid-container">
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
-                        {label}
+                        {labelMap[label]}
                     </div>
                 ))}
                 {getCurrentItems().map((drug, rowIndex) =>
