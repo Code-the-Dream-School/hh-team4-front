@@ -102,7 +102,9 @@ const AllDrugs = () => {
                     setFilterData(location.state ? alarmFilterData : null);
                     setIsFilteredByAlarm(true);
                 } else {
-                    const filteredData = data.data.filter((item) => item.location === store && item.quantity !==0);
+                    const filteredData = data.data.filter(
+                        (item) => item.location === store && item.quantity !== 0
+                    );
                     setOriginalData(filteredData);
                     setData(filteredData);
                     setFilterData(filteredData);
@@ -263,13 +265,14 @@ const AllDrugs = () => {
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}
+                                        disabled={drug.quantity === 'Out of Stock' ? true : false}
                                     >
                                         <AiFillMinusCircle />
                                     </button>
                                 </div>
                             ) : label === 'expirationDate' ? (
                                 formatForDatetimeLocal(drug[label])
-                            ) :  (
+                            ) : (
                                 <span
                                     style={{
                                         color:
