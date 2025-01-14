@@ -1,38 +1,77 @@
 import styled from 'styled-components';
 import { IoIosSearch } from 'react-icons/io';
-import { FaHome, FaFilter } from 'react-icons/fa';
+import { FaHome, FaFilter, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import { AiFillMinusCircle } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import FilterSearch from './FilterSearch';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LiveSearch from '../components/LiveSearch';
 import Pagination from '../components/Pagination';
-import { useNavigate } from 'react-router-dom';
-import { FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 import { useDashboardContext } from './Dashboard';
 import Modal from '../components/Modal';
 
-// import { TbChevronsDownLeft } from 'react-icons/tb';
+const useResponsiveView = () => {
+    const [view, setView] = useState('mobile');
+
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+
+            if (width < 600) {
+                setView('mobile');
+            } else if (width >= 600 && width < 1024) {
+                setView('tablet');
+            } else if (width >= 1024 && width < 1440) {
+                setView('desktop');
+            } else {
+                setView('largeDesktop');
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return view;
+};
 
 const AllDrugs = () => {
     const { user, store } = useDashboardContext();
     const roleOfUser = user.role;
+    const view = useResponsiveView();
 
     const formatForDatetimeLocal = (isoDate) => {
         if (!isoDate) return '';
         const date = new Date(isoDate);
         return date.toISOString().split('T')[0];
     };
-    const columnLabels = [
-        'name',
-        'genericName',
-        'class',
-        'quantity',
-        'expirationDate',
-        'lot',
-        'ndcNumber',
-        'view/edit/delete/dispense',
-    ];
+
+    const allowedFields = () => {
+        switch (view) {
+            case 'mobile':
+                return ['name', 'view/edit/delete/dispense'];
+            case 'tablet':
+                return ['name', 'quantity', 'lot', 'view/edit/delete/dispense'];
+            case 'desktop':
+                return ['name', 'quantity', 'lot', 'expirationDate', 'view/edit/delete/dispense'];
+            case 'largeDesktop':
+                return [
+                    'name',
+                    'genericName',
+                    'class',
+                    'quantity',
+                    'expirationDate',
+                    'lot',
+                    'ndcNumber',
+                    'view/edit/delete/dispense',
+                ];
+            default:
+                return [];
+        }
+    };
+    const fields = allowedFields();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [record, setRecord] = useState({
         name: '',
@@ -221,13 +260,13 @@ const AllDrugs = () => {
                 )}
             </div>
             <div className="grid-container">
-                {columnLabels.map((label, index) => (
+                {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
                         {label}
                     </div>
                 ))}
                 {getCurrentItems().map((drug, rowIndex) =>
-                    columnLabels.map((label, colIndex) => (
+                    fields.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
                             {label === 'view/edit/delete/dispense' ? (
                                 <div className="actions">
@@ -302,6 +341,9 @@ const AllDrugs = () => {
 export default AllDrugs;
 
 const Wrapper = styled.section`
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     .centered-container {
         display: flex;
         justify-content: space-between;
@@ -372,7 +414,7 @@ const Wrapper = styled.section`
     }
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(8, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
         padding: 10px;
     }
@@ -386,12 +428,6 @@ const Wrapper = styled.section`
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;
-    }
-
-    .grid-header {
-        font-weight: bold;
-        background-color: var(--color-green-med);
-        color: var(--color-blue-dark);
     }
     .advanced-search {
         align-items: center;
@@ -442,6 +478,11 @@ const Wrapper = styled.section`
         border-radius: var(--border-radius);
         background-color: #fff;
     }
+    .grid-header {
+        font-weight: bold;
+        background-color: var(--color-green-med);
+        color: var(--color-blue-dark);
+    }
     .modal {
         position: fixed;
         top: 0;
@@ -472,7 +513,7 @@ const Wrapper = styled.section`
         border-radius: 5px;
         transition:
             background-color 0.3s,
-            transform 0.2s; /* Smooth transition */
+            transform 0.2s;
     }
     .modal-buttons:nth-of-type(1) {
         background-color: var(--color-green-dark);
@@ -489,5 +530,20 @@ const Wrapper = styled.section`
         font-weight: bold;
         margin-left: 200px;
         color: var(--color-blue-dark);
+
     }
+    @media (min-width: 600px) {
+        .grid-container {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+    @media (min-width: 1024px) {
+        .grid-container {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+    @media (min-width: 1440px) {
+        .grid-container {
+            grid-template-columns: repeat(8, 1fr);
+        }
 `;
