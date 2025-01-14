@@ -74,28 +74,28 @@ export default function Alarms() {
                 <Alarmbutton
                     message={`Low Stock on ${lowStockData.length} products`}
                     imagepath="../images/low-stock.png"
-                    filterTitle="LowStock"
+                    filterTitle="Low Stock Drugs"
                     alarmFilterData={lowStockData}
                     targetPage="dashboard"
                 />
                 <Alarmbutton
                     message={`No Stock on ${noStockData.length} products`}
                     imagepath="../images/out-of-stock.png"
-                    filterTitle="No Stock"
+                    filterTitle="No Stock Drugs"
                     alarmFilterData={noStockData}
                     targetPage="dashboard"
                 />
                 <Alarmbutton
                     message={`Expired ${expiredData.length} products`}
                     imagepath="../images/expired.png"
-                    filterTitle="Expire"
+                    filterTitle="Expired Drugs"
                     alarmFilterData={expiredData}
                     targetPage="dashboard"
                 />
                 <Alarmbutton
                     message={`Expiration soon ${expiringsoonData.length} products`}
                     imagepath="../images/expire-soon.png"
-                    filterTitle="Expire soon"
+                    filterTitle="Expiring Soon Drugs"
                     alarmFilterData={expiringsoonData}
                     targetPage="dashboard"
                 />

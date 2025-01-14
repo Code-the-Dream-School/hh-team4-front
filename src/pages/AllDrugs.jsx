@@ -110,7 +110,7 @@ const AllDrugs = () => {
     const [error, setError] = useState(false);
     const [searchsection, setSearchSection] = useState(false);
     const location = useLocation();
-    const { alarmFilterData: alarmFilterData } = location.state || {};
+    const { alarmFilterData: alarmFilterData, filterTitle } = location.state || {};
     const [currentPage, setCurrentPage] = useState(1);
     const [originalData, setOriginalData] = useState([]);
     const [isFilteredByAlarm, setIsFilteredByAlarm] = useState(false);
@@ -213,6 +213,9 @@ const AllDrugs = () => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+    const closeFilter = () => {
+        toggleSearch();
+    };
 
     return (
         <Wrapper>
@@ -240,13 +243,19 @@ const AllDrugs = () => {
                             </button>
                         )}
                     </div>
+                    <div className="form-title">{filterTitle}</div>
                 </div>
             </div>
             <div className="advanced-search">
                 {searchsection && (
                     <div>
                         <br />
-                        <FilterSearch data={data} formName="allDrug" onFilter={handleFilter} />
+                        <FilterSearch
+                            data={data}
+                            formName="allDrug"
+                            onFilter={handleFilter}
+                            onClose={closeFilter}
+                        />
                     </div>
                 )}
             </div>
@@ -346,7 +355,7 @@ const Wrapper = styled.section`
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .left-filter-box {
-        margin-right: 3rem;
+        margin-right: 0.1rem;
     }
     .bell-icon-box {
         align-self: self-start;
@@ -360,6 +369,7 @@ const Wrapper = styled.section`
     .filter-button {
         border: 15px solid var(--color-green-light);
         border-radius: 50%;
+        margin-right: 1rem;
     }
     .filter-icon {
         background: var(--color-green-light);
@@ -514,6 +524,14 @@ const Wrapper = styled.section`
         background-color: var(--color-alert);
         color: white;
     }
+    .form-title {
+        text-align: center;
+        font-size: 90%;
+        font-weight: bold;
+        margin-left: 200px;
+        color: var(--color-blue-dark);
+
+    }
     @media (min-width: 600px) {
         .grid-container {
             grid-template-columns: repeat(4, 1fr);
@@ -528,5 +546,4 @@ const Wrapper = styled.section`
         .grid-container {
             grid-template-columns: repeat(8, 1fr);
         }
-    }
 `;
