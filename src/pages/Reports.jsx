@@ -1,5 +1,5 @@
+import styled from 'styled-components';
 import { Bar, Doughnut } from 'react-chartjs-2';
-import { useEffect } from 'react';
 import {
     Chart,
     ArcElement,
@@ -23,8 +23,11 @@ const Reports = () => {
     const [medOutOfStock, setMedOutOfStock] = useState([]);
     const [outOfStockCounts, setOutOfStockCounts] = useState([]);
     const [error, setError] = useState(null);
+    const [showBarChart, setShowBarChart] = useState(false);
+    const [showDoughnutChart, setShowDoughnutChart] = useState(false);
+    const [showOutOfStockList, setShowOutOfStockList] = useState(false);
 
-    useEffect(() => {
+    const fetchTopEmployees = () => {
         const token = localStorage.getItem('token');
         fetch(`http://localhost:8000/api/v1/topEmployee`, {
             method: 'GET',
@@ -54,7 +57,7 @@ const Reports = () => {
                 setTopEmployee(uniqueNames[maxIndex]);
             })
             .catch((error) => console.error('Error:', error));
-    }, []);
+    };
     const chartData = {
         labels: employeesNames,
         datasets: [
@@ -73,7 +76,7 @@ const Reports = () => {
             legend: {
                 labels: {
                     font: {
-                        size: 32,
+                        size: 20,
                     },
                 },
             },
@@ -111,13 +114,13 @@ const Reports = () => {
         justifyContent: 'center',
         alignItems: 'center', // Aligns charts vertically in the center
         gap: '10px',
-        margin: 'auto', // This will center the chart horizontally
-        width: '800px',
-        height: '800px',
-        padding: '4rem',
+        margin: '1%',
+        padding: '5%',
+        width: '600',
+        height: '600px',
     };
 
-    useEffect(() => {
+    const fetchInventoryData = () => {
         const token = localStorage.getItem('token');
 
         fetch('http://localhost:8000/api/v1/inventory', {
@@ -154,7 +157,7 @@ const Reports = () => {
                 setClassCount(countsArray);
             })
             .catch((error) => setError(error.message));
-    }, []);
+    };
 
     const doughnutData = {
         labels: classNames,
@@ -176,46 +179,34 @@ const Reports = () => {
                 display: true,
                 text: 'Medication Classes in Stock',
                 font: {
-                    size: 32,
+                    size: 28,
                 },
-                padding: {
-                    top: 20,
-                    bottom: 20,
-                },
-                align: 'center',
+
             },
             legend: {
                 labels: {
                     font: {
-                        size: 26,
+                        size: 24,
                     },
                 },
                 position: 'top',
-            },
-        },
-        layout: {
-            padding: {
-                top: 40,
-                bottom: 40,
-                left: 100,
-                right: 10,
             },
         },
         aspectRatio: 2,
     };
     const doughnutContainerStyle = {
         display: 'flex',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center', // Aligns charts vertically in the center
         gap: '10px',
-        margin: 'auto',
-        width: '800px',
-        height: '800px',
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
+        margin: '1%',
+        padding: '5%',
+        width: '600',
+        height: '600px',
+
     };
 
-    useEffect(() => {
+    const fetchOutOfStockData = () => {
         const token = localStorage.getItem('token');
 
         fetch('http://localhost:8000/api/v1/outOfStock', {
@@ -245,52 +236,125 @@ const Reports = () => {
                 setOutOfStockCounts(Object.values(groupedQuantities));
             })
             .catch((error) => setError(error.message));
-    }, []);
+    };
+
+    const handleShowBarChart = () => {
+        setShowBarChart(true);
+        setShowDoughnutChart(false);
+        setShowOutOfStockList(false);
+        fetchTopEmployees();
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
+
+    };
+
+    const handleShowDoughnutChart = () => {
+        setShowBarChart(false);
+        setShowDoughnutChart(true);
+        setShowOutOfStockList(false);
+        fetchInventoryData();
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
+
+    };
+
+    const handleShowOutOfStockList = () => {
+        setShowBarChart(false);
+        setShowDoughnutChart(false);
+        setShowOutOfStockList(true);
+        fetchOutOfStockData();
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
+
+    };
 
     return (
         <div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <h1 style={{ textAlign: 'center' }}>Reports</h1>
-            <div style={chartContainerStyle}>
-                {' '}
-                <Bar data={chartData} options={chartOptions} />
-            </div>
-            <div style={doughnutContainerStyle}>
-                <Doughnut data={doughnutData} options={doughnutOptions} />
-            </div>
-            <div style={{ textAlign: 'center' }}>
-                <h2
-                    style={{
-                        textAlign: 'center',
-                        fontSize: '2rem',
-                        paddingLeft: '6rem',
-                        paddingBottom: '2rem',
-                        paddingTop: '4rem',
-                    }}
-                >
-                    Out of Stock Medicines
-                </h2>
-                <ul
-                    style={{
-                        listStyleType: 'none',
-                        paddingLeft: '6rem',
-                        textAlign: 'center',
-                        fontSize: '1.5rem',
-                    }}
-                >
-                    {medOutOfStock.length > 0 ? (
-                        medOutOfStock.map((med, index) => (
-                            <li key={index}>
-                                {med} - Quantity: {outOfStockCounts[index]}
-                            </li>
-                        ))
-                    ) : (
-                        <p>No medicines are out of stock currently.</p>
-                    )}
-                </ul>
-            </div>
-        </div>
+            <h1 style={{ textAlign: 'center', marginLeft: '2.5%', padding: '5% ', fontSize: '200%' }}>Reports</h1>
+
+            {showBarChart && (
+                <div style={chartContainerStyle}>
+                    <Bar data={chartData} options={chartOptions} />
+                </div>
+            )}
+            {showDoughnutChart && (
+                <div style={doughnutContainerStyle}>
+                    <Doughnut data={doughnutData} options={doughnutOptions} />
+                </div>
+            )}
+            {showOutOfStockList && (
+                <div style={{ textAlign: 'center' }}>
+                    <h2
+                        style={{
+                            textAlign: 'center',
+                            fontSize: '200%',
+                            paddingLeft: '1.5%',
+                            paddingBottom: '2%',
+                            paddingTop: '4%',
+                            font: 'bold',
+                        }}
+                    >
+                        Out of Stock Medicines
+                    </h2>
+                    <ul
+                        style={{
+                            margin: '2%',
+                            fontSize: '160%',
+                        }}
+                    >
+                        {medOutOfStock.length > 0 ? (
+                            medOutOfStock.map((med, index) => (
+                                <li key={index}>
+                                    {med} - Quantity: {outOfStockCounts[index]}
+                                </li>
+                            ))
+                        ) : (
+                            <p>No medicines are out of stock currently.</p>
+                        )}
+                    </ul>
+                </div>
+            )
+            }
+            <Wrapper>
+                <div>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+
+                    <button onClick={handleShowBarChart} className="button-bar" >Top Employee for the Month</button>
+                    <button onClick={handleShowDoughnutChart} className="button-doughnut">Classes with the most Medicine</button>
+                    <button onClick={handleShowOutOfStockList} className="button-outofstock">Out of Stock Medicines</button>
+                </div>
+            </Wrapper >
+
+        </div >
     );
 };
 
 export default Reports;
+
+const Wrapper = styled.section`
+.parent {
+    display: flex;
+    height: 100%; 
+}
+     .button-bar, .button-doughnut, .button-outofstock {
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        width: 30%;           
+        height: 30%; 
+        padding: 1.4% .5%;
+        margin: 5% 38%;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 125%;
+    }
+    .button-bar {
+        background-color: #084C61;
+    }
+    .button-doughnut {
+        background-color: #523A28;
+    }
+    .button-outofstock {
+        background-color: #C45B59;
+    }
+`;

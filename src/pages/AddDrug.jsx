@@ -306,8 +306,6 @@ export const Wrapper = styled.section`
   }
               `;
 
-export const FormField = styled.div``;
-
 export const AddForm = styled.form`
     width: 90vw;
     max-width: 400px;
