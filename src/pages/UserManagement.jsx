@@ -19,7 +19,7 @@ const UserManagement = () => {
         'store',
         //'creationAt',
         //'updatedAt',
-        'view/edit/delete',
+        'View/Edit/Delete',
     ];
 
     const token = localStorage.getItem('token');
@@ -107,14 +107,16 @@ const UserManagement = () => {
                     {/* Render column headers */}
                     {columnLabels.map((label, index) => (
                         <div key={index} className="grid-item grid-header">
-                            {label}
+                            {label === 'ndcNumber' || label === 'lot'
+                                ? label.toUpperCase()
+                                : label.charAt(0).toUpperCase() + label.slice(1)}
                         </div>
                     ))}
                     {/* Render rows dynamically */}
                     {getCurrentItems().map((user, rowIndex) =>
                         columnLabels.map((label, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                                {label === 'view/edit/delete' ? (
+                                {label === 'View/Edit/Delete' ? (
                                     <div className="actions">
                                         <button
                                             className="action-button edit"
@@ -173,7 +175,6 @@ const Wrapper = styled.section`
         border: 1px solid #ccc;
         text-align: left;
         font-size: 1rem;
-        text-transform: lowercase;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;
@@ -218,16 +219,6 @@ const Wrapper = styled.section`
     }
     .action-button.delete.disabeld {
         color: var(--color-gray);
-    }
-    .grid-item {
-        padding: 20px;
-        border: 1px solid #ccc;
-        text-align: left;
-        font-size: 1rem;
-        text-transform: lowercase;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border-radius: var(--border-radius);
-        background-color: #fff;
     }
 
     .description {

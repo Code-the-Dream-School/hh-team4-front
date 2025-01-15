@@ -207,7 +207,9 @@ const PastOrders = () => {
                 {/* Render column headers */}
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
-                        {label}
+                        {label === 'ndcNumber' || label === 'lot'
+                            ? label.toUpperCase()
+                            : label.charAt(0).toUpperCase() + label.slice(1)}
                     </div>
                 ))}
                 {/* Render rows dynamically */}
@@ -336,7 +338,6 @@ const Wrapper = styled.section`
         border: 1px solid #ccc;
         text-align: left;
         font-size: 1rem;
-        text-transform: lowercase;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;

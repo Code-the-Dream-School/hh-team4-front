@@ -51,11 +51,11 @@ const AllDrugs = () => {
     const allowedFields = () => {
         switch (view) {
             case 'mobile':
-                return ['name', 'view/edit/delete/dispense'];
+                return ['name', 'View/Edit/Delete/Dispense'];
             case 'tablet':
-                return ['name', 'quantity', 'lot', 'view/edit/delete/dispense'];
+                return ['name', 'quantity', 'lot', 'View/Edit/Delete/Dispense'];
             case 'desktop':
-                return ['name', 'quantity', 'lot', 'expirationDate', 'view/edit/delete/dispense'];
+                return ['name', 'quantity', 'lot', 'expirationDate', 'View/Edit/Delete/Dispense'];
             case 'largeDesktop':
                 return [
                     'name',
@@ -65,7 +65,7 @@ const AllDrugs = () => {
                     'expirationDate',
                     'lot',
                     'ndcNumber',
-                    'view/edit/delete/dispense',
+                    'View/Edit/Delete/Dispense',
                 ];
             default:
                 return [];
@@ -264,13 +264,15 @@ const AllDrugs = () => {
             <div className="grid-container">
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
-                        {label}
+                        {label === 'ndcNumber' || label === 'lot'
+                            ? label.toUpperCase()
+                            : label.charAt(0).toUpperCase() + label.slice(1)}
                     </div>
                 ))}
                 {getCurrentItems().map((drug, rowIndex) =>
                     fields.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {label === 'view/edit/delete/dispense' ? (
+                            {label === 'View/Edit/Delete/Dispense' ? (
                                 <div className="actions">
                                     <button
                                         className="action-button view"
@@ -436,7 +438,7 @@ const Wrapper = styled.section`
         border: 1px solid #ccc;
         text-align: left;
         font-size: 1rem;
-        text-transform: lowercase;
+        //text-transform: lowercase;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;
@@ -480,16 +482,7 @@ const Wrapper = styled.section`
     .action-button.delete {
         color: var(--color-alert);
     }
-    .grid-item {
-        padding: 20px;
-        border: 1px solid #ccc;
-        text-align: left;
-        font-size: 1rem;
-        text-transform: lowercase;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border-radius: var(--border-radius);
-        background-color: #fff;
-    }
+   
     .grid-header {
         font-weight: bold;
         background-color: var(--color-green-med);
