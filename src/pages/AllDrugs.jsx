@@ -264,9 +264,9 @@ const AllDrugs = () => {
             <div className="grid-container">
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
-                        { label==='ndcNumber' || label === 'lot' ?  label.toUpperCase() :
-                        label.charAt(0).toUpperCase() + label.slice(1)
-                        }
+                        {label === 'ndcNumber' || label === 'lot'
+                            ? label.toUpperCase()
+                            : label.charAt(0).toUpperCase() + label.slice(1)}
                     </div>
                 ))}
                 {getCurrentItems().map((drug, rowIndex) =>
