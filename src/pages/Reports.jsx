@@ -181,7 +181,6 @@ const Reports = () => {
                 font: {
                     size: 28,
                 },
-
             },
             legend: {
                 labels: {
@@ -203,7 +202,6 @@ const Reports = () => {
         padding: '5%',
         width: '600',
         height: '600px',
-
     };
 
     const fetchOutOfStockData = () => {
@@ -244,7 +242,6 @@ const Reports = () => {
         setShowOutOfStockList(false);
         fetchTopEmployees();
         window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
-
     };
 
     const handleShowDoughnutChart = () => {
@@ -253,7 +250,6 @@ const Reports = () => {
         setShowOutOfStockList(false);
         fetchInventoryData();
         window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
-
     };
 
     const handleShowOutOfStockList = () => {
@@ -262,12 +258,20 @@ const Reports = () => {
         setShowOutOfStockList(true);
         fetchOutOfStockData();
         window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
-
     };
 
     return (
         <div>
-            <h1 style={{ textAlign: 'center', marginLeft: '2.5%', padding: '5% ', fontSize: '200%' }}>Reports</h1>
+            <h1
+                style={{
+                    textAlign: 'center',
+                    marginLeft: '2.5%',
+                    padding: '5% ',
+                    fontSize: '200%',
+                }}
+            >
+                Reports
+            </h1>
 
             {showBarChart && (
                 <div style={chartContainerStyle}>
@@ -310,37 +314,43 @@ const Reports = () => {
                         )}
                     </ul>
                 </div>
-            )
-            }
+            )}
             <Wrapper>
                 <div>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
 
-                    <button onClick={handleShowBarChart} className="button-bar" >Top Employee for the Month</button>
-                    <button onClick={handleShowDoughnutChart} className="button-doughnut">Classes with the most Medicine</button>
-                    <button onClick={handleShowOutOfStockList} className="button-outofstock">Out of Stock Medicines</button>
+                    <button onClick={handleShowBarChart} className="button-bar">
+                        Top Employee for the Month
+                    </button>
+                    <button onClick={handleShowDoughnutChart} className="button-doughnut">
+                        Classes with the most Medicine
+                    </button>
+                    <button onClick={handleShowOutOfStockList} className="button-outofstock">
+                        Out of Stock Medicines
+                    </button>
                 </div>
-            </Wrapper >
-
-        </div >
+            </Wrapper>
+        </div>
     );
 };
 
 export default Reports;
 
 const Wrapper = styled.section`
-.parent {
-    display: flex;
-    height: 100%; 
-}
-     .button-bar, .button-doughnut, .button-outofstock {
-        display: flex; 
-        flex-direction: column; 
-        justify-content: center; 
-        align-items: center; 
-        width: 30%;           
-        height: 30%; 
-        padding: 1.4% .5%;
+    .parent {
+        display: flex;
+        height: 100%;
+    }
+    .button-bar,
+    .button-doughnut,
+    .button-outofstock {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 30%;
+        height: 30%;
+        padding: 1.4% 0.5%;
         margin: 5% 38%;
         color: #fff;
         border: none;
@@ -349,12 +359,12 @@ const Wrapper = styled.section`
         font-size: 125%;
     }
     .button-bar {
-        background-color: #084C61;
+        background-color: #084c61;
     }
     .button-doughnut {
-        background-color: #523A28;
+        background-color: #523a28;
     }
     .button-outofstock {
-        background-color: #C45B59;
+        background-color: #c45b59;
     }
 `;
