@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './AlarmButton.module.css';
-
+import styled from 'styled-components';
 export default function AlarmButton({
     message,
     imagepath,
@@ -15,16 +15,23 @@ export default function AlarmButton({
     }
 
     return (
-        <div className={styles.alarmitem}>
+        <Wrapper className={styles.alarmitem}>
             <img
                 src={imagepath}
                 alt={filterTitle}
                 className={styles.alarmicon}
                 onClick={loadingPage}
             />
-            <span className={styles.alarmtext} onClick={loadingPage}>
+            <p className="text" onClick={loadingPage}>
                 {message}
-            </span>
-        </div>
+            </p>
+        </Wrapper>
     );
 }
+
+const Wrapper = styled.section`
+    .text {
+        font-size: 1.5rem;
+        color: var(--color-blue-dark);
+    }
+`;

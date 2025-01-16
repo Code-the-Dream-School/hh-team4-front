@@ -72,6 +72,19 @@ const AllDrugs = () => {
         }
     };
     const fields = allowedFields();
+
+    const labelMap = {
+        name: 'Drug Name',
+        genericName: 'Generic Name',
+        class: 'Class',
+        quantity: 'Quantity',
+        expirationDate: 'Expiration Date',
+        lot: 'LOT',
+        ndcNumber: 'NDC',
+        'View/Edit/Delete/Dispense':
+            roleOfUser === 'clerk' ? 'View/Dispense' : 'View/Edit/Delete/Dispense',
+    };
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [record, setRecord] = useState({
         name: '',
@@ -264,9 +277,7 @@ const AllDrugs = () => {
             <div className="grid-container">
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
-                        {label === 'ndcNumber' || label === 'lot'
-                            ? label.toUpperCase()
-                            : label.charAt(0).toUpperCase() + label.slice(1)}
+                        {labelMap[label]}
                     </div>
                 ))}
                 {getCurrentItems().map((drug, rowIndex) =>
@@ -482,7 +493,7 @@ const Wrapper = styled.section`
     .action-button.delete {
         color: var(--color-alert);
     }
-   
+
     .grid-header {
         font-weight: bold;
         background-color: var(--color-green-med);
@@ -535,7 +546,6 @@ const Wrapper = styled.section`
         font-weight: bold;
         margin-left: 200px;
         color: var(--color-blue-dark);
-
     }
     @media (min-width: 600px) {
         .grid-container {
@@ -551,4 +561,5 @@ const Wrapper = styled.section`
         .grid-container {
             grid-template-columns: repeat(8, 1fr);
         }
+    }
 `;

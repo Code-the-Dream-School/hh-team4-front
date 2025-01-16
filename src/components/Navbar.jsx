@@ -6,7 +6,8 @@ import { LogoutContainer } from '.';
 import { TbBellFilled } from 'react-icons/tb';
 
 const Navbar = () => {
-    const { toggleSidebar, toggleAlarm } = useDashboardContext();
+    const { toggleSidebar, toggleAlarm, store } = useDashboardContext();
+    console.log(store);
     return (
         <Wrapper>
             <div className="nav-center">
@@ -15,7 +16,7 @@ const Navbar = () => {
                 </button>
                 <div className="logo-container">
                     <Logo />
-                    <h4 className="logo-text">MediStock</h4>
+                    <h4 className="logo-text">MediStock: {store}</h4>
                 </div>
                 <div className="btn-container">
                     <button className="bell-button" onClick={toggleAlarm}>

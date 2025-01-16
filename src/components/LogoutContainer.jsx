@@ -36,6 +36,7 @@ const Wrapper = styled.div`
         align-items: center;
         justify-content: center;
         gap: 0 0.5rem;
+        background: var(--color-blue-dark);
     }
     .img {
         width: 25px;
@@ -57,7 +58,8 @@ const Wrapper = styled.div`
         visibility: visible;
     }
     .dropdown-btn {
-        border-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
         padding: 0.5rem;
         background: transparent;
         border-color: transparent;

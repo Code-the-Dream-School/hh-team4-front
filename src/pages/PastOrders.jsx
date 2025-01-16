@@ -40,11 +40,11 @@ const PastOrders = () => {
     const allowedFields = () => {
         switch (view) {
             case 'mobile':
-                return ['drugName', 'view'];
+                return ['drugName', 'View'];
             case 'tablet':
-                return ['drugName', 'lot', 'dispensedQuantity', 'view'];
+                return ['drugName', 'lot', 'dispensedQuantity', 'View'];
             case 'desktop':
-                return ['drugName', 'lot', 'dispensedQuantity', 'dispensedDate', 'view'];
+                return ['drugName', 'lot', 'dispensedQuantity', 'dispensedDate', 'View'];
             case 'largeDesktop':
                 return [
                     'drugName',
@@ -53,14 +53,21 @@ const PastOrders = () => {
                     'className',
                     'dispensedQuantity',
                     'dispensedDate',
-                    'view',
+                    'View',
                 ];
             default:
                 return [];
         }
     };
     const fields = allowedFields();
-
+    const labelMap = {
+        drugName: 'Drug Name',
+        genericName: 'Generic Name',
+        className: 'Class Name',
+        dispensedQuantity: 'Dispense Quantity',
+        dispensedDate: 'Dispensed Date',
+        View: 'View',
+    };
     const [record, setRecord] = useState({
         drugName: '',
         genericName: '',
@@ -207,9 +214,7 @@ const PastOrders = () => {
                 {/* Render column headers */}
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
-                        {label === 'ndcNumber' || label === 'lot'
-                            ? label.toUpperCase()
-                            : label.charAt(0).toUpperCase() + label.slice(1)}
+                        {labelMap[label] || label}
                     </div>
                 ))}
                 {/* Render rows dynamically */}
@@ -217,7 +222,7 @@ const PastOrders = () => {
                 {getCurrentItems().map((drug, rowIndex) =>
                     fields.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {label === 'view' ? (
+                            {label === 'View' ? (
                                 <div className="actions">
                                     <button
                                         className="action-button view"

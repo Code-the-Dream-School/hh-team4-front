@@ -7,20 +7,61 @@ import Pagination from '../components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrash, FaUserPlus } from 'react-icons/fa';
 
+const useResponsiveView = () => {
+    const [view, setView] = useState('mobile');
+
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+
+            if (width < 600) {
+                setView('mobile');
+            } else if (width >= 600 && width < 1024) {
+                setView('tablet');
+            } else if (width >= 1024 && width < 1440) {
+                setView('desktop');
+            } else {
+                setView('largeDesktop');
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return view;
+};
 const UserManagement = () => {
     const [allUserData, setAllUserData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
+    const view = useResponsiveView();
 
-    const columnLabels = [
-        'name',
-        'email',
-        'role',
-        'store',
-        //'creationAt',
-        //'updatedAt',
-        'View/Edit/Delete',
-    ];
+    const allowedFields = () => {
+        switch (view) {
+            case 'mobile':
+                return ['name', 'role', 'Edit/Delete'];
+            case 'tablet':
+                return ['name', 'role', 'Store', 'Edit/Delete'];
+            case 'desktop':
+                return ['name', 'email', 'role', 'store', 'Edit/Delete'];
+            case 'largeDesktop':
+                return ['name', 'email', 'role', 'store', 'Edit/Delete'];
+            default:
+                return [];
+        }
+    };
+    const fields = allowedFields();
+
+    const labelMap = {
+        name: 'Name',
+        email: 'Email',
+        role: 'Role',
+        store: 'Store',
+        'Edit/Delete': 'Edit/Delete',
+    };
 
     const token = localStorage.getItem('token');
     const currentUserId = localStorage.getItem('userId');
@@ -97,7 +138,11 @@ const UserManagement = () => {
         <>
             <Wrapper>
                 <div className="top-container">
-                    <button className="action-button" name="createUser" onClick={handelCreateUser}>
+                    <button
+                        className="action-button user"
+                        name="createUser"
+                        onClick={handelCreateUser}
+                    >
                         <FaUserPlus />
                         <span className="description">Register New User</span>
                     </button>
@@ -105,18 +150,16 @@ const UserManagement = () => {
 
                 <div className="grid-container">
                     {/* Render column headers */}
-                    {columnLabels.map((label, index) => (
+                    {fields.map((label, index) => (
                         <div key={index} className="grid-item grid-header">
-                            {label === 'ndcNumber' || label === 'lot'
-                                ? label.toUpperCase()
-                                : label.charAt(0).toUpperCase() + label.slice(1)}
+                            {labelMap[label]}
                         </div>
                     ))}
                     {/* Render rows dynamically */}
                     {getCurrentItems().map((user, rowIndex) =>
-                        columnLabels.map((label, colIndex) => (
+                        fields.map((label, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                                {label === 'View/Edit/Delete' ? (
+                                {label === 'Edit/Delete' ? (
                                     <div className="actions">
                                         <button
                                             className="action-button edit"
@@ -158,14 +201,15 @@ export default UserManagement;
 
 const Wrapper = styled.section`
     .top-container {
+        margin-bottom: 1rem;
+        padding-left: 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 10px;
         padding: 10px;
     }
@@ -178,12 +222,6 @@ const Wrapper = styled.section`
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;
-    }
-
-    .grid-header {
-        font-weight: bold;
-        background-color: var(--color-green-med);
-        color: var(--color-blue-dark);
     }
 
     .actions {
@@ -200,6 +238,10 @@ const Wrapper = styled.section`
         cursor: pointer;
         font-size: 1.2rem;
         transition: transform 0.2s ease-in-out;
+    }
+    .user {
+        color: var(--color-blue-dark);
+        font-size: 2rem;
     }
 
     .action-button:hover {
@@ -220,8 +262,38 @@ const Wrapper = styled.section`
     .action-button.delete.disabeld {
         color: var(--color-gray);
     }
-
+    .grid-item {
+        padding: 20px;
+        border: 1px solid #ccc;
+        text-align: left;
+        font-size: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius);
+        background-color: #fff;
+    }
+    .grid-header {
+        font-weight: bold;
+        background-color: var(--color-green-med);
+        color: var(--color-blue-dark);
+    }
     .description {
         margin: 0;
+        padding-left: 1rem;
+        font-size: 2rem;
+    }
+    @media (min-width: 600px) {
+        .grid-container {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+    @media (min-width: 1024px) {
+        .grid-container {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+    @media (min-width: 1440px) {
+        .grid-container {
+            grid-template-columns: repeat(5, 1fr);
+        }
     }
 `;
