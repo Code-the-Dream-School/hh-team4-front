@@ -51,11 +51,11 @@ const AllDrugs = () => {
     const allowedFields = () => {
         switch (view) {
             case 'mobile':
-                return ['name', 'View/Edit/Delete/Dispense'];
+                return ['name', 'view/edit/delete/dispense'];
             case 'tablet':
-                return ['name', 'quantity', 'lot', 'View/Edit/Delete/Dispense'];
+                return ['name', 'quantity', 'lot', 'view/edit/delete/dispense'];
             case 'desktop':
-                return ['name', 'quantity', 'lot', 'expirationDate', 'View/Edit/Delete/Dispense'];
+                return ['name', 'quantity', 'lot', 'expirationDate', 'view/edit/delete/dispense'];
             case 'largeDesktop':
                 return [
                     'name',
@@ -65,7 +65,7 @@ const AllDrugs = () => {
                     'expirationDate',
                     'lot',
                     'ndcNumber',
-                    'View/Edit/Delete/Dispense',
+                    'view/edit/delete/dispense',
                 ];
             default:
                 return [];
@@ -82,8 +82,9 @@ const AllDrugs = () => {
         lot: 'lot',
         ndcNumber: 'ndc number',
         'view/edit/delete/dispense':
-            roleOfUser === 'clerk' ? 'View/Dispense' : 'View/Edit/Delete/Dispense',
+            roleOfUser === 'clerk' ? 'view/dispense' : 'view/edit/delete/dispense',
     };
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [record, setRecord] = useState({
         name: '',
@@ -277,16 +278,12 @@ const AllDrugs = () => {
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
                         {labelMap[label]}
-//                         {label === 'ndcNumber' || label === 'lot'
-//                             ? label.toUpperCase()
-//                             : label.charAt(0).toUpperCase() + label.slice(1)}
-
                     </div>
                 ))}
                 {getCurrentItems().map((drug, rowIndex) =>
                     fields.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {label === 'View/Edit/Delete/Dispense' ? (
+                            {label === 'view/edit/delete/dispense' ? (
                                 <div className="actions">
                                     <button
                                         className="action-button view"
@@ -496,7 +493,7 @@ const Wrapper = styled.section`
     .action-button.delete {
         color: var(--color-alert);
     }
-   
+
     .grid-header {
         font-weight: bold;
         background-color: var(--color-green-med);
@@ -549,7 +546,6 @@ const Wrapper = styled.section`
         font-weight: bold;
         margin-left: 200px;
         color: var(--color-blue-dark);
-
     }
     @media (min-width: 600px) {
         .grid-container {
@@ -565,4 +561,5 @@ const Wrapper = styled.section`
         .grid-container {
             grid-template-columns: repeat(8, 1fr);
         }
+    }
 `;

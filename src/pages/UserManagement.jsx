@@ -39,7 +39,6 @@ const UserManagement = () => {
     const navigate = useNavigate();
     const view = useResponsiveView();
 
-
     const allowedFields = () => {
         switch (view) {
             case 'mobile':
@@ -55,16 +54,16 @@ const UserManagement = () => {
         }
     };
     const fields = allowedFields();
-  
-//     const columnLabels = [
-//         'name',
-//         'email',
-//         'role',
-//         'store',
-//         //'creationAt',
-//         //'updatedAt',
-//         'View/Edit/Delete',
-//     ];
+
+    //     const columnLabels = [
+    //         'name',
+    //         'email',
+    //         'role',
+    //         'store',
+    //         //'creationAt',
+    //         //'updatedAt',
+    //         'View/Edit/Delete',
+    //     ];
 
     const token = localStorage.getItem('token');
     const currentUserId = localStorage.getItem('userId');
@@ -164,10 +163,7 @@ const UserManagement = () => {
                     {getCurrentItems().map((user, rowIndex) =>
                         fields.map((label, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-
                                 {label === 'edit/delete' ? (
-//                                 {label === 'View/Edit/Delete' ? (
-
                                     <div className="actions">
                                         <button
                                             className="action-button edit"
@@ -215,7 +211,7 @@ const Wrapper = styled.section`
         justify-content: space-between;
         align-items: center;
     }
-      .grid-container {
+    .grid-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
@@ -247,7 +243,7 @@ const Wrapper = styled.section`
         font-size: 1.2rem;
         transition: transform 0.2s ease-in-out;
     }
-      .user{
+    .user {
         color: var(--color-blue-dark);
         font-size: 2rem;
     }
@@ -290,7 +286,7 @@ const Wrapper = styled.section`
         padding-left: 1rem;
         font-size: 2rem;
     }
-      @media (min-width: 600px) {
+    @media (min-width: 600px) {
         .grid-container {
             grid-template-columns: repeat(4, 1fr);
         }
@@ -304,4 +300,5 @@ const Wrapper = styled.section`
         .grid-container {
             grid-template-columns: repeat(5, 1fr);
         }
+    }
 `;

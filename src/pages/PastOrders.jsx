@@ -215,10 +215,6 @@ const PastOrders = () => {
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
                         {labelMap[label] || label}
-//                         {label === 'ndcNumber' || label === 'lot'
-//                             ? label.toUpperCase()
-//                             : label.charAt(0).toUpperCase() + label.slice(1)}
-
                     </div>
                 ))}
                 {/* Render rows dynamically */}
