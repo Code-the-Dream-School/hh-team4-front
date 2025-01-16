@@ -42,28 +42,26 @@ const UserManagement = () => {
     const allowedFields = () => {
         switch (view) {
             case 'mobile':
-                return ['name', 'role', 'edit/delete'];
+                return ['name', 'role', 'Edit/Delete'];
             case 'tablet':
-                return ['name', 'role', 'store', 'edit/delete'];
+                return ['name', 'role', 'Store', 'Edit/Delete'];
             case 'desktop':
-                return ['name', 'email', 'role', 'store', 'edit/delete'];
+                return ['name', 'email', 'role', 'store', 'Edit/Delete'];
             case 'largeDesktop':
-                return ['name', 'email', 'role', 'store', 'edit/delete'];
+                return ['name', 'email', 'role', 'store', 'Edit/Delete'];
             default:
                 return [];
         }
     };
     const fields = allowedFields();
 
-    //     const columnLabels = [
-    //         'name',
-    //         'email',
-    //         'role',
-    //         'store',
-    //         //'creationAt',
-    //         //'updatedAt',
-    //         'View/Edit/Delete',
-    //     ];
+    const labelMap = {
+        name: 'Name',
+        email: 'Email',
+        role: 'Role',
+        store: 'Store',
+        'Edit/Delete': 'Edit/Delete',
+    };
 
     const token = localStorage.getItem('token');
     const currentUserId = localStorage.getItem('userId');
@@ -154,16 +152,14 @@ const UserManagement = () => {
                     {/* Render column headers */}
                     {fields.map((label, index) => (
                         <div key={index} className="grid-item grid-header">
-                            {label === 'ndcNumber' || label === 'lot'
-                                ? label.toUpperCase()
-                                : label.charAt(0).toUpperCase() + label.slice(1)}
+                            {labelMap[label]}
                         </div>
                     ))}
                     {/* Render rows dynamically */}
                     {getCurrentItems().map((user, rowIndex) =>
                         fields.map((label, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                                {label === 'edit/delete' ? (
+                                {label === 'Edit/Delete' ? (
                                     <div className="actions">
                                         <button
                                             className="action-button edit"
@@ -271,7 +267,6 @@ const Wrapper = styled.section`
         border: 1px solid #ccc;
         text-align: left;
         font-size: 1rem;
-        text-transform: lowercase;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;

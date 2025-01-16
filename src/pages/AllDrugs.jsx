@@ -51,11 +51,11 @@ const AllDrugs = () => {
     const allowedFields = () => {
         switch (view) {
             case 'mobile':
-                return ['name', 'view/edit/delete/dispense'];
+                return ['name', 'View/Edit/Delete/Dispense'];
             case 'tablet':
-                return ['name', 'quantity', 'lot', 'view/edit/delete/dispense'];
+                return ['name', 'quantity', 'lot', 'View/Edit/Delete/Dispense'];
             case 'desktop':
-                return ['name', 'quantity', 'lot', 'expirationDate', 'view/edit/delete/dispense'];
+                return ['name', 'quantity', 'lot', 'expirationDate', 'View/Edit/Delete/Dispense'];
             case 'largeDesktop':
                 return [
                     'name',
@@ -65,7 +65,7 @@ const AllDrugs = () => {
                     'expirationDate',
                     'lot',
                     'ndcNumber',
-                    'view/edit/delete/dispense',
+                    'View/Edit/Delete/Dispense',
                 ];
             default:
                 return [];
@@ -74,15 +74,15 @@ const AllDrugs = () => {
     const fields = allowedFields();
 
     const labelMap = {
-        name: 'drug dame',
-        genericName: 'generic name',
-        class: 'class',
-        quantity: 'quantity',
-        expirationDate: 'expiration date',
-        lot: 'lot',
-        ndcNumber: 'ndc number',
-        'view/edit/delete/dispense':
-            roleOfUser === 'clerk' ? 'view/dispense' : 'view/edit/delete/dispense',
+        name: 'Drug Name',
+        genericName: 'Generic Name',
+        class: 'Class',
+        quantity: 'Quantity',
+        expirationDate: 'Expiration Date',
+        lot: 'Lot',
+        ndcNumber: 'Ndc Number',
+        'View/Edit/Delete/Dispense':
+            roleOfUser === 'clerk' ? 'View/Dispense' : 'View/Edit/Delete/Dispense',
     };
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -283,7 +283,7 @@ const AllDrugs = () => {
                 {getCurrentItems().map((drug, rowIndex) =>
                     fields.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {label === 'view/edit/delete/dispense' ? (
+                            {label === 'View/Edit/Delete/Dispense' ? (
                                 <div className="actions">
                                     <button
                                         className="action-button view"
