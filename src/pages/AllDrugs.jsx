@@ -51,11 +51,11 @@ const AllDrugs = () => {
     const allowedFields = () => {
         switch (view) {
             case 'mobile':
-                return ['name', 'view/edit/delete/dispense'];
+                return ['name', 'View/Edit/Delete/Dispense'];
             case 'tablet':
-                return ['name', 'quantity', 'lot', 'view/edit/delete/dispense'];
+                return ['name', 'quantity', 'lot', 'View/Edit/Delete/Dispense'];
             case 'desktop':
-                return ['name', 'quantity', 'lot', 'expirationDate', 'view/edit/delete/dispense'];
+                return ['name', 'quantity', 'lot', 'expirationDate', 'View/Edit/Delete/Dispense'];
             case 'largeDesktop':
                 return [
                     'name',
@@ -65,7 +65,7 @@ const AllDrugs = () => {
                     'expirationDate',
                     'lot',
                     'ndcNumber',
-                    'view/edit/delete/dispense',
+                    'View/Edit/Delete/Dispense',
                 ];
             default:
                 return [];
@@ -133,7 +133,7 @@ const AllDrugs = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:8000/api/v1/inventory', {
+        fetch('https://medistock.onrender.com/api/v1/inventory', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -153,7 +153,9 @@ const AllDrugs = () => {
                     setFilterData(location.state ? alarmFilterData : null);
                     setIsFilteredByAlarm(true);
                 } else {
-                    const filteredData = data.data.filter((item) => item.location === store);
+                    const filteredData = data.data.filter(
+                        (item) => item.location === store && item.quantity !== 0
+                    );
                     setOriginalData(filteredData);
                     setData(filteredData);
                     setFilterData(filteredData);
@@ -198,7 +200,7 @@ const AllDrugs = () => {
 
     const handleConfirmDelete = () => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:8000/api/v1/inventory/${drugToDelete?.drugId}`, {
+        fetch(`https://medistock.onrender.com/api/v1/inventory/${drugToDelete?.drugId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -275,12 +277,16 @@ const AllDrugs = () => {
                 {fields.map((label, index) => (
                     <div key={index} className="grid-item grid-header">
                         {labelMap[label]}
+//                         {label === 'ndcNumber' || label === 'lot'
+//                             ? label.toUpperCase()
+//                             : label.charAt(0).toUpperCase() + label.slice(1)}
+
                     </div>
                 ))}
                 {getCurrentItems().map((drug, rowIndex) =>
                     fields.map((label, colIndex) => (
                         <div key={`${rowIndex}-${colIndex}`} className="grid-item">
-                            {label === 'view/edit/delete/dispense' ? (
+                            {label === 'View/Edit/Delete/Dispense' ? (
                                 <div className="actions">
                                     <button
                                         className="action-button view"
@@ -314,6 +320,7 @@ const AllDrugs = () => {
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}
+                                        disabled={drug.quantity === 'Out of Stock' ? true : false}
                                     >
                                         <AiFillMinusCircle />
                                     </button>
@@ -321,7 +328,16 @@ const AllDrugs = () => {
                             ) : label === 'expirationDate' ? (
                                 formatForDatetimeLocal(drug[label])
                             ) : (
-                                drug[label] || ''
+                                <span
+                                    style={{
+                                        color:
+                                            label === 'quantity' && drug[label] === 'Out of Stock'
+                                                ? 'red'
+                                                : 'inherit',
+                                    }}
+                                >
+                                    {drug[label] || ''}
+                                </span>
                             )}
                         </div>
                     ))
@@ -436,7 +452,7 @@ const Wrapper = styled.section`
         border: 1px solid #ccc;
         text-align: left;
         font-size: 1rem;
-        text-transform: lowercase;
+        //text-transform: lowercase;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;
@@ -480,16 +496,7 @@ const Wrapper = styled.section`
     .action-button.delete {
         color: var(--color-alert);
     }
-    .grid-item {
-        padding: 20px;
-        border: 1px solid #ccc;
-        text-align: left;
-        font-size: 1rem;
-        text-transform: lowercase;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border-radius: var(--border-radius);
-        background-color: #fff;
-    }
+   
     .grid-header {
         font-weight: bold;
         background-color: var(--color-green-med);

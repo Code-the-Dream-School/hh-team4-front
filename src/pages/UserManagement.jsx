@@ -39,6 +39,7 @@ const UserManagement = () => {
     const navigate = useNavigate();
     const view = useResponsiveView();
 
+
     const allowedFields = () => {
         switch (view) {
             case 'mobile':
@@ -54,11 +55,22 @@ const UserManagement = () => {
         }
     };
     const fields = allowedFields();
+  
+//     const columnLabels = [
+//         'name',
+//         'email',
+//         'role',
+//         'store',
+//         //'creationAt',
+//         //'updatedAt',
+//         'View/Edit/Delete',
+//     ];
+
     const token = localStorage.getItem('token');
     const currentUserId = localStorage.getItem('userId');
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/users', {
+        fetch('https://medistock.onrender.com/api/v1/users', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -100,7 +112,7 @@ const UserManagement = () => {
             return;
         }
 
-        fetch(`http://localhost:8000/api/v1/users/${userDelId}`, {
+        fetch(`https://medistock.onrender.com/api/v1/users/${userDelId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -143,14 +155,19 @@ const UserManagement = () => {
                     {/* Render column headers */}
                     {fields.map((label, index) => (
                         <div key={index} className="grid-item grid-header">
-                            {label}
+                            {label === 'ndcNumber' || label === 'lot'
+                                ? label.toUpperCase()
+                                : label.charAt(0).toUpperCase() + label.slice(1)}
                         </div>
                     ))}
                     {/* Render rows dynamically */}
                     {getCurrentItems().map((user, rowIndex) =>
                         fields.map((label, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="grid-item">
+
                                 {label === 'edit/delete' ? (
+//                                 {label === 'View/Edit/Delete' ? (
+
                                     <div className="actions">
                                         <button
                                             className="action-button edit"
@@ -210,7 +227,6 @@ const Wrapper = styled.section`
         border: 1px solid #ccc;
         text-align: left;
         font-size: 1rem;
-        text-transform: lowercase;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: var(--border-radius);
         background-color: #fff;

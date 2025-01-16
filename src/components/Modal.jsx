@@ -20,7 +20,7 @@ const Modal = ({ isOpen, onClose, record, title }) => {
                             key.toUpperCase() !== '__V' &&
                             key.toUpperCase() !== 'CREATEDBY' &&
                             key.toUpperCase() !== 'VIEW'
-                    ) // Exclude unwanted keys
+                    )
                     .map(([key, value]) => (
                         <p className="paragraph" style={pStyle} key={key}>
                             <strong className="key">{key}:</strong> {value}
