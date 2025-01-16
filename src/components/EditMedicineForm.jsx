@@ -13,7 +13,6 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
     const formatDateForInput = (date) => {
         if (!date) return '';
         const parsedDate = new Date(date);
-        // Format the date to 'yyyy-MM-dd' without timezone effects
         return parsedDate.toISOString().split('T')[0];
     };
 
@@ -29,7 +28,7 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
             }
             key={id}
             id={id}
-            value={formattedValue} // Format date correctly for the date input
+            value={formattedValue}
             onChange={handleInputChange}
             placeholder={placeholder}
             ref={inputRef}
@@ -39,7 +38,7 @@ const EditMedicineForm = ({ id, value, handleInputChange, placeholder }) => {
 
 EditMedicineForm.propTypes = {
     id: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Accept string or number
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     handleInputChange: PropTypes.func,
     placeholder: PropTypes.string.isRequired,
 };

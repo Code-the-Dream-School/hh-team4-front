@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import AddMedicineForm from '../components/AddMedicineForm';
 import Logo from '../components/Logo';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-export default function AddDrug({ addDrugs }) {
+export default function AddDrug() {
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -151,47 +150,69 @@ export default function AddDrug({ addDrugs }) {
 
     const handleAddMed = (event) => {
         event.preventDefault();
+
         const errors = validate(formData);
         setErrorsForm(errors);
 
-        addDrugs = {
-            ...formData,
-        };
+        if (!isEmpty(errors)) {
+            return;
+        }
 
         const token = localStorage.getItem('token');
 
         fetch('http://localhost:8000/api/v1/inventory', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(addDrugs),
         })
-            .then((response) => {
-                return response.json();
+            .then((response) => response.json())
+            .then((medications) => {
+                const existingNDC = medications.data.map((med) => med.ndcNumber);
+                const existingLots = medications.data.map((med) => med.lot);
+
+                if (existingNDC.includes(formData.ndcNumber)) {
+                    setErrorsForm((prevErrors) => ({
+                        ...prevErrors,
+                        ndcNumber: 'This NDC number is already in use.',
+                    }));
+                } else if (existingLots.includes(formData.lot)) {
+                    setErrorsForm((prevErrors) => ({
+                        ...prevErrors,
+                        lot: 'This LOT number is already in use.',
+                    }));
+                    return;
+                }
+
+                return fetch('http://localhost:8000/api/v1/inventory', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
             })
+            .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
                     toast.success('Registration Successful');
+                    setFormData({
+                        name: '',
+                        genericName: '',
+                        class: '',
+                        quantity: '',
+                        threshold: '',
+                        expirationDate: '',
+                        ndcNumber: '',
+                        lot: '',
+                    });
                 } else {
                     toast.error(data.error);
                 }
             })
             .catch((error) => setError(error.message));
-
-        if (isEmpty(errors)) {
-            setFormData({
-                name: '',
-                genericName: '',
-                class: '',
-                quantity: '',
-                threshold: '',
-                expirationDate: '',
-                ndcNumber: '',
-                lot: '',
-            });
-        }
     };
 
     return (
@@ -287,24 +308,20 @@ export default function AddDrug({ addDrugs }) {
     );
 }
 
-AddDrug.propTypes = {
-    addDrugs: PropTypes.func.isRequired,
-};
-
 export const Wrapper = styled.section`
-              min-height: 100vh;
-              display: grid;
-              align-items: center;
-              h4 {
-                  text - align: center;
-              margin-bottom: 1.38rem;
-  }
-              .logo {
-                  display: block;
-              margin: 0 auto;
-              margin-bottom: 1.38rem;
-  }
-              `;
+             min-height: 100vh;
+             display: grid;
+             align-items: center;
+             h4 {
+                 text - align: center;
+             margin-bottom: 1.38rem;
+ }
+             .logo {
+                 display: block;
+             margin: 0 auto;
+             margin-bottom: 1.38rem;
+ }
+             `;
 
 export const AddForm = styled.form`
     width: 90vw;
@@ -336,23 +353,23 @@ export const FormSection = styled.div`
 `;
 
 export const Fieldwrapper = styled.div`
-              .form-row {
-                  margin - bottom: 0.5rem;
-  }
-              input {
-                  width: 100%;
-              padding: 0.375rem 0.75rem;
-              border-radius: var(--border-radius);
-              border: 1px solid var(--grey-300);
-              color: var(--text-color);
-              height: 35px;
-              background-color: white;
-  }
-              label {
-                  font - size: 0.9rem;
-              text-transform: lowercase;
-  }
-              `;
+             .form-row {
+                 margin - bottom: 0.5rem;
+ }
+             input {
+                 width: 100%;
+             padding: 0.375rem 0.75rem;
+             border-radius: var(--border-radius);
+             border: 1px solid var(--grey-300);
+             color: var(--text-color);
+             height: 35px;
+             background-color: white;
+ }
+             label {
+                 font - size: 0.9rem;
+             text-transform: lowercase;
+ }
+             `;
 
 export const AddButton = styled.button`
     margin-top: 1rem;

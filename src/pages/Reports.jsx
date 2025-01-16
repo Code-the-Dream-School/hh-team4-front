@@ -112,7 +112,7 @@ const Reports = () => {
     const chartContainerStyle = {
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center', // Aligns charts vertically in the center
+        alignItems: 'center',
         gap: '10px',
         margin: '1%',
         padding: '5%',
@@ -196,7 +196,7 @@ const Reports = () => {
     const doughnutContainerStyle = {
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center', // Aligns charts vertically in the center
+        alignItems: 'center',
         gap: '10px',
         margin: '1%',
         padding: '5%',
@@ -223,14 +223,10 @@ const Reports = () => {
             .then((data) => {
                 const medicationNames = data.medications.map((item) => item.name);
                 setMedOutOfStock(medicationNames);
-
-                // Group quantities using reduce
                 const groupedQuantities = data.medications.reduce((acc, item) => {
                     acc[item.name] = acc[item.name] || 0;
                     return acc;
                 }, {});
-
-                // Update state with counts
                 setOutOfStockCounts(Object.values(groupedQuantities));
             })
             .catch((error) => setError(error.message));
@@ -241,7 +237,7 @@ const Reports = () => {
         setShowDoughnutChart(false);
         setShowOutOfStockList(false);
         fetchTopEmployees();
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleShowDoughnutChart = () => {
@@ -249,7 +245,7 @@ const Reports = () => {
         setShowDoughnutChart(true);
         setShowOutOfStockList(false);
         fetchInventoryData();
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleShowOutOfStockList = () => {
@@ -257,7 +253,7 @@ const Reports = () => {
         setShowDoughnutChart(false);
         setShowOutOfStockList(true);
         fetchOutOfStockData();
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to the top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
