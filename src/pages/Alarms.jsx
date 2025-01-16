@@ -2,6 +2,10 @@ import React from 'react';
 import Alarmbutton from './AlarmButton.jsx';
 import { useEffect, useState } from 'react';
 import { useDashboardContext } from './Dashboard';
+import lowStockIcon from '../assets/low-stock.svg';
+import outOfStockIcon from '../assets/out-of-stock.svg';
+import expiredIcon from '../assets/expired.svg';
+import expiresoonIcon from '../assets/expire-soon.svg';
 
 import styles from './AlarmButton.module.css';
 
@@ -64,14 +68,14 @@ export default function Alarms() {
             const next30Days = new Date(); // Clone current date
             next30Days.setDate(today.getDate() + 30); // Add 30 days
 
-            return expirationDate >= today && expirationDate <= next30Days;
+            return expirationDate >= today && expirationDate <= next30Days && drug.quantity !==0;
         });
         setExpiringData(expirationDateData); //Data for Date checking
 
         const expireddata = drugsData.filter((drug) => {
             const today = new Date();
             const expirationDate = new Date(drug.expirationDate);
-            return expirationDate <= today;
+            return expirationDate <= today && drug.quantity !==0;
         });
         setExpiredData(expireddata); //Data for Date checking
     };
@@ -82,28 +86,28 @@ export default function Alarms() {
             <div className={styles.alarmcontainer}>
                 <Alarmbutton
                     message={`Low Stock on ${lowStockData.length} products`}
-                    imagepath="../images/low-stock.png"
+                    imagepath={lowStockIcon}
                     filterTitle="Low Stock Drugs"
                     alarmFilterData={lowStockData}
                     targetPage="dashboard"
                 />
                 <Alarmbutton
                     message={`No Stock on ${noStockData.length} products`}
-                    imagepath="../images/out-of-stock.png"
+                    imagepath={outOfStockIcon}
                     filterTitle="Out of Stock Drugs"
                     alarmFilterData={noStockData}
                     targetPage="dashboard"
                 />
                 <Alarmbutton
                     message={`Expired ${expiredData.length} products`}
-                    imagepath="../images/expired.png"
+                    imagepath={expiredIcon}
                     filterTitle="Expired Drugs"
                     alarmFilterData={expiredData}
                     targetPage="dashboard"
                 />
                 <Alarmbutton
                     message={`Expiration soon ${expiringsoonData.length} products`}
-                    imagepath="../images/expire-soon.png"
+                    imagepath={expiresoonIcon}
                     filterTitle="Expiring Soon Drugs"
                     alarmFilterData={expiringsoonData}
                     targetPage="dashboard"
