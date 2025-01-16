@@ -29,7 +29,7 @@ const Reports = () => {
 
     const fetchTopEmployees = () => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:8000/api/v1/topEmployee`, {
+        fetch(`https://medistock.onrender.com/api/v1/topEmployee`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -123,7 +123,7 @@ const Reports = () => {
     const fetchInventoryData = () => {
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:8000/api/v1/inventory', {
+        fetch('https://medistock.onrender.com/api/v1/inventory', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -207,7 +207,7 @@ const Reports = () => {
     const fetchOutOfStockData = () => {
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:8000/api/v1/outOfStock', {
+        fetch('https://medistock.onrender.com/api/v1/outOfStock', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

@@ -19,7 +19,7 @@ const DispenseDrugByID = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
+                const response = await fetch(`https://medistock.onrender.com/api/v1/inventory/${id}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ const DispenseDrugByID = () => {
 
     const handleDispensedDrug = (event) => {
         event.preventDefault();
-        fetch(`http://localhost:8000/api/v1/dispense`, {
+        fetch(`https://medistock.onrender.com/api/v1/dispense`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,

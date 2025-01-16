@@ -121,7 +121,7 @@ const AllDrugs = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:8000/api/v1/inventory', {
+        fetch('https://medistock.onrender.com/api/v1/inventory', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -188,7 +188,7 @@ const AllDrugs = () => {
 
     const handleConfirmDelete = () => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:8000/api/v1/inventory/${drugToDelete?.drugId}`, {
+        fetch(`https://medistock.onrender.com/api/v1/inventory/${drugToDelete?.drugId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -288,21 +288,21 @@ const AllDrugs = () => {
                                     />
                                     {(roleOfUser === 'admin' ||
                                         roleOfUser === 'inventoryManager') && (
-                                        <>
-                                            <button
-                                                className="action-button edit"
-                                                onClick={() => handleEdit(drug._id)}
-                                            >
-                                                <FaEdit />
-                                            </button>
-                                            <button
-                                                className="action-button delete"
-                                                onClick={() => handleDelete(drug._id, drug.name)}
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                        </>
-                                    )}
+                                            <>
+                                                <button
+                                                    className="action-button edit"
+                                                    onClick={() => handleEdit(drug._id)}
+                                                >
+                                                    <FaEdit />
+                                                </button>
+                                                <button
+                                                    className="action-button delete"
+                                                    onClick={() => handleDelete(drug._id, drug.name)}
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </>
+                                        )}
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}

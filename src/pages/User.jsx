@@ -24,7 +24,7 @@ const User = () => {
     const userId = id ? id : currentUser;
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/v1/users/${userId}`, {
+        fetch(`https://medistock.onrender.com/api/v1/users/${userId}`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ const User = () => {
     };
 
     const updateUserInfo = () => {
-        fetch(`http://localhost:8000/api/v1/users/${userId}`, {
+        fetch(`https://medistock.onrender.com/api/v1/users/${userId}`, {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,

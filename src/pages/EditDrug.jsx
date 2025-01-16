@@ -43,7 +43,7 @@ export default function EditDrug() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
+        fetch(`https://medistock.onrender.com/api/v1/inventory/${id}`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -188,7 +188,7 @@ export default function EditDrug() {
         setErrorsForm(errors);
         if (isEmpty(errors)) {
             const token = localStorage.getItem('token');
-            fetch(`http://localhost:8000/api/v1/inventory/${id}`, {
+            fetch(`https://medistock.onrender.com/api/v1/inventory/${id}`, {
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${token}`,
