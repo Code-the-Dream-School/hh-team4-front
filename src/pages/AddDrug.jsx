@@ -4,7 +4,7 @@ import AddMedicineForm from '../components/AddMedicineForm';
 import Logo from '../components/Logo';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-export default function AddDrug({ addDrugs }) {
+export default function AddDrug({ }) {
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -151,47 +151,69 @@ export default function AddDrug({ addDrugs }) {
 
     const handleAddMed = (event) => {
         event.preventDefault();
+
         const errors = validate(formData);
         setErrorsForm(errors);
 
-        addDrugs = {
-            ...formData,
-        };
+        if (!isEmpty(errors)) {
+            return;
+        }
 
         const token = localStorage.getItem('token');
 
         fetch('http://localhost:8000/api/v1/inventory', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(addDrugs),
         })
-            .then((response) => {
-                return response.json();
+            .then((response) => response.json())
+            .then((medications) => {
+                const existingLots = medications.data.map((med) => med.lot);
+                const existingNDC = medications.data.map((med) => med.ndcNumber);
+
+                if (existingLots.includes(formData.lot)) {
+                    setErrorsForm((prevErrors) => ({
+                        ...prevErrors,
+                        lot: 'This LOT number is already in use.',
+                    }));
+                } else if (existingNDC.includes(formData.ndcNumber)) {
+                    setErrorsForm((prevErrors) => ({
+                        ...prevErrors,
+                        ndcNumber: 'This NDC number is already in use.',
+                    }));
+                    return;
+                }
+
+                return fetch('http://localhost:8000/api/v1/inventory', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
             })
-            .then((data) => {
+            .then(response => response.json())
+            .then(data => {
                 if (data.success) {
                     toast.success('Registration Successful');
+                    setFormData({
+                        name: '',
+                        genericName: '',
+                        class: '',
+                        quantity: '',
+                        threshold: '',
+                        expirationDate: '',
+                        ndcNumber: '',
+                        lot: '',
+                    });
                 } else {
                     toast.error(data.error);
                 }
             })
-            .catch((error) => setError(error.message));
-
-        if (isEmpty(errors)) {
-            setFormData({
-                name: '',
-                genericName: '',
-                class: '',
-                quantity: '',
-                threshold: '',
-                expirationDate: '',
-                ndcNumber: '',
-                lot: '',
-            });
-        }
+            .catch(error => setError(error.message));
     };
 
     return (
@@ -287,107 +309,103 @@ export default function AddDrug({ addDrugs }) {
     );
 }
 
-AddDrug.propTypes = {
-    addDrugs: PropTypes.func.isRequired,
-};
-
 export const Wrapper = styled.section`
-              min-height: 100vh;
-              display: grid;
-              align-items: center;
-              h4 {
-                  text - align: center;
-              margin-bottom: 1.38rem;
-  }
-              .logo {
-                  display: block;
-              margin: 0 auto;
-              margin-bottom: 1.38rem;
-  }
-              `;
+             min-height: 100vh;
+             display: grid;
+             align-items: center;
+             h4 {
+                 text - align: center;
+             margin-bottom: 1.38rem;
+ }
+             .logo {
+                 display: block;
+             margin: 0 auto;
+             margin-bottom: 1.38rem;
+ }
+             `;
 
 export const AddForm = styled.form`
-    width: 90vw;
-    max-width: 400px;
-    border-top: 5px solid var(--color-blue-dark);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-2);
-    padding: 2rem 2.5rem;
-    margin: 3rem auto;
+   width: 90vw;
+   max-width: 400px;
+   border-top: 5px solid var(--color-blue-dark);
+   border-radius: var(--border-radius);
+   box-shadow: var(--shadow-2);
+   padding: 2rem 2.5rem;
+   margin: 3rem auto;
 `;
 
 export const StyledLabel = styled.label`
-    text-transform: lowercase;
-    display: block;
-    font-size: var(--small-text);
-    margin-bottom: 0.75rem;
-    text-transform: capitalize;
-    letter-spacing: var(--letter-spacing);
-    line-height: 1.5;
+   text-transform: lowercase;
+   display: block;
+   font-size: var(--small-text);
+   margin-bottom: 0.75rem;
+   text-transform: capitalize;
+   letter-spacing: var(--letter-spacing);
+   line-height: 1.5;
 `;
 
 export const FormSection = styled.div`
-    width: 90vw;
-    max-width: var(--fixed-width);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-2);
-    padding: 2rem 2.5rem;
-    margin: 3rem auto;
+   width: 90vw;
+   max-width: var(--fixed-width);
+   border-radius: var(--border-radius);
+   box-shadow: var(--shadow-2);
+   padding: 2rem 2.5rem;
+   margin: 3rem auto;
 `;
 
 export const Fieldwrapper = styled.div`
-              .form-row {
-                  margin - bottom: 0.5rem;
-  }
-              input {
-                  width: 100%;
-              padding: 0.375rem 0.75rem;
-              border-radius: var(--border-radius);
-              border: 1px solid var(--grey-300);
-              color: var(--text-color);
-              height: 35px;
-              background-color: white;
-  }
-              label {
-                  font - size: 0.9rem;
-              text-transform: lowercase;
-  }
-              `;
+             .form-row {
+                 margin - bottom: 0.5rem;
+ }
+             input {
+                 width: 100%;
+             padding: 0.375rem 0.75rem;
+             border-radius: var(--border-radius);
+             border: 1px solid var(--grey-300);
+             color: var(--text-color);
+             height: 35px;
+             background-color: white;
+ }
+             label {
+                 font - size: 0.9rem;
+             text-transform: lowercase;
+ }
+             `;
 
 export const AddButton = styled.button`
-    margin-top: 1rem;
-    background-color: var(--color-blue-dark);
-    width: 100%;
-    cursor: pointer;
-    color: var(--white);
-    border: transparent;
-    border-radius: var(--border-radius);
-    letter-spacing: var(--letter-spacing);
-    padding: 1rem 4rem;
-    box-shadow: var(--shadow-1);
-    transition: var(--transition);
-    display: inline-block;
+   margin-top: 1rem;
+   background-color: var(--color-blue-dark);
+   width: 100%;
+   cursor: pointer;
+   color: var(--white);
+   border: transparent;
+   border-radius: var(--border-radius);
+   letter-spacing: var(--letter-spacing);
+   padding: 1rem 4rem;
+   box-shadow: var(--shadow-1);
+   transition: var(--transition);
+   display: inline-block;
 `;
 
 export const Overlay = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+   width: 100vw;
+   height: 100vh;
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
 `;
 
 export const DeleteButton = styled.button`
-    background-color: rgb(34, 63, 75);
-    color: white;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    padding: 0.2em 3em; /* Smaller padding */
-    font-size: 0.8em; /* Smaller font size */
-    font-family: inherit;
-    cursor: pointer;
-    transition: border-color 0.25s;
+   background-color: rgb(34, 63, 75);
+   color: white;
+   border-radius: 8px;
+   border: 1px solid transparent;
+   padding: 0.6em 1.2em;
+   padding: 0.2em 3em; /* Smaller padding */
+   font-size: 0.8em; /* Smaller font size */
+   font-family: inherit;
+   cursor: pointer;
+   transition: border-color 0.25s;
 `;
