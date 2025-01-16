@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import AddMedicineForm from '../components/AddMedicineForm';
 import Logo from '../components/Logo';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-export default function AddDrug({ }) {
+export default function AddDrug() {
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -195,8 +194,8 @@ export default function AddDrug({ }) {
                     body: JSON.stringify(formData),
                 });
             })
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 if (data.success) {
                     toast.success('Registration Successful');
                     setFormData({
@@ -213,7 +212,7 @@ export default function AddDrug({ }) {
                     toast.error(data.error);
                 }
             })
-            .catch(error => setError(error.message));
+            .catch((error) => setError(error.message));
     };
 
     return (
@@ -325,32 +324,32 @@ export const Wrapper = styled.section`
              `;
 
 export const AddForm = styled.form`
-   width: 90vw;
-   max-width: 400px;
-   border-top: 5px solid var(--color-blue-dark);
-   border-radius: var(--border-radius);
-   box-shadow: var(--shadow-2);
-   padding: 2rem 2.5rem;
-   margin: 3rem auto;
+    width: 90vw;
+    max-width: 400px;
+    border-top: 5px solid var(--color-blue-dark);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 3rem auto;
 `;
 
 export const StyledLabel = styled.label`
-   text-transform: lowercase;
-   display: block;
-   font-size: var(--small-text);
-   margin-bottom: 0.75rem;
-   text-transform: capitalize;
-   letter-spacing: var(--letter-spacing);
-   line-height: 1.5;
+    text-transform: lowercase;
+    display: block;
+    font-size: var(--small-text);
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+    letter-spacing: var(--letter-spacing);
+    line-height: 1.5;
 `;
 
 export const FormSection = styled.div`
-   width: 90vw;
-   max-width: var(--fixed-width);
-   border-radius: var(--border-radius);
-   box-shadow: var(--shadow-2);
-   padding: 2rem 2.5rem;
-   margin: 3rem auto;
+    width: 90vw;
+    max-width: var(--fixed-width);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-2);
+    padding: 2rem 2.5rem;
+    margin: 3rem auto;
 `;
 
 export const Fieldwrapper = styled.div`
@@ -373,39 +372,39 @@ export const Fieldwrapper = styled.div`
              `;
 
 export const AddButton = styled.button`
-   margin-top: 1rem;
-   background-color: var(--color-blue-dark);
-   width: 100%;
-   cursor: pointer;
-   color: var(--white);
-   border: transparent;
-   border-radius: var(--border-radius);
-   letter-spacing: var(--letter-spacing);
-   padding: 1rem 4rem;
-   box-shadow: var(--shadow-1);
-   transition: var(--transition);
-   display: inline-block;
+    margin-top: 1rem;
+    background-color: var(--color-blue-dark);
+    width: 100%;
+    cursor: pointer;
+    color: var(--white);
+    border: transparent;
+    border-radius: var(--border-radius);
+    letter-spacing: var(--letter-spacing);
+    padding: 1rem 4rem;
+    box-shadow: var(--shadow-1);
+    transition: var(--transition);
+    display: inline-block;
 `;
 
 export const Overlay = styled.div`
-   width: 100vw;
-   height: 100vh;
-   position: fixed;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 `;
 
 export const DeleteButton = styled.button`
-   background-color: rgb(34, 63, 75);
-   color: white;
-   border-radius: 8px;
-   border: 1px solid transparent;
-   padding: 0.6em 1.2em;
-   padding: 0.2em 3em; /* Smaller padding */
-   font-size: 0.8em; /* Smaller font size */
-   font-family: inherit;
-   cursor: pointer;
-   transition: border-color 0.25s;
+    background-color: rgb(34, 63, 75);
+    color: white;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    padding: 0.2em 3em; /* Smaller padding */
+    font-size: 0.8em; /* Smaller font size */
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.25s;
 `;
