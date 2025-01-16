@@ -68,14 +68,14 @@ export default function Alarms() {
             const next30Days = new Date(); // Clone current date
             next30Days.setDate(today.getDate() + 30); // Add 30 days
 
-            return expirationDate >= today && expirationDate <= next30Days && drug.quantity !==0;
+            return expirationDate >= today && expirationDate <= next30Days && drug.quantity !== 0;
         });
         setExpiringData(expirationDateData); //Data for Date checking
 
         const expireddata = drugsData.filter((drug) => {
             const today = new Date();
             const expirationDate = new Date(drug.expirationDate);
-            return expirationDate <= today && drug.quantity !==0;
+            return expirationDate <= today && drug.quantity !== 0;
         });
         setExpiredData(expireddata); //Data for Date checking
     };
