@@ -169,18 +169,18 @@ export default function AddDrug() {
         })
             .then((response) => response.json())
             .then((medications) => {
-                const existingLots = medications.data.map((med) => med.lot);
                 const existingNDC = medications.data.map((med) => med.ndcNumber);
+                const existingLots = medications.data.map((med) => med.lot);
 
-                if (existingLots.includes(formData.lot)) {
-                    setErrorsForm((prevErrors) => ({
-                        ...prevErrors,
-                        lot: 'This LOT number is already in use.',
-                    }));
-                } else if (existingNDC.includes(formData.ndcNumber)) {
+                if (existingNDC.includes(formData.ndcNumber)) {
                     setErrorsForm((prevErrors) => ({
                         ...prevErrors,
                         ndcNumber: 'This NDC number is already in use.',
+                    }));
+                } else if (existingLots.includes(formData.lot)) {
+                    setErrorsForm((prevErrors) => ({
+                        ...prevErrors,
+                        lot: 'This LOT number is already in use.',
                     }));
                     return;
                 }
