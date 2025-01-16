@@ -288,21 +288,21 @@ const AllDrugs = () => {
                                     />
                                     {(roleOfUser === 'admin' ||
                                         roleOfUser === 'inventoryManager') && (
-                                            <>
-                                                <button
-                                                    className="action-button edit"
-                                                    onClick={() => handleEdit(drug._id)}
-                                                >
-                                                    <FaEdit />
-                                                </button>
-                                                <button
-                                                    className="action-button delete"
-                                                    onClick={() => handleDelete(drug._id, drug.name)}
-                                                >
-                                                    <FaTrash />
-                                                </button>
-                                            </>
-                                        )}
+                                        <>
+                                            <button
+                                                className="action-button edit"
+                                                onClick={() => handleEdit(drug._id)}
+                                            >
+                                                <FaEdit />
+                                            </button>
+                                            <button
+                                                className="action-button delete"
+                                                onClick={() => handleDelete(drug._id, drug.name)}
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </>
+                                    )}
                                     <button
                                         className="action-button dispense"
                                         onClick={() => handleDispense(drug._id)}

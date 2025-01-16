@@ -19,13 +19,16 @@ const DispenseDrugByID = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://medistock.onrender.com/api/v1/inventory/${id}`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
+                const response = await fetch(
+                    `https://medistock.onrender.com/api/v1/inventory/${id}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
                 }
