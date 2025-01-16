@@ -79,8 +79,8 @@ const AllDrugs = () => {
         class: 'Class',
         quantity: 'Quantity',
         expirationDate: 'Expiration Date',
-        lot: 'Lot',
-        ndcNumber: 'Ndc Number',
+        lot: 'LOT',
+        ndcNumber: 'NDC',
         'View/Edit/Delete/Dispense':
             roleOfUser === 'clerk' ? 'View/Dispense' : 'View/Edit/Delete/Dispense',
     };
