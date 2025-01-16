@@ -98,7 +98,7 @@ const PastOrders = () => {
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/v1/dispense-logs`, {
+        fetch(`https://medistock.onrender.com/api/v1/dispense-logs`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

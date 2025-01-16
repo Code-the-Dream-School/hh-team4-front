@@ -160,7 +160,7 @@ export default function AddDrug() {
 
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:8000/api/v1/inventory', {
+        fetch('https://medistock.onrender.com/api/v1/inventory', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -185,7 +185,7 @@ export default function AddDrug() {
                     return;
                 }
 
-                return fetch('http://localhost:8000/api/v1/inventory', {
+                return fetch('https://medistock.onrender.com/api/v1/inventory', {
                     method: 'POST',
                     headers: {
                         Authorization: `Bearer ${token}`,

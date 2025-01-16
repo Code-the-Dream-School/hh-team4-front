@@ -15,7 +15,7 @@ export default function Alarms() {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:8000/api/v1/inventory', {
+        fetch('https://medistock.onrender.com/api/v1/inventory', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

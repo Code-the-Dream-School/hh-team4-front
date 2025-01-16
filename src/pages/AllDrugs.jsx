@@ -121,7 +121,7 @@ const AllDrugs = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        fetch('http://localhost:8000/api/v1/inventory', {
+        fetch('https://medistock.onrender.com/api/v1/inventory', {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -188,7 +188,7 @@ const AllDrugs = () => {
 
     const handleConfirmDelete = () => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:8000/api/v1/inventory/${drugToDelete?.drugId}`, {
+        fetch(`https://medistock.onrender.com/api/v1/inventory/${drugToDelete?.drugId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
